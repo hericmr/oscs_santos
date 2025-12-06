@@ -1,0 +1,36 @@
+{
+  "data_download": "2025-12-06T12:15:29.292137",
+  "total_urls": 7,
+  "sucessos": 4,
+  "falhas": 1,
+  "resultados": [
+    {
+      "url": "https://geosiap.santos.sp.gov.br/portal-transparencia/api/default/execucao/despesas_acao/despesas_acao?id_entidade=1&tipo_despesa=uo&ano_selecionado=Sat%20Dec%2006%202025%2012:14:37%20GMT-0300%20(Hor%C3%A1rio%20Padr%C3%A3o%20de%20Bras%C3%ADlia)&data_inicial=undefined&data_final=undefined",
+      "sucesso": false
+    },
+    {
+      "url": "https://egov.santos.sp.gov.br/dadosabertos/backend/api/prestacao-contas/prestacao/valor-ano?ano=2024",
+      "json": "dados_completos/prestacao_valor-ano_ano=2024.json",
+      "csv": "dados_completos/prestacao_valor-ano_ano=2024.csv",
+      "sucesso": true
+    },
+    {
+      "url": "https://geosiap.santos.sp.gov.br/portal-transparencia/api/default/execucao/despesas_acao/despesas_acao?id_entidade=1&tipo_despesa=fs&ano_selecionado=Sat%20Dec%2006%202025%2012:14:37%20GMT-0300%20(Hor%C3%A1rio%20Padr%C3%A3o%20de%20Bras%C3%ADlia)&data_inicial=undefined&data_final=undefined",
+      "json": "dados_completos/despesas_acao_despesas_acao_id_entidade=1_tipo_despesa=fs_ano_selecionado=Sat_.json",
+      "csv": "dados_completos/despesas_acao_despesas_acao_id_entidade=1_tipo_despesa=fs_ano_selecionado=Sat_.csv",
+      "sucesso": true
+    },
+    {
+      "url": "https://geosiap.santos.sp.gov.br/portal-transparencia/api/default/execucao/detalhamento_despesas/detalhamento_despesas?ano=2025&id_entidade=1&dias=0",
+      "json": "dados_completos/detalhamento_despesas_detalhamento_despesas_ano=2025_id_entidade=1_dias=0.json",
+      "csv": "dados_completos/detalhamento_despesas_detalhamento_despesas_ano=2025_id_entidade=1_dias=0.csv",
+      "sucesso": true
+    },
+    {
+      "url": "https://geosiap.santos.sp.gov.br/portal-transparencia/api/default/execucao/receitas/proprias/receitas_proprias?ano=2025&dt_inicial=undefined&dt_final=undefined&id_entidade=1&dias=0&layout=Anual",
+      "json": "dados_completos/proprias_receitas_proprias_ano=2025_dt_inicial=undefined_dt_final=undefined_i.json",
+      "csv": "dados_completos/proprias_receitas_proprias_ano=2025_dt_inicial=undefined_dt_final=undefined_i.csv",
+      "sucesso": true
+    }
+  ]
+}

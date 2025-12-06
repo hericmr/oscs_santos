@@ -1,0 +1,119 @@
+[
+  {
+    "id": 438,
+    "secretaria_id": 11,
+    "secretaria_sigla": "GPM",
+    "beneficiaria_id": 541,
+    "beneficiaria_nome": "SOCIEDADE DE MELHORAMENTOS DOS AMIGOS DA VILA SÃO BENTO",
+    "valor_recurso": null,
+    "valor_repasse": 10401.73
+  },
+  {
+    "id": 640,
+    "secretaria_id": 11,
+    "secretaria_sigla": "GPM",
+    "beneficiaria_id": 540,
+    "beneficiaria_nome": "SOCIEDADE DE MELHORAMENTOS DO BAIRRO E MORRO DO JABAQUARA",
+    "valor_recurso": null,
+    "valor_repasse": 10497.639999999998
+  },
+  {
+    "id": 659,
+    "secretaria_id": 11,
+    "secretaria_sigla": "GPM",
+    "beneficiaria_id": 484,
+    "beneficiaria_nome": "SOCIEDADE DE MELHORAMENTOS DO BAIRRO DA ENCRUZILHADA",
+    "valor_recurso": null,
+    "valor_repasse": 10497.639999999998
+  },
+  {
+    "id": 715,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 548,
+    "beneficiaria_nome": "SOCIEDADE ESPORTIVA CANTAREIRA",
+    "valor_recurso": "134140.92",
+    "valor_repasse": 89427.28000000001
+  },
+  {
+    "id": 722,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 458,
+    "beneficiaria_nome": "INSTITUTO PROATVIDA (COM VOCÃŠ A GENTE FAZ)",
+    "valor_recurso": "358020.00",
+    "valor_repasse": 179010
+  },
+  {
+    "id": 723,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 458,
+    "beneficiaria_nome": "INSTITUTO PROATVIDA (COM VOCÃŠ A GENTE FAZ)",
+    "valor_recurso": "358020.00",
+    "valor_repasse": 179010
+  },
+  {
+    "id": 726,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 458,
+    "beneficiaria_nome": "INSTITUTO PROATVIDA (COM VOCÃŠ A GENTE FAZ)",
+    "valor_recurso": "90000.00",
+    "valor_repasse": 90000
+  },
+  {
+    "id": 767,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 545,
+    "beneficiaria_nome": "ASSOCIAÇÃO DO CENTRO COMUNITÁRIO DO DIQUE - UNIVERSIDADE ABERTA - CRECHE TIA NILDA",
+    "valor_recurso": null,
+    "valor_repasse": 15000
+  },
+  {
+    "id": 781,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 548,
+    "beneficiaria_nome": "SOCIEDADE ESPORTIVA CANTAREIRA",
+    "valor_recurso": "122942.00",
+    "valor_repasse": 44713.64
+  },
+  {
+    "id": 960,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 458,
+    "beneficiaria_nome": "INSTITUTO PROATVIDA (COM VOCÃŠ A GENTE FAZ)",
+    "valor_recurso": null,
+    "valor_repasse": 0
+  },
+  {
+    "id": 3813,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 458,
+    "beneficiaria_nome": "INSTITUTO PROATVIDA (COM VOCÃŠ A GENTE FAZ)",
+    "valor_recurso": "90000.00",
+    "valor_repasse": 0
+  },
+  {
+    "id": 4673,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 121,
+    "beneficiaria_nome": "ASSOCIAÇÃO DESPORTIVA EDUCACIONAL E SOCIAL EQUILIBRIUM",
+    "valor_recurso": "51430.00",
+    "valor_repasse": 51430
+  },
+  {
+    "id": 7900,
+    "secretaria_id": 11,
+    "secretaria_sigla": "GPM",
+    "beneficiaria_id": 666,
+    "beneficiaria_nome": "ASSOCIAÃ‡ÃƒO DE MORADORES DA VILA SANTA CASA",
+    "valor_recurso": null,
+    "valor_repasse": 4267.45
+  }
+]

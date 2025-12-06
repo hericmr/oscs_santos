@@ -150,8 +150,7 @@ with tab1:
         display_cols = ['dt_ano_recursos_osc', 'tx_razao_social_osc', 'nr_valor_recursos_osc', 'tx_nome_fonte_recursos_osc']
         # Filter for columns that actually exist to avoid KeyError
         valid_cols = [c for c in display_cols if c in df_ipea.columns]
-        with st.expander("Ver Tabela Detalhada (IPEA)"):
-            st.dataframe(df_ipea[valid_cols].sort_values(by='dt_ano_recursos_osc', ascending=False) if 'dt_ano_recursos_osc' in valid_cols else df_ipea[valid_cols], use_container_width=True)
+        st.dataframe(df_ipea[valid_cols].sort_values(by='dt_ano_recursos_osc', ascending=False) if 'dt_ano_recursos_osc' in valid_cols else df_ipea[valid_cols], use_container_width=True)
     else:
         st.info("Não foram encontrados dados de repasses federais vinculados às OSCs de Santos nesta base.")
 
@@ -183,9 +182,8 @@ with tab2:
         fig_stack = apply_academic_chart_style(fig_stack)
         st.plotly_chart(fig_stack, use_container_width=True)
 
-        with st.expander("Ver Dados Detalhados (MJ)"):
-            st.subheader("Dados Detalhados")
-            st.dataframe(df_mj_year, use_container_width=True)
+        st.subheader("Dados Detalhados")
+        st.dataframe(df_mj_year, use_container_width=True)
     else:
          st.info("Não foram encontrados dados detalhados de fontes de recursos (MJ) para as OSCs de Santos.")
 

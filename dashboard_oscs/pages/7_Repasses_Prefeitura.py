@@ -30,11 +30,11 @@ df = load_funding_data()
 if df.empty:
     st.warning("Nenhum dado de repasse encontrado.")
 else:
-    # Filters
-    st.write("### Filtros")
+    # Sidebar filters
+    st.sidebar.header("Filtros")
     
     anos_disponiveis = sorted(df['ano'].unique(), reverse=True)
-    ano_selecionado = st.selectbox("Selecione o Ano", ["Todos"] + list(anos_disponiveis))
+    ano_selecionado = st.sidebar.selectbox("Selecione o Ano", ["Todos"] + list(anos_disponiveis))
     
     df_filtered = df.copy()
     if ano_selecionado != "Todos":
@@ -71,9 +71,8 @@ else:
             st.plotly_chart(fig_top, use_container_width=True)
             
         st.markdown("---")
-        with st.expander("Ver Tabela Detalhada (Geral)"):
-            st.subheader("Detalhamento dos Dados (Geral)")
-            st.dataframe(df_filtered, use_container_width=True)
+        st.subheader("Detalhamento dos Dados (Geral)")
+        st.dataframe(df_filtered, use_container_width=True)
 
     else:
         st.subheader(f"Análise Detalhada de {ano_selecionado}")
@@ -132,6 +131,5 @@ else:
             st.plotly_chart(fig_bar_area, use_container_width=True)
             
         st.markdown("---")
-        with st.expander("Ver Tabela de Dados Completa"):
-            st.subheader("Tabela de Dados do Ano")
-            st.dataframe(df_filtered, use_container_width=True)
+        st.subheader("Tabela de Dados do Ano")
+        st.dataframe(df_filtered, use_container_width=True)

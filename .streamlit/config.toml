@@ -1,0 +1,7 @@
+[theme]
+base = "light"
+primaryColor = "#2C3E50"  # Navy Blue sober/academic
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F8F9FA" # Very light gray for sidebar
+textColor = "#000000"
+font = "serif"

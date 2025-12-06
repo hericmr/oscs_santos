@@ -1,0 +1,36 @@
+--- dashboard_oscs/data/oscs_santos.csv ---
+               0   ...                38
+0            cnpj  ...  SubArea_Religiao
+1  11061656000211  ...               0.0
+2  11061656000300  ...               0.0
+3   5273791001380  ...               0.0
+4  61873820000182  ...               0.0
+
+[5 rows x 39 columns]
+
+--- area_subarea.xlsx ---
+['id_osc', 'cd_identificador_osc', 'tx_razao_social_osc', 'tx_nome_fantasia_osc', 'dt_fundacao_osc', 'tx_nome_classe_atividade_economica', 'cd_natureza_juridica_osc', 'edmu_cd_municipio', 'edmu_nm_municipio', 'eduf_cd_uf', 'eduf_sg_uf', 'id_osc.1', 'HabitaÃ§Ã£o', 'SaÃºde', 'Cultura e recreaÃ§Ã£o', 'EducaÃ§Ã£o e pesquisa', 'AssistÃªncia social', 'ReligiÃ£o', 'AssociaÃ§Ãµes patronais, profissionais e de produtores rurais', 'Meio ambiente e proteÃ§Ã£o animal', 'Desenvolvimento e defesa de direitos', 'Outros', 'Outras atividades associativas', 'id_osc.2', 'Hab sub HabitaÃ§Ã£o', 'Hab sub Outros', 'Saude sub Hospitais', 'Saude sub Outros serviÃ§os de saÃºde', 'Saude sub Outros', 'Cultura sub Cultura e arte', 'Cultura sub Esporte e recreaÃ§Ã£o', 'Cultura sub Outros', 'Educacao sub EducaÃ§Ã£o infantil', 'Educacao sub Ensino fundamental', 'Educacao sub Ensino mÃ©dio', 'Educacao sub EducaÃ§Ã£o superior', 'Educacao sub Estudos e pesquisas', 'Educacao sub EducaÃ§Ã£o profissional', 'Educacao sub Outras formas de educaÃ§Ã£o/ensino', 'Educacao sub Outros', 'Educacao sub Atividades de apoio Ã\xa0 educaÃ§Ã£o', 'Ass Social sub AssistÃªncia social', 'Ass Social sub Outros', 'Religiao sub ReligiÃ£o', 'Religiao sub Outros', 'Ass Patronais sub AssociaÃ§Ãµes empresariais e patronais', 'Ass Patronais sub AssociaÃ§Ãµes profissionais', 'Ass Patronais sub AssociaÃ§Ãµes de produtores rurais', 'Ass Patronais sub Cooperativas sociais', 'Ass Patronais sub Outros', 'Meio Amb sub Meio ambiente', 'Meio Amb sub ProteÃ§Ã£o animal', 'Meio Amb sub Outros', 'Desenv e Def sub AssociaÃ§Ãµes de moradores', 'Desenv e Def sub Centros e associaÃ§Ãµes comunitÃ¡rias', 'Desenv e Def sub Desenvolvimento rural', 'Desenv e Def sub Emprego e treinamento', 'Desenv e Def sub Defesa de direitos de grupos e minorias', 'Desenv e Def sub Outros', 'Desenv e Def sub AssociaÃ§Ãµes de pais, professores, alunos e a', 'Desenv e Def sub AssociaÃ§Ãµes patronais e profissionais', 'Desenv e Def sub Cultura e recreaÃ§Ã£o', 'Desenv e Def sub Defesa de direitos e interesses - mÃºltiplas ', 'Desenv e Def sub Meio ambiente e proteÃ§Ã£o animal', 'Desenv e Def sub Outras formas de desenvolvimento e defesa de d', 'Desenv e Def sub ReligiÃ£o', 'Desenv e Def sub SaÃºde, assistÃªncia social e educaÃ§Ã£o', 'Outras sub AssociaÃ§Ãµes de atividades nÃ£o especificadas anter']
+
+--- 6793-certificadolistaantiga.xls ---
+Missing optional dependency 'xlrd'. Install xlrd >= 2.0.1 for xls Excel support Use pip or conda to install xlrd.
+
+--- 4168-baseprojetososcantiga.xlsx ---
+['id_projeto', 'id_osc', 'cd_identificador_osc', 'tx_nome_projeto', 'tx_nome_status_projeto', 'dt_data_inicio_projeto', 'dt_data_fim_projeto', 'tx_link_projeto', 'nr_total_beneficiarios', 'nr_valor_captado_projeto', 'nr_valor_total_projeto', 'tx_nome_abrangencia_projeto', 'tx_nome_zona_atuacao', 'tx_descricao_projeto', 'tx_metodologia_monitoramento', 'ft_identificador_projeto_externo', 'tx_status_projeto_outro', 'edmu_cd_municipio', 'edmu_nm_municipio', 'eduf_cd_uf', 'eduf_nm_uf', 'tx_nome_subarea_atuacao', 'tx_nome_financiador', 'tx_orgao_concedente', 'tx_nome_origem_fonte_recursos_projeto', 'tx_nome_fonte_recursos_projeto', 'tx_nome_regiao_localizacao_projeto', 'tx_nome_objetivo_projeto', 'tx_nome_meta_projeto', 'id_osc_parceira', 'tx_nome_publico_beneficiado', 'nr_estimativa_pessoas_atendidas', 'tx_nome_tipo_parceria']
+
+--- 4038-dicionario-de-dados-mapa-oscs(1).xlsx ---
+['Variavel', 'Descrição', 'Fontes dos Dados']
+
+--- 1434-cebassaude.xlsx ---
+['NU_CNPJ', 'NO_PESSOA', 'NO_FANTASIA', 'NO_REGIAO', 'SG_UF', 'CO_MUNICIPIO_IBGE', 'NO_MUNICIPIO', 'DS_SITUACAO_ATUAL', 'DT_INICIO_VIGENCIA', 'DT_FIM_VIGENCIA', 'ST_CEBAS', 'DT_INICIO_VALIDADE_ANTERIOR', 'DT_FIM_VALIDADE_ANTERIOR']
+
+--- 8420-cebaseducacao.xlsx ---
+['CNPJ', ' PROCESSO SEI', ' SITUAÇÃO DA CERTIFICAÇÃO                                 ', 'Unnamed: 3', ' Nº DA PORTARIA ', 'DATA DA PORTARIA', 'DATA DA PUBLICAÇÃO ', ' INICIO DA VALIDADE ', 'FIM DA VALIDADE']
+
+--- 4786-recursososc.xls ---
+Missing optional dependency 'xlrd'. Install xlrd >= 2.0.1 for xls Excel support Use pip or conda to install xlrd.
+
+--- 7684-cebassuas.xlsx ---
+['Unnamed: 0', 'MINISTÉRIO DO DESENVOLVIMENTO E ASSISTÊNCIA SOCIAL, FAMÍLIA E COMBATE À FOME']
+
+--- oscs_santos.csv ---
+['cnpj', 'tx_razao_social_osc', 'tx_nome_fantasia_osc', 'cd_natureza_juridica_osc', 'dt_fundacao_osc', 'situacao_cadastral', 'tx_endereco_completo', 'cd_municipio', 'municipio_nome', 'UF_Sigla', 'longitude', 'latitude', 'cnae', 'Area_Assistencia_social', 'Area_Associacoes_patronais_e_profissionais', 'Area_Cultura_e_recreacao', 'Area_Desenvolvimento_e_defesa_de_direitos_e_interesses', 'Area_Educacao_e_pesquisa', 'Area_Outras_atividades_associativas', 'Area_Religiao', 'Area_Saude', 'SubArea_Assistencia_social', 'SubArea_Associacoes_de_atividades_nao_especificadas_anteriormente', 'SubArea_Associacoes_de_produtores_rurais_pescadores_e_similares', 'SubArea_Associacoes_empresariais_e_patronais', 'SubArea_Associacoes_profissionais', 'SubArea_Atividades_de_apoio_a_educacao', 'SubArea_Cultura_e_arte', 'SubArea_Desenvolvimento_e_defesa_de_direitos', 'SubArea_Educacao_infantil', 'SubArea_Educacao_profissional', 'SubArea_Ensino_fundamental', 'SubArea_Ensino_superior', 'SubArea_Esportes_e_recreacao', 'SubArea_Estudos_e_pesquisas', 'SubArea_Hospitais', 'SubArea_Outras_formas_de_educacao_ensino', 'SubArea_Outros_servicos_de_saude', 'SubArea_Religiao']

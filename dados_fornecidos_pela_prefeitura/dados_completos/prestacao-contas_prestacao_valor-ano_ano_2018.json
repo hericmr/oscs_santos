@@ -1,0 +1,47 @@
+[
+  {
+    "id": 720,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 458,
+    "beneficiaria_nome": "INSTITUTO PROATVIDA (COM VOCÃŠ A GENTE FAZ)",
+    "valor_recurso": "179010.00",
+    "valor_repasse": 179010
+  },
+  {
+    "id": 721,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 458,
+    "beneficiaria_nome": "INSTITUTO PROATVIDA (COM VOCÃŠ A GENTE FAZ)",
+    "valor_recurso": "179010.00",
+    "valor_repasse": 179010
+  },
+  {
+    "id": 893,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 458,
+    "beneficiaria_nome": "INSTITUTO PROATVIDA (COM VOCÃŠ A GENTE FAZ)",
+    "valor_recurso": "358020.00",
+    "valor_repasse": 0
+  },
+  {
+    "id": 7555,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 477,
+    "beneficiaria_nome": "PRÓ SAÚDE ASSOCIAÇÃO BENEFICENTE DE ASSISTÊNCIA SOCIAL E HOSPITALAR",
+    "valor_recurso": "20376267.70",
+    "valor_repasse": 500000
+  },
+  {
+    "id": 7559,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 477,
+    "beneficiaria_nome": "PRÓ SAÚDE ASSOCIAÇÃO BENEFICENTE DE ASSISTÊNCIA SOCIAL E HOSPITALAR",
+    "valor_recurso": "20376267.70",
+    "valor_repasse": 2109348.39
+  }
+]

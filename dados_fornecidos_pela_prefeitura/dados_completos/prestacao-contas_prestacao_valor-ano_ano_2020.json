@@ -1,0 +1,794 @@
+[
+  {
+    "id": 68,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 16,
+    "beneficiaria_nome": "GALP - GRUPO AMIGO DO LAR POBRE",
+    "valor_recurso": "30227.67",
+    "valor_repasse": 10075.89
+  },
+  {
+    "id": 324,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 114,
+    "beneficiaria_nome": "ASSOCIAÇÃO DE ASSISTÊNCIA SOCIAL EVOLUÇÃO",
+    "valor_recurso": "1765047.96",
+    "valor_repasse": 459087.56999999995
+  },
+  {
+    "id": 362,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 204,
+    "beneficiaria_nome": "ESCOLA PORTUGUESA",
+    "valor_recurso": "575062.74",
+    "valor_repasse": 136919.7
+  },
+  {
+    "id": 371,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 204,
+    "beneficiaria_nome": "ESCOLA PORTUGUESA",
+    "valor_recurso": "575062.74",
+    "valor_repasse": 136919.7
+  },
+  {
+    "id": 379,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 204,
+    "beneficiaria_nome": "ESCOLA PORTUGUESA",
+    "valor_recurso": "575062.74",
+    "valor_repasse": 150611.67
+  },
+  {
+    "id": 384,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 204,
+    "beneficiaria_nome": "ESCOLA PORTUGUESA",
+    "valor_recurso": "575062.74",
+    "valor_repasse": 150611.67
+  },
+  {
+    "id": 395,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 114,
+    "beneficiaria_nome": "ASSOCIAÇÃO DE ASSISTÊNCIA SOCIAL EVOLUÇÃO",
+    "valor_recurso": "1765047.96",
+    "valor_repasse": 0
+  },
+  {
+    "id": 424,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 204,
+    "beneficiaria_nome": "ESCOLA PORTUGUESA",
+    "valor_recurso": "575062.74",
+    "valor_repasse": 575062.74
+  },
+  {
+    "id": 457,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 119,
+    "beneficiaria_nome": "CEREX - ASSOCIAÇÃO DE PAIS PRÓ CENTRO DE RECUPERAÇÃO PARA EXCEPCIONAIS",
+    "valor_recurso": "132012.00",
+    "valor_repasse": 16501.5
+  },
+  {
+    "id": 474,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 204,
+    "beneficiaria_nome": "ESCOLA PORTUGUESA",
+    "valor_recurso": null,
+    "valor_repasse": 60000
+  },
+  {
+    "id": 480,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 456,
+    "beneficiaria_nome": "GRUPO ESPÍRITA CRISTÃO DE SANTOS - CRECHE IRMÃ SCHEILLA",
+    "valor_recurso": null,
+    "valor_repasse": 136338.84000000003
+  },
+  {
+    "id": 486,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 456,
+    "beneficiaria_nome": "GRUPO ESPÍRITA CRISTÃO DE SANTOS - CRECHE IRMÃ SCHEILLA",
+    "valor_recurso": null,
+    "valor_repasse": 521986.3599999999
+  },
+  {
+    "id": 487,
+    "secretaria_id": 22,
+    "secretaria_sigla": "SEGOV",
+    "beneficiaria_id": 204,
+    "beneficiaria_nome": "ESCOLA PORTUGUESA",
+    "valor_recurso": null,
+    "valor_repasse": 0
+  },
+  {
+    "id": 508,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 535,
+    "beneficiaria_nome": "CRECHE ANJOS DO AMANHÃƒ E EDUCAÃ‡ÃƒO INFANTIL",
+    "valor_recurso": "1107431.77",
+    "valor_repasse": 271568.94
+  },
+  {
+    "id": 509,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 204,
+    "beneficiaria_nome": "ESCOLA PORTUGUESA",
+    "valor_recurso": "65000.00",
+    "valor_repasse": 65000
+  },
+  {
+    "id": 512,
+    "secretaria_id": 16,
+    "secretaria_sigla": "SECULT",
+    "beneficiaria_id": 539,
+    "beneficiaria_nome": "ASSOCIAÇÃO BALÉ DA CIDADE DE SANTOS",
+    "valor_recurso": null,
+    "valor_repasse": 0
+  },
+  {
+    "id": 513,
+    "secretaria_id": 16,
+    "secretaria_sigla": "SECULT",
+    "beneficiaria_id": 539,
+    "beneficiaria_nome": "ASSOCIAÇÃO BALÉ DA CIDADE DE SANTOS",
+    "valor_recurso": "747000.00",
+    "valor_repasse": 626650
+  },
+  {
+    "id": 521,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 535,
+    "beneficiaria_nome": "CRECHE ANJOS DO AMANHÃƒ E EDUCAÃ‡ÃƒO INFANTIL",
+    "valor_recurso": "1107431.77",
+    "valor_repasse": 271568.94
+  },
+  {
+    "id": 524,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 119,
+    "beneficiaria_nome": "CEREX - ASSOCIAÇÃO DE PAIS PRÓ CENTRO DE RECUPERAÇÃO PARA EXCEPCIONAIS",
+    "valor_recurso": "132012.00",
+    "valor_repasse": 16501.5
+  },
+  {
+    "id": 529,
+    "secretaria_id": 30,
+    "secretaria_sigla": "SEMULHER",
+    "beneficiaria_id": 527,
+    "beneficiaria_nome": "VITAE DOMINI INSTITUTO BRASILEIRO DE DESENVOLVIMENTO SOCIAL",
+    "valor_recurso": "278449.00",
+    "valor_repasse": 19345.75
+  },
+  {
+    "id": 533,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 108,
+    "beneficiaria_nome": "ASSOCIAÃ‡ÃƒO CASA DA ESPERANÃ‡A",
+    "valor_recurso": "824200.00",
+    "valor_repasse": 824200
+  },
+  {
+    "id": 534,
+    "secretaria_id": 11,
+    "secretaria_sigla": "GPM",
+    "beneficiaria_id": 541,
+    "beneficiaria_nome": "SOCIEDADE DE MELHORAMENTOS DOS AMIGOS DA VILA SÃO BENTO",
+    "valor_recurso": null,
+    "valor_repasse": 10625.52
+  },
+  {
+    "id": 535,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 546,
+    "beneficiaria_nome": "ASSOCIAÇÃO DE JUDÔ ROGÉRIO SAMPAIO",
+    "valor_recurso": "36750.00",
+    "valor_repasse": 36750
+  },
+  {
+    "id": 536,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 535,
+    "beneficiaria_nome": "CRECHE ANJOS DO AMANHÃƒ E EDUCAÃ‡ÃƒO INFANTIL",
+    "valor_recurso": "1107431.77",
+    "valor_repasse": 298725.82999999996
+  },
+  {
+    "id": 539,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 545,
+    "beneficiaria_nome": "ASSOCIAÇÃO DO CENTRO COMUNITÁRIO DO DIQUE - UNIVERSIDADE ABERTA - CRECHE TIA NILDA",
+    "valor_recurso": "104490.18",
+    "valor_repasse": 104490.18
+  },
+  {
+    "id": 542,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 545,
+    "beneficiaria_nome": "ASSOCIAÇÃO DO CENTRO COMUNITÁRIO DO DIQUE - UNIVERSIDADE ABERTA - CRECHE TIA NILDA",
+    "valor_recurso": "104490.18",
+    "valor_repasse": 104490.18
+  },
+  {
+    "id": 544,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 545,
+    "beneficiaria_nome": "ASSOCIAÇÃO DO CENTRO COMUNITÁRIO DO DIQUE - UNIVERSIDADE ABERTA - CRECHE TIA NILDA",
+    "valor_recurso": "114939.20",
+    "valor_repasse": 114939.2
+  },
+  {
+    "id": 545,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 545,
+    "beneficiaria_nome": "ASSOCIAÇÃO DO CENTRO COMUNITÁRIO DO DIQUE - UNIVERSIDADE ABERTA - CRECHE TIA NILDA",
+    "valor_recurso": "107654.28",
+    "valor_repasse": 107654.28
+  },
+  {
+    "id": 546,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 535,
+    "beneficiaria_nome": "CRECHE ANJOS DO AMANHÃƒ E EDUCAÃ‡ÃƒO INFANTIL",
+    "valor_recurso": "1107431.77",
+    "valor_repasse": 298725.82999999996
+  },
+  {
+    "id": 547,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 545,
+    "beneficiaria_nome": "ASSOCIAÇÃO DO CENTRO COMUNITÁRIO DO DIQUE - UNIVERSIDADE ABERTA - CRECHE TIA NILDA",
+    "valor_recurso": "432008.29",
+    "valor_repasse": 431573.84
+  },
+  {
+    "id": 551,
+    "secretaria_id": 16,
+    "secretaria_sigla": "SECULT",
+    "beneficiaria_id": 90,
+    "beneficiaria_nome": "ABRACE - ASSOCIAÇÃO BRASILEIRA DE ARTES CÊNICAS",
+    "valor_recurso": "656448.00",
+    "valor_repasse": 506923.7300000001
+  },
+  {
+    "id": 557,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 126,
+    "beneficiaria_nome": "ASSOCIAÇÃO EDUCACIONAL CULTURAL ESPORTIVA E RECREATIVA PROJETO TIA EGLE",
+    "valor_recurso": "10000.00",
+    "valor_repasse": 10000
+  },
+  {
+    "id": 558,
+    "secretaria_id": 16,
+    "secretaria_sigla": "SECULT",
+    "beneficiaria_id": 90,
+    "beneficiaria_nome": "ABRACE - ASSOCIAÇÃO BRASILEIRA DE ARTES CÊNICAS",
+    "valor_recurso": "656448.00",
+    "valor_repasse": 200581.33000000002
+  },
+  {
+    "id": 560,
+    "secretaria_id": 16,
+    "secretaria_sigla": "SECULT",
+    "beneficiaria_id": 90,
+    "beneficiaria_nome": "ABRACE - ASSOCIAÇÃO BRASILEIRA DE ARTES CÊNICAS",
+    "valor_recurso": "656448.00",
+    "valor_repasse": 306342.4
+  },
+  {
+    "id": 591,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 547,
+    "beneficiaria_nome": "ASSOCIAÇÃO SANTOS DE SURF",
+    "valor_recurso": "192480.00",
+    "valor_repasse": 176440
+  },
+  {
+    "id": 592,
+    "secretaria_id": 16,
+    "secretaria_sigla": "SECULT",
+    "beneficiaria_id": 539,
+    "beneficiaria_nome": "ASSOCIAÇÃO BALÉ DA CIDADE DE SANTOS",
+    "valor_recurso": "747000.00",
+    "valor_repasse": 256262.5
+  },
+  {
+    "id": 602,
+    "secretaria_id": 16,
+    "secretaria_sigla": "SECULT",
+    "beneficiaria_id": 539,
+    "beneficiaria_nome": "ASSOCIAÇÃO BALÉ DA CIDADE DE SANTOS",
+    "valor_recurso": "747000.00",
+    "valor_repasse": 370387.5
+  },
+  {
+    "id": 607,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 27,
+    "beneficiaria_nome": "APM DA UME CIDADE DE SANTOS",
+    "valor_recurso": "3740.00",
+    "valor_repasse": 3864.67
+  },
+  {
+    "id": 614,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 27,
+    "beneficiaria_nome": "APM DA UME CIDADE DE SANTOS",
+    "valor_recurso": "3532.00",
+    "valor_repasse": 21192
+  },
+  {
+    "id": 615,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 27,
+    "beneficiaria_nome": "APM DA UME CIDADE DE SANTOS",
+    "valor_recurso": "3864.67",
+    "valor_repasse": 3864.67
+  },
+  {
+    "id": 623,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 27,
+    "beneficiaria_nome": "APM DA UME CIDADE DE SANTOS",
+    "valor_recurso": "3740.00",
+    "valor_repasse": 7480
+  },
+  {
+    "id": 632,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 548,
+    "beneficiaria_nome": "SOCIEDADE ESPORTIVA CANTAREIRA",
+    "valor_recurso": "134140.92",
+    "valor_repasse": 44713.64
+  },
+  {
+    "id": 639,
+    "secretaria_id": 22,
+    "secretaria_sigla": "SEGOV",
+    "beneficiaria_id": 528,
+    "beneficiaria_nome": "INSTITUTO ARTE NO DIQUE",
+    "valor_recurso": "176540.00",
+    "valor_repasse": 51490.850000000006
+  },
+  {
+    "id": 641,
+    "secretaria_id": 11,
+    "secretaria_sigla": "GPM",
+    "beneficiaria_id": 540,
+    "beneficiaria_nome": "SOCIEDADE DE MELHORAMENTOS DO BAIRRO E MORRO DO JABAQUARA",
+    "valor_recurso": null,
+    "valor_repasse": 10625.52
+  },
+  {
+    "id": 665,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 121,
+    "beneficiaria_nome": "ASSOCIAÇÃO DESPORTIVA EDUCACIONAL E SOCIAL EQUILIBRIUM",
+    "valor_recurso": "124269.60",
+    "valor_repasse": 93202.20000000001
+  },
+  {
+    "id": 672,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 121,
+    "beneficiaria_nome": "ASSOCIAÇÃO DESPORTIVA EDUCACIONAL E SOCIAL EQUILIBRIUM",
+    "valor_recurso": "10000.00",
+    "valor_repasse": 10000
+  },
+  {
+    "id": 674,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 121,
+    "beneficiaria_nome": "ASSOCIAÇÃO DESPORTIVA EDUCACIONAL E SOCIAL EQUILIBRIUM",
+    "valor_recurso": "39990.00",
+    "valor_repasse": 39990
+  },
+  {
+    "id": 683,
+    "secretaria_id": 28,
+    "secretaria_sigla": "SEPORTE",
+    "beneficiaria_id": 532,
+    "beneficiaria_nome": "CENEP - FUNDAÇÃO CENTRO DE EXCELÊNCIA PORTUÁRIA DE SANTOS",
+    "valor_recurso": "480000.00",
+    "valor_repasse": 120000
+  },
+  {
+    "id": 700,
+    "secretaria_id": 19,
+    "secretaria_sigla": "SEDS",
+    "beneficiaria_id": 202,
+    "beneficiaria_nome": "EDUCANDÁRIO ANÁLIA FRANCO",
+    "valor_recurso": "361143.07",
+    "valor_repasse": 17933.83
+  },
+  {
+    "id": 716,
+    "secretaria_id": 28,
+    "secretaria_sigla": "SEPORTE",
+    "beneficiaria_id": 532,
+    "beneficiaria_nome": "CENEP - FUNDAÇÃO CENTRO DE EXCELÊNCIA PORTUÁRIA DE SANTOS",
+    "valor_recurso": "480000.00",
+    "valor_repasse": 120000
+  },
+  {
+    "id": 724,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 458,
+    "beneficiaria_nome": "INSTITUTO PROATVIDA (COM VOCÃŠ A GENTE FAZ)",
+    "valor_recurso": "358020.00",
+    "valor_repasse": 179010
+  },
+  {
+    "id": 725,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 458,
+    "beneficiaria_nome": "INSTITUTO PROATVIDA (COM VOCÃŠ A GENTE FAZ)",
+    "valor_recurso": "358020.00",
+    "valor_repasse": 179010
+  },
+  {
+    "id": 727,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 458,
+    "beneficiaria_nome": "INSTITUTO PROATVIDA (COM VOCÃŠ A GENTE FAZ)",
+    "valor_recurso": null,
+    "valor_repasse": 0
+  },
+  {
+    "id": 772,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 548,
+    "beneficiaria_nome": "SOCIEDADE ESPORTIVA CANTAREIRA",
+    "valor_recurso": "134140.92",
+    "valor_repasse": 89427.28000000001
+  },
+  {
+    "id": 795,
+    "secretaria_id": 22,
+    "secretaria_sigla": "SEGOV",
+    "beneficiaria_id": 112,
+    "beneficiaria_nome": "ASSOCIAÇÃO DE AMOR À CRIANÇA ARCANJO RAFAEL",
+    "valor_recurso": "60514.98",
+    "valor_repasse": 60514.979999999996
+  },
+  {
+    "id": 822,
+    "secretaria_id": 11,
+    "secretaria_sigla": "GPM",
+    "beneficiaria_id": 484,
+    "beneficiaria_nome": "SOCIEDADE DE MELHORAMENTOS DO BAIRRO DA ENCRUZILHADA",
+    "valor_recurso": null,
+    "valor_repasse": 10625.52
+  },
+  {
+    "id": 961,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 458,
+    "beneficiaria_nome": "INSTITUTO PROATVIDA (COM VOCÃŠ A GENTE FAZ)",
+    "valor_recurso": null,
+    "valor_repasse": 0
+  },
+  {
+    "id": 1241,
+    "secretaria_id": 19,
+    "secretaria_sigla": "SEDS",
+    "beneficiaria_id": 469,
+    "beneficiaria_nome": "LAR EVANGÃ‰LICO DE AMPARO Ã€ VELHICE",
+    "valor_recurso": "583777.56",
+    "valor_repasse": 48648.13
+  },
+  {
+    "id": 1299,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 545,
+    "beneficiaria_nome": "ASSOCIAÇÃO DO CENTRO COMUNITÁRIO DO DIQUE - UNIVERSIDADE ABERTA - CRECHE TIA NILDA",
+    "valor_recurso": "438858.74",
+    "valor_repasse": 104490.18
+  },
+  {
+    "id": 1328,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 529,
+    "beneficiaria_nome": "APM DA UME PROFESSORA MARGARETH BUCHMANN",
+    "valor_recurso": "3854.40",
+    "valor_repasse": 0
+  },
+  {
+    "id": 1330,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 529,
+    "beneficiaria_nome": "APM DA UME PROFESSORA MARGARETH BUCHMANN",
+    "valor_recurso": "1073.60",
+    "valor_repasse": 545.6
+  },
+  {
+    "id": 1334,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 126,
+    "beneficiaria_nome": "ASSOCIAÇÃO EDUCACIONAL CULTURAL ESPORTIVA E RECREATIVA PROJETO TIA EGLE",
+    "valor_recurso": "674782.42",
+    "valor_repasse": 674782.4200000003
+  },
+  {
+    "id": 1349,
+    "secretaria_id": 19,
+    "secretaria_sigla": "SEDS",
+    "beneficiaria_id": 99,
+    "beneficiaria_nome": "ASSOCIAÇÃO BENEFICENTE MÃOS ENTRELAÇADAS",
+    "valor_recurso": null,
+    "valor_repasse": 0
+  },
+  {
+    "id": 1375,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 192,
+    "beneficiaria_nome": "COMUNIDADE ASSISTENCIAL ESPÍRITA LAR VENERANDA",
+    "valor_recurso": "19200.00",
+    "valor_repasse": 19200
+  },
+  {
+    "id": 1409,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 545,
+    "beneficiaria_nome": "ASSOCIAÇÃO DO CENTRO COMUNITÁRIO DO DIQUE - UNIVERSIDADE ABERTA - CRECHE TIA NILDA",
+    "valor_recurso": "438858.74",
+    "valor_repasse": 104490.18
+  },
+  {
+    "id": 1481,
+    "secretaria_id": 23,
+    "secretaria_sigla": "SEMES",
+    "beneficiaria_id": 121,
+    "beneficiaria_nome": "ASSOCIAÇÃO DESPORTIVA EDUCACIONAL E SOCIAL EQUILIBRIUM",
+    "valor_recurso": "124269.60",
+    "valor_repasse": 31067.399999999998
+  },
+  {
+    "id": 1535,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 36,
+    "beneficiaria_nome": "APM DA UME DR JOSÉ DA COSTA E SILVA SOBRINHO",
+    "valor_recurso": "10241.87",
+    "valor_repasse": 9264
+  },
+  {
+    "id": 1536,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 36,
+    "beneficiaria_nome": "APM DA UME DR JOSÉ DA COSTA E SILVA SOBRINHO",
+    "valor_recurso": "11562.00",
+    "valor_repasse": 1698
+  },
+  {
+    "id": 1977,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 190,
+    "beneficiaria_nome": "CIEESH - CENTRO INTERDISCIPLINAR DE EDUCAÃ‡ÃƒO ESPECIAL SIMONE C HORCEL",
+    "valor_recurso": "9000.00",
+    "valor_repasse": 9000
+  },
+  {
+    "id": 2029,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 468,
+    "beneficiaria_nome": "LAR ESPÍRITA MENSAGEIROS DA LUZ",
+    "valor_recurso": "266484.60",
+    "valor_repasse": 33310.58
+  },
+  {
+    "id": 2325,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 545,
+    "beneficiaria_nome": "ASSOCIAÇÃO DO CENTRO COMUNITÁRIO DO DIQUE - UNIVERSIDADE ABERTA - CRECHE TIA NILDA",
+    "valor_recurso": "438858.74",
+    "valor_repasse": 114939.2
+  },
+  {
+    "id": 2326,
+    "secretaria_id": 12,
+    "secretaria_sigla": "SEDUC",
+    "beneficiaria_id": 545,
+    "beneficiaria_nome": "ASSOCIAÇÃO DO CENTRO COMUNITÁRIO DO DIQUE - UNIVERSIDADE ABERTA - CRECHE TIA NILDA",
+    "valor_recurso": "438858.74",
+    "valor_repasse": 107654.28
+  },
+  {
+    "id": 2422,
+    "secretaria_id": 16,
+    "secretaria_sigla": "SECULT",
+    "beneficiaria_id": 528,
+    "beneficiaria_nome": "INSTITUTO ARTE NO DIQUE",
+    "valor_recurso": "44360.00",
+    "valor_repasse": 44360
+  },
+  {
+    "id": 2425,
+    "secretaria_id": 16,
+    "secretaria_sigla": "SECULT",
+    "beneficiaria_id": 528,
+    "beneficiaria_nome": "INSTITUTO ARTE NO DIQUE",
+    "valor_recurso": "296420.00",
+    "valor_repasse": 265295.9
+  },
+  {
+    "id": 2628,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 477,
+    "beneficiaria_nome": "PRÓ SAÚDE ASSOCIAÇÃO BENEFICENTE DE ASSISTÊNCIA SOCIAL E HOSPITALAR",
+    "valor_recurso": "97015592.80",
+    "valor_repasse": 1422673.54
+  },
+  {
+    "id": 2676,
+    "secretaria_id": 16,
+    "secretaria_sigla": "SECULT",
+    "beneficiaria_id": 528,
+    "beneficiaria_nome": "INSTITUTO ARTE NO DIQUE",
+    "valor_recurso": "81021.47",
+    "valor_repasse": 81021.47
+  },
+  {
+    "id": 3154,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 472,
+    "beneficiaria_nome": "NUREX - NÚCLEO DE REABILITAÇÃO DO EXCEPCIONAL SÃO VICENTE DE PAULO",
+    "valor_recurso": "93950.64",
+    "valor_repasse": 11743.83
+  },
+  {
+    "id": 4035,
+    "secretaria_id": 16,
+    "secretaria_sigla": "SECULT",
+    "beneficiaria_id": 572,
+    "beneficiaria_nome": "GRÊMIO RECREATIVO CULTURAL ESCOLA DE SAMBA UNIÃO IMPERIAL",
+    "valor_recurso": null,
+    "valor_repasse": 120000
+  },
+  {
+    "id": 4052,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 477,
+    "beneficiaria_nome": "PRÓ SAÚDE ASSOCIAÇÃO BENEFICENTE DE ASSISTÊNCIA SOCIAL E HOSPITALAR",
+    "valor_recurso": "97015992.80",
+    "valor_repasse": 1422673.54
+  },
+  {
+    "id": 4125,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 477,
+    "beneficiaria_nome": "PRÓ SAÚDE ASSOCIAÇÃO BENEFICENTE DE ASSISTÊNCIA SOCIAL E HOSPITALAR",
+    "valor_recurso": "97015992.80",
+    "valor_repasse": 1976464.78
+  },
+  {
+    "id": 4306,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 563,
+    "beneficiaria_nome": "AFIP - ASSOCIAÇÃO FUNDO DE INCENTIVO À PESQUISA",
+    "valor_recurso": "1236457.79",
+    "valor_repasse": 1236457.79
+  },
+  {
+    "id": 4330,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 477,
+    "beneficiaria_nome": "PRÓ SAÚDE ASSOCIAÇÃO BENEFICENTE DE ASSISTÊNCIA SOCIAL E HOSPITALAR",
+    "valor_recurso": "97015992.80",
+    "valor_repasse": 1978252.85
+  },
+  {
+    "id": 4331,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 477,
+    "beneficiaria_nome": "PRÓ SAÚDE ASSOCIAÇÃO BENEFICENTE DE ASSISTÊNCIA SOCIAL E HOSPITALAR",
+    "valor_recurso": "97015992.80",
+    "valor_repasse": 1978252.85
+  },
+  {
+    "id": 4332,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 477,
+    "beneficiaria_nome": "PRÓ SAÚDE ASSOCIAÇÃO BENEFICENTE DE ASSISTÊNCIA SOCIAL E HOSPITALAR",
+    "valor_recurso": "97015992.80",
+    "valor_repasse": 1978252.85
+  },
+  {
+    "id": 4338,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 463,
+    "beneficiaria_nome": "INSTITUTO SOCIAL HOSPITAL ALEMÃO OSWALDO CRUZ",
+    "valor_recurso": "27560027.00",
+    "valor_repasse": 2415478.13
+  },
+  {
+    "id": 4451,
+    "secretaria_id": 16,
+    "secretaria_sigla": "SECULT",
+    "beneficiaria_id": 584,
+    "beneficiaria_nome": "ASSOCIAÇÃO RECREATIVA E CULTURAL REAL MOCIDADE SANTISTA",
+    "valor_recurso": null,
+    "valor_repasse": 120000
+  },
+  {
+    "id": 4783,
+    "secretaria_id": 11,
+    "secretaria_sigla": "GPM",
+    "beneficiaria_id": 489,
+    "beneficiaria_nome": "SOCIEDADE DE MELHORAMENTOS DO BAIRRO MACUCO",
+    "valor_recurso": null,
+    "valor_repasse": 10625.52
+  },
+  {
+    "id": 5826,
+    "secretaria_id": 13,
+    "secretaria_sigla": "SMS",
+    "beneficiaria_id": 108,
+    "beneficiaria_nome": "ASSOCIAÃ‡ÃƒO CASA DA ESPERANÃ‡A",
+    "valor_recurso": "250000.00",
+    "valor_repasse": 250000
+  }
+]
