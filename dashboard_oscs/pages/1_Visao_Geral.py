@@ -19,7 +19,7 @@ else:
     # --- Principais Resultados ---
     from utils.components import render_key_results, render_employment_stats
     render_key_results(df)
-    render_employment_stats(df)
+    # render_employment_stats(df) # Hidden due to missing RAIS data
         
     # --- KPIs ---
     col1, col2, col3 = st.columns(3)
