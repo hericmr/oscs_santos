@@ -10,7 +10,7 @@ from utils.styles import apply_academic_style
 from utils.visualizations import apply_academic_chart_style
 apply_academic_style()
 
-st.title("Recursos e Financiamento")
+st.title("Repasses Federais")
 
 # --- Helper Functions ---
 @st.cache_data
