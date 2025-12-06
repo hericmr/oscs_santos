@@ -115,7 +115,7 @@ def load_resources_data():
 # --- Main Logic ---
 df_ipea, df_mj, df_contas = load_resources_data()
 
-tab1, tab2, tab3 = st.tabs(["Repasses Federais (IPEA)", "Fontes de Recursos (MJ)", "Repasses Municipais (Santos)"])
+tab1, tab2 = st.tabs(["Repasses Federais (IPEA)", "Fontes de Recursos (MJ)"])
 
 with tab1:
     # ... (content of tab 1) ...
@@ -187,76 +187,4 @@ with tab2:
     else:
          st.info("Não foram encontrados dados detalhados de fontes de recursos (MJ) para as OSCs de Santos.")
 
-with tab3:
-    st.header("Repasses Municipais (Prefeitura de Santos)")
-    st.markdown("Dados de prestação de contas da Prefeitura de Santos (2024). Fonte: [Portal de Dados Abertos](https://egov.santos.sp.gov.br/dadosabertos/prestacao_contas).")
-    
-    if df_contas is not None and not df_contas.empty:
-        # Metrics
-        total_municipal = df_contas['Valor_Clean'].sum()
-        st.metric("Total Repassado (R$)", f"{total_municipal:,.2f}")
-        
-        c1, c2 = st.columns(2)
-        
-        with c1:
-            st.subheader("Distribuição por Área de Atuação")
-            # Load dictionary
-            try:
-                dict_path = os.path.join(current_dir, '..', '..', 'scripts', 'dicionario_secretarias.csv')
-                if os.path.exists(dict_path):
-                    df_dict = pd.read_csv(dict_path)
-                    # Helper to get first dept
-                    def get_first_dept(dept_str):
-                        if isinstance(dept_str, str):
-                            return dept_str.split(',')[0].strip()
-                        return dept_str
 
-                    df_contas['Secretaria_Principal'] = df_contas['Secretaria'].apply(get_first_dept)
-                    df_contas = df_contas.merge(df_dict[['Sigla', 'Área de Atuação']], left_on='Secretaria_Principal', right_on='Sigla', how='left')
-                    df_contas['Área de Atuação'] = df_contas['Área de Atuação'].fillna('Outros')
-                    target_col = 'Área de Atuação'
-                else:
-                    st.warning("Dicionário de secretarias não encontrado. Usando 'Secretaria'.")
-                    target_col = 'Secretaria'
-            except Exception as e:
-                st.warning(f"Erro ao processar áreas de atuação: {e}")
-                target_col = 'Secretaria'
-
-            # Group by target_col
-            if target_col in df_contas.columns:
-                df_pie = df_contas.groupby(target_col)['Valor_Clean'].sum().reset_index().sort_values(by='Valor_Clean', ascending=False)
-                
-                # Create custom label for legend: "Area: R$ Value (Pct%)"
-                total_val = df_pie['Valor_Clean'].sum()
-                df_pie['Percent'] = (df_pie['Valor_Clean'] / total_val) * 100
-                df_pie['Legend_Label'] = df_pie.apply(lambda x: f"{x[target_col]}: R$ {x['Valor_Clean']:,.2f} ({x['Percent']:.1f}%)", axis=1)
-                
-                fig_pie = px.pie(df_pie, names='Legend_Label', values='Valor_Clean', title=f"Distribuição por {target_col}", hole=0.0)
-                
-                # Show percentage on chart only if > 2%
-                fig_pie.update_traces(textposition='inside', textinfo='percent', hoverinfo='label+value+percent')
-                
-                # We want the color to map to the Area, not the long label. 
-                # Ideally, we pass 'names=target_col' and use 'customdata' for the legend, 
-                # but Plotly legend usually takes the 'names'. 
-                # Using the long label as 'names' is the easiest way to get the requested legend format.
-                
-                fig_pie = apply_academic_chart_style(fig_pie)
-                st.plotly_chart(fig_pie, use_container_width=True)
-            else:
-                 st.info("Dados de secretaria/área indisponíveis para gráfico.")
-        
-        with c2:
-            st.subheader("Top 10 Beneficiários")
-            if 'Entidade' in df_contas.columns:
-                df_top = df_contas.groupby('Entidade')['Valor_Clean'].sum().reset_index().sort_values(by='Valor_Clean', ascending=False).head(10)
-                fig_top = px.bar(df_top, y='Entidade', x='Valor_Clean', title="Top 10 Entidades Beneficiadas", 
-                                 orientation='h', labels={'Valor_Clean': 'Valor Repassado (R$)'})
-                fig_top.update_layout(yaxis={'categoryorder':'total ascending'})
-                fig_top = apply_academic_chart_style(fig_top)
-                st.plotly_chart(fig_top, use_container_width=True)
-                
-        st.subheader("Tabela Completa")
-        st.dataframe(df_contas, use_container_width=True)
-    else:
-        st.info("Dados municipais não disponíveis.")
