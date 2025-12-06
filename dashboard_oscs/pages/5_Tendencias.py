@@ -8,7 +8,7 @@ st.set_page_config(page_title="Tendências", layout="wide")
 from utils.styles import apply_academic_style
 apply_academic_style()
 
-st.title("Análise de Tendências Temporais")
+st.title("Criação de Organizações da Sociedade Civil em Santos (1933–2025)")
 
 df = load_data()
 
@@ -22,7 +22,7 @@ if not df.empty and 'Ano_Fundacao' in df.columns:
     min_year = int(df['Ano_Fundacao'].min())
     max_year = int(df['Ano_Fundacao'].max())
     
-    st.subheader("Evolução da Criação de OSCs")
+    # st.subheader("Evolução da Criação de OSCs")
     
     col_filter, col_metrics = st.columns([1, 2])
     
