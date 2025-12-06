@@ -3,6 +3,8 @@ from utils.data_loader import load_data
 from utils.visualizations import plot_bar_chart, plot_pie_chart
 
 st.set_page_config(page_title="Situação Cadastral", layout="wide")
+from utils.styles import apply_academic_style
+apply_academic_style()
 
 st.title("Situação Cadastral")
 

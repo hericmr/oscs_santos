@@ -5,6 +5,8 @@ import numpy as np
 from utils.data_loader import load_data
 
 st.set_page_config(page_title="Tendências", layout="wide")
+from utils.styles import apply_academic_style
+apply_academic_style()
 
 st.title("Análise de Tendências Temporais")
 

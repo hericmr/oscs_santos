@@ -4,30 +4,10 @@ st.set_page_config(
     page_title="Dashboard OSCs Santos",
     layout="wide"
 )
+from utils.styles import apply_academic_style
+apply_academic_style()
 
-# --- BLOCO DE ESTILO CSS (ACADÊMICO) ---
-# Isso força a fonte Times New Roman em todo o app e justifica o texto
-st.markdown("""
-    <style>
-    /* Altera a fonte de todo o sistema para Times New Roman */
-    html, body, [class*="css"] {
-        font-family: 'Times New Roman', Times, serif;
-    }
-    
-    /* Justifica os parágrafos de texto (padrão ABNT) */
-    .stMarkdown p {
-        text-align: justify;
-        font-size: 18px; /* Um pouco maior para leitura */
-        line-height: 1.6; /* Espaçamento entre linhas confortável */
-    }
-    
-    /* Ajusta cor dos títulos para preto absoluto */
-    h1, h2, h3 {
-        color: #000000;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-# ----------------------------------------
+
 
 st.title("Mapeamento Crítico das OSCs de Santos")
 
