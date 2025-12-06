@@ -15,7 +15,7 @@ from utils.data_loader import load_funding_data
 
 st.set_page_config(layout="wide", page_title="Repasses da Prefeitura")
 
-st.title("Repasses da Prefeitura para OSCs")
+st.title("Repasses da Prefeitura para OSs e OSCs")
 
 st.markdown("""
 Esta página apresenta os dados de repasses financeiros da Prefeitura de Santos para as Organizações da Sociedade Civil (OSCs), 
