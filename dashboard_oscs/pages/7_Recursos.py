@@ -23,6 +23,7 @@ def load_resources_data():
     # 1. Load Main Data (OSCs Santos) to get names/valid IDs
     try:
         df_main = pd.read_csv(main_data_path, sep=';', dtype=str)
+        df_main.columns = df_main.columns.str.strip() # Strip whitespace from headers
         # Clean CNPJ for joining
         df_main['cnpj_clean'] = df_main['cnpj'].str.replace(r'\D', '', regex=True)
     except Exception as e:
@@ -33,6 +34,7 @@ def load_resources_data():
     try:
         recursos_path = os.path.join(data_dir, '4786-recursososc.csv')
         df_recursos_ipea = pd.read_csv(recursos_path, sep=';', dtype=str)
+        df_recursos_ipea.columns = df_recursos_ipea.columns.str.strip()
         
         # Convert numeric columns
         df_recursos_ipea['nr_valor_recursos_osc'] = pd.to_numeric(df_recursos_ipea['nr_valor_recursos_osc'], errors='coerce').fillna(0)
@@ -120,7 +122,10 @@ with tab1:
             st.plotly_chart(fig_pie, use_container_width=True)
 
         st.subheader("Detalhamento por OSC")
-        st.dataframe(df_ipea[['dt_ano_recursos_osc', 'tx_razao_social_osc', 'nr_valor_recursos_osc', 'tx_nome_fonte_recursos_osc']].sort_values(by='dt_ano_recursos_osc', ascending=False), use_container_width=True)
+        display_cols = ['dt_ano_recursos_osc', 'tx_razao_social_osc', 'nr_valor_recursos_osc', 'tx_nome_fonte_recursos_osc']
+        # Filter for columns that actually exist to avoid KeyError
+        valid_cols = [c for c in display_cols if c in df_ipea.columns]
+        st.dataframe(df_ipea[valid_cols].sort_values(by='dt_ano_recursos_osc', ascending=False) if 'dt_ano_recursos_osc' in valid_cols else df_ipea[valid_cols], use_container_width=True)
     else:
         st.info("Não foram encontrados dados de repasses federais vinculados às OSCs de Santos nesta base.")
 
