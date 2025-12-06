@@ -30,11 +30,11 @@ df = load_funding_data()
 if df.empty:
     st.warning("Nenhum dado de repasse encontrado.")
 else:
-    # Sidebar filters
-    st.sidebar.header("Filtros")
+    # Filters
+    st.write("### Filtros")
     
     anos_disponiveis = sorted(df['ano'].unique(), reverse=True)
-    ano_selecionado = st.sidebar.selectbox("Selecione o Ano", ["Todos"] + list(anos_disponiveis))
+    ano_selecionado = st.selectbox("Selecione o Ano", ["Todos"] + list(anos_disponiveis))
     
     df_filtered = df.copy()
     if ano_selecionado != "Todos":
