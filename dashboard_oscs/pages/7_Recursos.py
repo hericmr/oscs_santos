@@ -6,6 +6,7 @@ import os
 # Set page config
 st.set_page_config(page_title="Recursos", layout="wide")
 from utils.styles import apply_academic_style
+from utils.visualizations import apply_academic_chart_style
 apply_academic_style()
 
 st.title("Recursos e Financiamento")
@@ -107,6 +108,7 @@ with tab1:
             fig_bar = px.bar(df_year, x='dt_ano_recursos_osc', y='nr_valor_recursos_osc', 
                              title="Volume de Recursos por Ano", labels={'dt_ano_recursos_osc':'Ano', 'nr_valor_recursos_osc':'Valor (R$)'})
             fig_bar.update_layout(xaxis_type='category')
+            fig_bar = apply_academic_chart_style(fig_bar)
             st.plotly_chart(fig_bar, use_container_width=True)
             
         with col2:
@@ -114,6 +116,7 @@ with tab1:
             df_source = df_ipea['tx_nome_fonte_recursos_osc'].value_counts().reset_index()
             df_source.columns = ['Fonte', 'Quantidade']
             fig_pie = px.pie(df_source, names='Fonte', values='Quantidade', title="Distribuição por Fonte")
+            fig_pie = apply_academic_chart_style(fig_pie)
             st.plotly_chart(fig_pie, use_container_width=True)
 
         st.subheader("Detalhamento por OSC")
@@ -146,6 +149,7 @@ with tab2:
         
         fig_stack = px.bar(df_melt, x='tx_razao_social_osc', y='Percentual', color='Tipo de Fonte', 
                            title="Composição das Fontes de Recurso por OSC", barmode='stack')
+        fig_stack = apply_academic_chart_style(fig_stack)
         st.plotly_chart(fig_stack, use_container_width=True)
 
         st.subheader("Dados Detalhados")
