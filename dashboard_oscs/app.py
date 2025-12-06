@@ -9,7 +9,7 @@ apply_academic_style()
 
 
 
-st.title("Mapeamento Crítico das OSCs de Santos")
+st.title("Relatório preliminar das OSCIPs e OSs de Santos")
 
 st.markdown("""
 O relatório de pesquisa apresenta um panorama inicial sobre as Organizações da Sociedade Civil (OSCs) atuantes no município de Santos, abrangendo informações de 1930 até 2025. É um levantamento preliminar que servirá como base para estudos posteriores.
