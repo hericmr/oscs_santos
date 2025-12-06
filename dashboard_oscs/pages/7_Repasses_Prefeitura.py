@@ -129,68 +129,6 @@ else:
             df_bar_area = df_filtered.groupby(target_col)['valor_repasse'].sum().reset_index().sort_values('valor_repasse', ascending=False)
             fig_bar_area = px.bar(df_bar_area, x=target_col, y='valor_repasse', title=f"Total por {target_col}", labels={'valor_repasse': 'Valor (R$)'})
             st.plotly_chart(fig_bar_area, use_container_width=True)
-
-        col_c, col_d = st.columns(2)
-        
-        with col_c:
-            # 3. Histogram
-            st.markdown("### 4. Histograma de Valores de Repasse")
-            fig_hist = px.histogram(df_filtered, x='valor_repasse', nbins=30, title="Distribuição dos Valores de Repasse")
-            st.plotly_chart(fig_hist, use_container_width=True)
-            
-        with col_d:
-            # 4. Pareto Analysis
-            st.markdown("### 5. Análise de Pareto")
-            df_pareto = df_filtered.sort_values(by='valor_repasse', ascending=False)
-            df_pareto['Acumulado'] = df_pareto['valor_repasse'].cumsum()
-            df_pareto['Percentual Acumulado'] = 100 * df_pareto['Acumulado'] / df_pareto['valor_repasse'].sum()
-            
-            from plotly.subplots import make_subplots
-            import plotly.graph_objects as go
-            
-            fig_pareto = make_subplots(specs=[[{"secondary_y": True}]])
-            
-            limit_pareto = 50
-            df_pareto_plot = df_pareto.head(limit_pareto)
-            
-            fig_pareto.add_trace(
-                go.Bar(x=df_pareto_plot['beneficiaria_nome'], y=df_pareto_plot['valor_repasse'], name="Valor Repasse"),
-                secondary_y=False
-            )
-            
-            fig_pareto.add_trace(
-                go.Scatter(x=df_pareto_plot['beneficiaria_nome'], y=df_pareto_plot['Percentual Acumulado'], name="% Acumulado", mode='lines+markers', marker=dict(color='orange')),
-                secondary_y=True
-            )
-            
-            fig_pareto.update_layout(title="Análise de Pareto (Top 50 Entidades)")
-            fig_pareto.add_hline(y=80, line_dash="dash", line_color="gray", annotation_text="80%", secondary_y=True)
-            st.plotly_chart(fig_pareto, use_container_width=True)
-
-        # 5. WordCloud
-        st.markdown("### 6. Nuvem de Palavras (Nome das Entidades)")
-        try:
-            from wordcloud import WordCloud
-            import matplotlib.pyplot as plt
-            
-            text = ' '.join(df_filtered['beneficiaria_nome'].astype(str))
-            stopwords = ['DE', 'DA', 'DO', 'DOS', 'DAS', 'E', 'A', 'O', 'EM', 'PARA', 'COM', 'POR', 'SANTOS', 'ASSOCIAÇÃO', 'SOCIEDADE', 'INSTITUTO', 'CENTRO', 'GRUPO', 'GRÊMIO', 'APM', 'UME', 'OSC', 'ORGANIZAÇÃO', 'SERVIÇO', 'SOCIAL']
-            
-            wordcloud = WordCloud(width=800, height=400, background_color='white', stopwords=stopwords).generate(text)
-            
-            fig_wc, ax = plt.subplots(figsize=(10, 5))
-            ax.imshow(wordcloud, interpolation='bilinear')
-            ax.axis('off')
-            st.pyplot(fig_wc)
-        except ImportError:
-            st.warning("Biblioteca 'wordcloud' não instalada. Visualização indisponível.")
-
-        # 6. Bar Chart Total by Secretary (Pure)
-        if target_col != 'secretaria_sigla':
-            st.markdown("### 7. Total por Secretaria")
-            df_sec = df_filtered.groupby('secretaria_sigla')['valor_repasse'].sum().reset_index().sort_values('valor_repasse', ascending=False)
-            fig_sec = px.bar(df_sec, x='secretaria_sigla', y='valor_repasse', title="Total de Repasses por Secretaria", labels={'valor_repasse': 'Valor (R$)', 'secretaria_sigla': 'Secretaria'})
-            st.plotly_chart(fig_sec, use_container_width=True)
             
         st.markdown("---")
         st.subheader("Tabela de Dados do Ano")
