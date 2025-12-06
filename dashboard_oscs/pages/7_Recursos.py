@@ -189,7 +189,7 @@ with tab2:
 
 with tab3:
     st.header("Repasses Municipais (Prefeitura de Santos)")
-    st.markdown("Dados de prestação de contas da Prefeitura de Santos (2025). Fonte: [Portal de Dados Abertos](https://egov.santos.sp.gov.br/dadosabertos/prestacao_contas).")
+    st.markdown("Dados de prestação de contas da Prefeitura de Santos (2024). Fonte: [Portal de Dados Abertos](https://egov.santos.sp.gov.br/dadosabertos/prestacao_contas).")
     
     if df_contas is not None and not df_contas.empty:
         # Metrics
