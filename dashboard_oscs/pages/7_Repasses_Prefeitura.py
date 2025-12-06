@@ -79,25 +79,9 @@ else:
         
         # --- Data Preparation ---
         
-        # Load Dictionary for Areas
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        dict_path = os.path.join(current_dir, '..', '..', 'scripts', 'dicionario_secretarias.csv')
-        
-        if os.path.exists(dict_path):
-            df_dict = pd.read_csv(dict_path)
-            # Helper to get first dept (if comma separated)
-            def get_first_dept(dept_str):
-                if isinstance(dept_str, str):
-                    return dept_str.split(',')[0].strip()
-                return dept_str
-
-            df_filtered['Secretaria_Principal'] = df_filtered['secretaria_sigla'].apply(get_first_dept)
-            df_filtered = df_filtered.merge(df_dict[['Sigla', 'Área de Atuação']], left_on='Secretaria_Principal', right_on='Sigla', how='left')
-            df_filtered['Área de Atuação'] = df_filtered['Área de Atuação'].fillna('Outros')
-            target_col = 'Área de Atuação'
-        else:
-            st.warning("Dicionário de secretarias não encontrado. Classificação por Área de Atuação indisponível. Usando 'Secretaria'.")
-            target_col = 'secretaria_sigla'
+        # User requested to use 'Secretaria' instead of 'Área de Atuação'
+        df_filtered['Secretaria'] = df_filtered['secretaria_sigla']
+        target_col = 'Secretaria'
 
         
         # --- Charts ---
