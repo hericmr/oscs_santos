@@ -18,6 +18,15 @@ A principal fonte documental são dados secundários obtidos a partir da platafo
 
 **Palavras-chave**: OSC. Terceiro Setor. Fundo Público. Serviço Social. Santos.
 
----
-**Use o menu lateral para navegar entre as páginas de análise.**
-""")
+st.markdown("---")
+st.subheader("Navegação")
+st.markdown("Acesse as páginas do painel através dos botões abaixo:")
+
+st.page_link("pages/1_Visao_Geral.py", label="Visão Geral", icon="📊", use_container_width=True)
+st.page_link("pages/2_Areas_de_Atuacao.py", label="Áreas de Atuação", icon="🎭", use_container_width=True)
+st.page_link("pages/3_Geolocalizacao.py", label="Geolocalização", icon="🗺️", use_container_width=True)
+st.page_link("pages/4_Situacao_Cadastral.py", label="Situação Cadastral", icon="📝", use_container_width=True)
+st.page_link("pages/5_Tendencias.py", label="Tendências", icon="📈", use_container_width=True)
+st.page_link("pages/6_Evolucao_Temporal_Mapa.py", label="Evolução Temporal Mapa", icon="⏳", use_container_width=True)
+st.page_link("pages/7_Repasses_Federais.py", label="Repasses Federais", icon="🏛️", use_container_width=True)
+st.page_link("pages/7_Repasses_Prefeitura.py", label="Repasses Prefeitura", icon="💰", use_container_width=True)
