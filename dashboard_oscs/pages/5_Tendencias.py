@@ -10,6 +10,15 @@ apply_academic_style()
 
 st.title("Criação de Organizações da Sociedade Civil em Santos (1933–2025)")
 
+# Custom CSS to reduce metric font size
+st.markdown("""
+<style>
+[data-testid="stMetricValue"] {
+    font-size: 1.5rem !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 df = load_data()
 
 if not df.empty and 'Ano_Fundacao' in df.columns:
