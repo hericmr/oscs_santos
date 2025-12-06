@@ -1,0 +1,91 @@
+=== Análise Detalhada das OSCs de Santos ===
+
+Total de OSCs encontradas: 2459
+
+
+--- Evolução Temporal Detalhada ---
+Análise histórica da fundação de novas organizações na cidade.
+
+Resumo Estatístico:
+- Ano com maior número de criações: 2024 (109 novas OSCs)
+- Ano com menor número de criações: 1933 (1 novas OSCs)
+- Média anual de criações: 37.8 OSCs/ano
+- Período analisado: 1933 a 2025
+
+Contexto Histórico e Marcos Legais:
+- Período da Ditadura Empresarial-Militar: 1964 a 1985
+  (Período destacado no gráfico)
+
+Marcos Legais Destacados:
+- 1938: Criação do CNSS (Neste ano foram criadas 0 OSCs)
+- 1998: Lei das Organizações Sociais (Neste ano foram criadas 51 OSCs)
+- 1999: Lei das OSCIPs (Neste ano foram criadas 54 OSCs)
+- 2014: MROSC (Marco Regulatório das OSCs) (Neste ano foram criadas 36 OSCs)
+- 2016: Decreto do MROSC (Neste ano foram criadas 47 OSCs)
+
+Histórico Ano a Ano:
+1933: 1 novas OSCs
+1957: 1 novas OSCs
+1960: 1 novas OSCs
+1962: 1 novas OSCs
+1965: 2 novas OSCs
+1966: 27 novas OSCs
+1967: 13 novas OSCs
+1968: 17 novas OSCs
+1969: 24 novas OSCs
+1970: 91 novas OSCs
+1971: 27 novas OSCs
+1972: 13 novas OSCs
+1973: 10 novas OSCs
+1974: 9 novas OSCs
+1975: 12 novas OSCs
+1976: 19 novas OSCs
+1977: 28 novas OSCs
+1978: 19 novas OSCs
+1979: 26 novas OSCs
+1980: 18 novas OSCs
+1981: 30 novas OSCs
+1982: 22 novas OSCs
+1983: 22 novas OSCs
+1984: 21 novas OSCs
+1985: 24 novas OSCs
+1986: 19 novas OSCs
+1987: 27 novas OSCs
+1988: 20 novas OSCs
+1989: 29 novas OSCs
+1990: 40 novas OSCs
+1991: 27 novas OSCs
+1992: 30 novas OSCs
+1993: 27 novas OSCs
+1994: 28 novas OSCs
+1995: 39 novas OSCs
+1996: 45 novas OSCs
+1997: 31 novas OSCs
+1998: 51 novas OSCs
+1999: 54 novas OSCs
+2000: 54 novas OSCs
+2001: 55 novas OSCs
+2002: 58 novas OSCs
+2003: 37 novas OSCs
+2004: 50 novas OSCs
+2005: 45 novas OSCs
+2006: 51 novas OSCs
+2007: 51 novas OSCs
+2008: 48 novas OSCs
+2009: 54 novas OSCs
+2010: 67 novas OSCs
+2011: 53 novas OSCs
+2012: 55 novas OSCs
+2013: 60 novas OSCs
+2014: 36 novas OSCs
+2015: 63 novas OSCs
+2016: 47 novas OSCs
+2017: 70 novas OSCs
+2018: 83 novas OSCs
+2019: 60 novas OSCs
+2020: 37 novas OSCs
+2021: 78 novas OSCs
+2022: 69 novas OSCs
+2023: 64 novas OSCs
+2024: 109 novas OSCs
+2025: 60 novas OSCs

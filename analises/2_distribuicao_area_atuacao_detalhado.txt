@@ -1,0 +1,18 @@
+=== Relatório Detalhado: Distribuição de Verba por Área de Atuação ===
+
+Valor Total Repassado: R$ 473.106.174,99
+
+Detalhamento por Área:
+--------------------------------------------------------------------------------
+Área de Atuação                                    | Valor (R$)           | %         
+--------------------------------------------------------------------------------
+Saúde                                              | R$ 326.739.402,52    |  69.06%
+Outros(esses não foram identificados por area      | R$ 84.481.647,26     |  17.86%
+Assistência Social                                 | R$ 43.825.982,53     |   9.26%
+Cultura                                            | R$ 7.812.413,12      |   1.65%
+Gestão e Finanças                                  | R$ 5.371.489,10      |   1.14%
+Direitos Humanos e Cidadania                       | R$ 2.546.942,88      |   0.54%
+Meio Ambiente                                      | R$ 1.400.475,58      |   0.30%
+Comunicação Institucional                          | R$ 615.822,00        |   0.13%
+Segurança Pública                                  | R$ 312.000,00        |   0.07%
+--------------------------------------------------------------------------------
