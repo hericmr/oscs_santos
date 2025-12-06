@@ -123,8 +123,9 @@ if not df.empty and 'Ano_Fundacao' in df.columns:
         st.subheader("Dados Detalhados do Período")
         
         # Calculate height: 35px per row + 38px buffer for header/borders
-        # We limit to a sensible max if needed, but user asked for "total lines", so we try to show all.
-        height_px = (len(df_filtered) + 1) * 35 + 3
+        # We limit to a sensible max (e.g. 1500px) to prevent browser canvas crashes (InvalidStateError)
+        # caused by excessively large heights (>32k pixels).
+        height_px = min((len(df_filtered) + 1) * 35 + 3, 1500)
         
         st.dataframe(df_filtered, use_container_width=True, height=height_px)
         
