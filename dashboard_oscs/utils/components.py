@@ -44,7 +44,7 @@ def render_key_results(df):
             <p style="font-size: 1.1rem; margin: 0; line-height: 1.6;">
                 Do total de <b>{total_active}</b> OSCs em atividade em Santos, 
                 <b>{os_count}</b> são Organizações Sociais (OSs) e 
-                <b>{oscip_count}</b> são classificadas como OSCIPs (outras naturezas jurídicas).
+                <b>{oscip_count}</b> são classificadas como OSCIPs.
             </p>
         </div>
         """,
