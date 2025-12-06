@@ -102,7 +102,12 @@ def load_resources_data():
             df_contas['Entidade'] = df_contas['Entidade'].str.strip()
             
     except Exception as e:
-        st.warning(f"Erro ao carregar contas.csv: {e}")
+        # Debug info: list files in the directory
+        try:
+            files_in_dir = os.listdir(data_dir)
+            st.warning(f"Erro ao carregar contas.csv: {e}. Arquivos em {data_dir}: {files_in_dir}")
+        except:
+             st.warning(f"Erro ao carregar contas.csv: {e}")
         df_contas = pd.DataFrame()
 
     return df_recursos_ipea, df_tb_recursos, df_contas
