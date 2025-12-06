@@ -13,6 +13,26 @@ df = load_data()
 if df.empty:
     st.error("Erro ao carregar os dados. Verifique se o arquivo data/oscs_santos.csv existe.")
 else:
+    # --- Principais Resultados ---
+    if 'dt_fundacao_osc' in df.columns and 'cd_natureza_juridica_osc' in df.columns:
+        # Convert date to year
+        # Convert date to year (dt_fundacao_osc is already datetime)
+        df['Ano_Fundacao_Calc'] = df['dt_fundacao_osc'].dt.year
+        
+        # OS (3301)
+        os_df = df[df['cd_natureza_juridica_osc'] == 3301]
+        total_os_count = len(os_df)
+        os_2011_2018 = len(os_df[(os_df['Ano_Fundacao_Calc'] >= 2011) & (os_df['Ano_Fundacao_Calc'] <= 2018)])
+        pct_os = (os_2011_2018 / total_os_count * 100) if total_os_count > 0 else 0
+        
+        # OSCIP (Not 3301) per user instruction
+        oscip_df = df[df['cd_natureza_juridica_osc'] != 3301]
+        total_oscip_count = len(oscip_df)
+        oscip_2001_2010 = len(oscip_df[(oscip_df['Ano_Fundacao_Calc'] >= 2001) & (oscip_df['Ano_Fundacao_Calc'] <= 2010)])
+        pct_oscip = (oscip_2001_2010 / total_oscip_count * 100) if total_oscip_count > 0 else 0
+        
+        st.info(f"**Principais resultados:** 1 - {pct_os:.1f}% das OSs foram criadas entre 2011 e 2018, enquanto {pct_oscip:.1f}% das OSCIPs surgiram na década anterior, entre 2001 e 2010.")
+
     # --- KPIs ---
     col1, col2, col3 = st.columns(3)
     
