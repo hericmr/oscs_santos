@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import os
+import matplotlib.pyplot as plt # Just in case, though we prefer Plotly for the dashboard
 
 # Set page config
 st.set_page_config(page_title="Recursos", layout="wide")
@@ -86,14 +87,33 @@ def load_resources_data():
         st.warning(f"Erro ao carregar tb_recursos.csv: {e}")
         df_tb_recursos = pd.DataFrame()
 
-    return df_recursos_ipea, df_tb_recursos
+    # 4. Load contas.csv (Prefeitura de Santos)
+    try:
+        contas_path = os.path.join(data_dir, 'contas.csv')
+        df_contas = pd.read_csv(contas_path, sep=',', quotechar='"', dtype=str)
+        
+        # Clean numeric values
+        if 'Valor do Repasse' in df_contas.columns:
+            df_contas['Valor_Clean'] = df_contas['Valor do Repasse'].str.replace('R$', '', regex=False).str.replace('.', '', regex=False).str.replace(',', '.', regex=False).str.strip()
+            df_contas['Valor_Clean'] = pd.to_numeric(df_contas['Valor_Clean'], errors='coerce').fillna(0)
+            
+        # Strip strings
+        if 'Entidade' in df_contas.columns:
+            df_contas['Entidade'] = df_contas['Entidade'].str.strip()
+            
+    except Exception as e:
+        st.warning(f"Erro ao carregar contas.csv: {e}")
+        df_contas = pd.DataFrame()
+
+    return df_recursos_ipea, df_tb_recursos, df_contas
 
 # --- Main Logic ---
-df_ipea, df_mj = load_resources_data()
+df_ipea, df_mj, df_contas = load_resources_data()
 
-tab1, tab2 = st.tabs(["Repasses Federais (IPEA)", "Fontes de Recursos (MJ)"])
+tab1, tab2, tab3 = st.tabs(["Repasses Federais (IPEA)", "Fontes de Recursos (MJ)", "Repasses Municipais (Santos)"])
 
 with tab1:
+    # ... (content of tab 1) ...
     st.header("Transferências Federais")
     st.markdown("Dados provenientes do Mapa das OSCs (IPEA) - Tabela `4786-recursososc.csv`.")
     
@@ -161,3 +181,38 @@ with tab2:
         st.dataframe(df_mj_year, use_container_width=True)
     else:
          st.info("Não foram encontrados dados detalhados de fontes de recursos (MJ) para as OSCs de Santos.")
+
+with tab3:
+    st.header("Repasses Municipais (Prefeitura de Santos)")
+    st.markdown("Dados de prestação de contas da Prefeitura de Santos (2025). Fonte: [Portal de Dados Abertos](https://egov.santos.sp.gov.br/dadosabertos/prestacao_contas).")
+    
+    if df_contas is not None and not df_contas.empty:
+        # Metrics
+        total_municipal = df_contas['Valor_Clean'].sum()
+        st.metric("Total Repassado (R$)", f"{total_municipal:,.2f}")
+        
+        c1, c2 = st.columns(2)
+        
+        with c1:
+            st.subheader("Repasses por Secretaria")
+            if 'Secretaria' in df_contas.columns:
+                df_sec = df_contas.groupby('Secretaria')['Valor_Clean'].sum().reset_index().sort_values(by='Valor_Clean', ascending=False)
+                fig_sec = px.bar(df_sec, x='Secretaria', y='Valor_Clean', title="Valor Total por Secretaria", 
+                                 labels={'Valor_Clean': 'Valor (R$)'}, text_auto='.2s')
+                fig_sec = apply_academic_chart_style(fig_sec)
+                st.plotly_chart(fig_sec, use_container_width=True)
+        
+        with c2:
+            st.subheader("Top 10 Beneficiários")
+            if 'Entidade' in df_contas.columns:
+                df_top = df_contas.groupby('Entidade')['Valor_Clean'].sum().reset_index().sort_values(by='Valor_Clean', ascending=False).head(10)
+                fig_top = px.bar(df_top, y='Entidade', x='Valor_Clean', title="Top 10 Entidades Beneficiadas", 
+                                 orientation='h', labels={'Valor_Clean': 'Valor Repassado (R$)'})
+                fig_top.update_layout(yaxis={'categoryorder':'total ascending'})
+                fig_top = apply_academic_chart_style(fig_top)
+                st.plotly_chart(fig_top, use_container_width=True)
+                
+        st.subheader("Tabela Completa")
+        st.dataframe(df_contas, use_container_width=True)
+    else:
+        st.info("Dados municipais não disponíveis.")
