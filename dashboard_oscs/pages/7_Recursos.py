@@ -48,8 +48,12 @@ def load_resources_data():
             df_main[['cnpj_clean', 'tx_razao_social_osc', 'situacao_cadastral']], 
             left_on='cnpj_join', 
             right_on='cnpj_clean', 
-            how='inner' # Only keep matches in our filtered Santos set
+            how='inner', # Only keep matches in our filtered Santos set
+            suffixes=('_old', '') # Keep the name from df_main (clean) as the primary one (no suffix)
         )
+        # Drop the old name column if it exists
+        if 'tx_razao_social_osc_old' in df_recursos_ipea.columns:
+            df_recursos_ipea.drop(columns=['tx_razao_social_osc_old'], inplace=True)
     except Exception as e:
         st.warning(f"Erro ao carregar 4786-recursososc.csv: {e}")
         df_recursos_ipea = pd.DataFrame()
