@@ -32,3 +32,44 @@ def load_data(filename="oscs_santos.csv"):
 
     df_cleaned = clean_data(df)
     return df_cleaned
+
+@st.cache_data
+def load_funding_data():
+    """
+    Carrega e consolida os dados de repasses da prefeitura.
+    Lê arquivos do diretório data/prestacao_contas/ com padrão prestacao-contas_prestacao_valor-ano_ano_*.csv
+    """
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(current_dir, '..', 'data', 'prestacao_contas')
+    
+    if not os.path.exists(data_dir):
+        return pd.DataFrame()
+        
+    all_files = [f for f in os.listdir(data_dir) if f.startswith('prestacao-contas_prestacao_valor-ano_ano_') and f.endswith('.csv')]
+    
+    dfs = []
+    for filename in all_files:
+        filepath = os.path.join(data_dir, filename)
+        try:
+            # Extrair ano do nome do arquivo (esperado: ...ano_YYYY.csv)
+            # O formato é prestacao-contas_prestacao_valor-ano_ano_2024.csv
+            # Split por '_' e pegar o último elemento removendo .csv
+            ano_str = filename.replace('.csv', '').split('_')[-1]
+            ano = int(ano_str)
+            
+            try:
+                df = pd.read_csv(filepath, sep=',', encoding='utf-8')
+            except:
+                 df = pd.read_csv(filepath, sep=';', encoding='utf-8')
+            
+            df['ano'] = ano
+            dfs.append(df)
+        except Exception as e:
+            st.warning(f"Erro ao ler arquivo {filename}: {e}")
+            continue
+            
+    if not dfs:
+        return pd.DataFrame()
+        
+    final_df = pd.concat(dfs, ignore_index=True)
+    return final_df
