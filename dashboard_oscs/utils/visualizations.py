@@ -6,6 +6,50 @@ import pandas as pd
 import streamlit as st
 from streamlit_folium import st_folium
 
+def apply_academic_chart_style(fig):
+    """
+    Apply strict academic styling to Plotly figures.
+    """
+    fig.update_layout(
+        template="plotly_white",
+        font=dict(
+            family="Times New Roman",
+            size=14,
+            color="black"
+        ),
+        title_font=dict(
+            family="Times New Roman",
+            size=18,
+            color="black",
+            weight="bold"
+        ),
+        paper_bgcolor="white",
+        plot_bgcolor="white",
+        xaxis=dict(
+            showline=True,
+            linewidth=2,
+            linecolor='black',
+            showgrid=True,
+            gridwidth=1,
+            gridcolor='lightgray',
+            tickfont=dict(color='black')
+        ),
+        yaxis=dict(
+            showline=True,
+            linewidth=2,
+            linecolor='black',
+            showgrid=True,
+            gridwidth=1,
+            gridcolor='lightgray',
+            tickfont=dict(color='black')
+        ),
+        legend=dict(
+            font=dict(color="black"),
+            bgcolor="rgba(0,0,0,0)"
+        )
+    )
+    return fig
+
 def plot_bar_chart(df, x_col, y_col=None, title="", color_col=None, orientation='v'):
     """
     Gera gráfico de barras (contagem ou valor).
@@ -17,7 +61,8 @@ def plot_bar_chart(df, x_col, y_col=None, title="", color_col=None, orientation=
         fig = px.bar(data, x=x_col, y=y_col, title=title, color=color_col if color_col else x_col, orientation=orientation)
     else:
         fig = px.bar(df, x=x_col, y=y_col, title=title, color=color_col, orientation=orientation)
-    return fig
+    
+    return apply_academic_chart_style(fig)
 
 def plot_pie_chart(df, col, title=""):
     """
@@ -26,7 +71,10 @@ def plot_pie_chart(df, col, title=""):
     data = df[col].value_counts().reset_index()
     data.columns = [col, 'Quantidade']
     fig = px.pie(data, names=col, values='Quantidade', title=title)
-    return fig
+    
+    # Pie charts handle styling a bit differently for traces
+    fig.update_traces(textfont_size=14, textfont_color="black")
+    return apply_academic_chart_style(fig)
 
 def plot_time_series(df, date_col, title="", cumulative=False):
     """
@@ -38,7 +86,8 @@ def plot_time_series(df, date_col, title="", cumulative=False):
         data['Quantidade'] = data['Quantidade'].cumsum()
         title = f"{title} (Acumulado)"
     fig = px.line(data, x='Ano', y='Quantidade', title=title, markers=True)
-    return fig
+    
+    return apply_academic_chart_style(fig)
 
 def plot_map(df, lat_col='latitude', lon_col='longitude', tooltip_cols=None):
     """
@@ -54,7 +103,8 @@ def plot_map(df, lat_col='latitude', lon_col='longitude', tooltip_cols=None):
     center_lat = df_map[lat_col].mean()
     center_lon = df_map[lon_col].mean()
     
-    m = folium.Map(location=[center_lat, center_lon], zoom_start=13)
+    # Use a cleaner tile if possible, or default
+    m = folium.Map(location=[center_lat, center_lon], zoom_start=13, tiles="CartoDB positron") 
     color = '#3186cc' 
 
     for idx, row in df_map.iterrows():
@@ -64,7 +114,7 @@ def plot_map(df, lat_col='latitude', lon_col='longitude', tooltip_cols=None):
         marker_color = '#d62728' if is_os else '#3186cc'
 
         # Construir conteúdo do Popup
-        popup_html = "<div style='font-family:sans-serif; font-size:12px;'>"
+        popup_html = "<div style='font-family:Times New Roman; color:black; font-size:12px;'>"
         popup_html += f"<b>{row.get('tx_nome_fantasia_osc', 'OSC')}</b><br><br>"
         
         if tooltip_cols:
@@ -100,4 +150,4 @@ def plot_heatmap(df, x_col, y_col, title=""):
     """
     data = df.groupby([x_col, y_col]).size().reset_index(name='Contagem')
     fig = px.density_heatmap(data, x=x_col, y=y_col, z='Contagem', title=title, text_auto=True)
-    return fig
+    return apply_academic_chart_style(fig)
