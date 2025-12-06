@@ -71,8 +71,9 @@ else:
             st.plotly_chart(fig_top, use_container_width=True)
             
         st.markdown("---")
-        st.subheader("Detalhamento dos Dados (Geral)")
-        st.dataframe(df_filtered, use_container_width=True)
+        with st.expander("Ver Tabela Detalhada (Geral)"):
+            st.subheader("Detalhamento dos Dados (Geral)")
+            st.dataframe(df_filtered, use_container_width=True)
 
     else:
         st.subheader(f"Análise Detalhada de {ano_selecionado}")
@@ -131,5 +132,6 @@ else:
             st.plotly_chart(fig_bar_area, use_container_width=True)
             
         st.markdown("---")
-        st.subheader("Tabela de Dados do Ano")
-        st.dataframe(df_filtered, use_container_width=True)
+        with st.expander("Ver Tabela de Dados Completa"):
+            st.subheader("Tabela de Dados do Ano")
+            st.dataframe(df_filtered, use_container_width=True)
