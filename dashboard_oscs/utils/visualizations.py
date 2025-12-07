@@ -93,6 +93,7 @@ def plot_map(df, lat_col='latitude', lon_col='longitude', tooltip_cols=None, hov
     """
     Gera mapa Folium com pontos individuais (sem clusterização).
     tooltip_cols pode ser uma lista de colunas ou um dict {coluna: label}.
+    Updated to support custom hover name.
     """
     # Filtrar dados com coordenadas válidas
     df_map = df.dropna(subset=[lat_col, lon_col])
