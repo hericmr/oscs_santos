@@ -1,60 +1,62 @@
 # Mapeamento Crítico das Organizações da Sociedade Civil em Santos
 
-Este projeto tem como objetivo realizar um mapeamento e análise crítica das Organizações da Sociedade Civil (OSCs) na cidade de Santos. O projeto combina processamento de dados, análise estatística e visualização interativa para fornecer insights sobre a distribuição, evolução e características das OSCs locais.
+![Status do Projeto](https://img.shields.io/badge/Status-Em_Desenvolvimento-yellow)
+![Python](https://img.shields.io/badge/Python-3.8+-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-red)
 
-## 📂 Estrutura do Projeto
+Este projeto tem como objetivo realizar um mapeamento e uma análise crítica das Organizações da Sociedade Civil (OSCs) na cidade de Santos-SP. A iniciativa combina processamento de dados governamentais, análise estatística e visualização interativa para fornecer insights sobre a distribuição territorial, a evolução histórica e o fluxo de recursos públicos (prestação de contas) dessas entidades.
 
-A estrutura de diretórios do projeto é organizada da seguinte forma:
+##  Objetivos
 
-- **[dashboard_oscs/](dashboard_oscs/)**: Contém o código fonte do dashboard interativo desenvolvido com Streamlit.
-    - `app.py`: Arquivo principal da aplicação Streamlit.
-    - `pages/`: Páginas individuais do dashboard.
-    - `utils/`: Funções utilitárias para carregamento de dados e visualização.
-- **[scripts/](scripts/)**: Scripts Python utilizados para limpeza de dados, processamento e geração de análises estáticas.
-    - `filter_brazil_data.py`: Filtra dados nacionais para o contexto local.
-    - `generate_analysis.py`: Gera relatórios de texto com análises estatísticas.
-- **[analises/](analises/)**: Diretório onde são salvos os relatórios de texto gerados pelos scripts de análise.
-- **[graficos/](graficos/)**: Diretório para armazenamento de gráficos estáticos gerados (ex: Matplotlib/Seaborn).
-- **[dados atualizados/](dados%20atualizados/)**: Repositório de arquivos de dados (CSV, etc.) utilizados e gerados pelo projeto.
+- **Mapear** a distribuição geespacial e temática das OSCs no município.
+- **Analisar** os dados de prestação de contas e repasses da Prefeitura de Santos (2018-2025).
 
-## 🚀 Instalação
+## 📚 Fontes de Dados e Metadados
 
-Para executar as ferramentas deste projeto, você precisará ter o Python instalado. É recomendado o uso de um ambiente virtual.
+Os dados apresentados neste dashboard são consolidados a partir de duas fontes primárias:
 
-1.  **Clone o repositório** (se aplicável) ou navegue até a pasta do projeto.
-2.  **Instale as dependências**:
-    As dependências principais do dashboard estão listadas em `dashboard_oscs/requirements.txt`.
+### 1. Mapa das Organizações da Sociedade Civil (IPEA)
+- **Fonte**: Base de dados oficial do IPEA (Instituto de Pesquisa Econômica Aplicada).
+- **Dados Extraídos**: Cadastro nacional de OSCs, incluindo CNPJ, Razão Social, endereço, área de atuação e natureza jurídica.
+- **Processamento**: Os dados foram filtrados para o município de Santos-SP e enriquecidos com geolocalização.
 
-    ```bash
-    pip install -r dashboard_oscs/requirements.txt
-    ```
+### 2. Portal de Dados Abertos de Santos (Prefeitura Municipal)
+- **Fonte**: [Portal de Dados Abertos - Santos](https://egov.santos.sp.gov.br/dadosabertos)
+- **Dados Extraídos**: 
+    - Recursos transferidos para OSCs (valores de repasse, empenho).
+    - Prestação de contas por ano, secretaria e entidade beneficiária.
+- **Cobertura Temporal**: Dados completos de 2018 a 2025.
 
-    Para os scripts de análise na pasta `scripts/`, bibliotecas adicionais de ciência de dados (como pandas, matplotlib, seaborn) podem ser necessárias.
 
-## 🖥️ Como Usar
+---
 
-### Executando o Dashboard
+##  Estrutura do Repositório
 
-O dashboard é a principal interface para exploração dos dados. Para iniciá-lo:
+O projeto está organizado para separar a lógica de processamento de dados (backend/scripts) da visualização (frontend/dashboard).
 
-1.  Navegue até a pasta do dashboard:
-    ```bash
-    cd dashboard_oscs
-    ```
-2.  Execute o Streamlit:
-    ```bash
-    streamlit run app.py
-    ```
-
-### Executando Scripts de Análise
-
-Os scripts na pasta `scripts/` podem ser executados individualmente para realizar tarefas específicas de processamento de dados ou atualização de relatórios.
-
-Exemplo:
-```bash
-python scripts/generate_analysis.py
-```
-
-## 📊 Metodologia
-
-O projeto utiliza dados públicos de OSCs, padroniza as informações e aplica classificações (como Áreas de Atuação e Natureza Jurídica) para permitir análises comparativas e temporais.
+```plaintext
+.
+├── dashboard_oscs/             # Aplicação Web Interativa (Streamlit)
+│   ├── pages/                  # Páginas individuais do dashboard
+│   ├── utils/                  # Funções auxiliares de carga e plotagem
+│   └── app.py                  # Ponto de entrada do Dashboard
+│
+├── scripts/                    # Scripts de ETL e Análise Estatística
+│   ├── filter_brazil_data.py   # Filtra dados do IPEA (Nacional -> Local)
+│   ├── generate_analysis.py    # Gera relatórios estatísticos gerais
+│   └── analisar_dados.py       # Script específico de Prestação de Contas
+│
+├── dados_completos/            # Dados Brutos (Raw Data)
+│   ├── *.json / *.csv          # Arquivos originais (PM Santos/IPEA)
+│   └── indice_downloads.json   # Controle de downloads
+│
+├── dados_atualizados/          # Dados Processados (Clean Data)
+│   # Repositório de CSVs limpos utilizados pelo Dashboard
+│
+├── analises/                   # Relatórios de Texto/CSV gerados pelos scripts
+│   ├── relatorio_por_ano.csv
+│   ├── relatorio_por_secretaria.csv
+│   └── relatorio_por_beneficiaria.csv
+│
+├── graficos/                   # Exportação de gráficos estáticos (Matplotlib/Seaborn)
+└── requirements.txt            # Dependências do projeto

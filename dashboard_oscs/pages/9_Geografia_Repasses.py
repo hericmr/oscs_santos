@@ -115,12 +115,12 @@ min_year = int(df_merged['ano_recurso'].min()) if not df_merged.empty else 2016
 max_year = int(df_merged['ano_recurso'].max()) if not df_merged.empty else 2025
 
 st.subheader("Linha do Tempo")
-# Slider para selecionar um ano específico ou intervalo? O usuário pediu "evolução ano a ano", "linha do tempo".
-# Geralmente "linha do tempo" pode ser um play ou slider. Slider único é mais simples.
-selected_year = st.slider("Selecione o Ano", min_value=min_year, max_value=max_year, value=max_year, step=1)
+# Slider para selecionar intervalo (range)
+year_range = st.slider("Selecione o Período", min_value=min_year, max_value=max_year, value=(min_year, max_year), step=1)
+start_year, end_year = year_range
 
 # Filtro
-df_year = df_merged[df_merged['ano_recurso'] == selected_year]
+df_year = df_merged[(df_merged['ano_recurso'] >= start_year) & (df_merged['ano_recurso'] <= end_year)]
 
 # --- Agregação por OSC para o Mapa ---
 # Uma OSC pode ter recebido vários repasses no ano. Queremos 1 pino no mapa.
@@ -160,7 +160,7 @@ df_map_data['Valor Formatado'] = df_map_data['Valor Total Recebido'].apply(lambd
 col1, col2 = st.columns([3, 1])
 
 with col1:
-    st.markdown(f"### Mapa de Repasses - {selected_year}")
+    st.markdown(f"### Mapa de Repasses - {start_year} a {end_year}")
     
     if not df_map_data.empty:
         # Colunas para tooltip enriquecido (Popup)
@@ -177,10 +177,10 @@ with col1:
         m = plot_map(df_map_data, tooltip_cols=tooltip, hover_name_col='Beneficiária')
         st_folium(m, width="100%", height=600)
     else:
-        st.info(f"Nenhum repasse mapeado com coordenadas para o ano {selected_year}.")
+        st.info(f"Nenhum repasse mapeado com coordenadas para o período {start_year}-{end_year}.")
 
 with col2:
-    st.markdown("### Resumo Anual")
+    st.markdown("### Resumo do Período")
     
     # Métricas Simples
     total_val = df_map_data['Valor Total Recebido'].sum()
@@ -202,7 +202,7 @@ with col2:
 
 # --- Área Expansível e Modular (Detalhes) ---
 st.markdown("---")
-st.subheader(f"Detalhamento dos Repasses ({selected_year})")
+st.subheader(f"Detalhamento dos Repasses ({start_year} - {end_year})")
 
 with st.expander("Ver Tabela Detalhada", expanded=False):
     if not df_map_data.empty:
@@ -222,7 +222,7 @@ with st.expander("Análise Gráfica (Top 10 Beneficiárias)", expanded=True):
             x='Valor Total Recebido',
             y='tx_nome_fantasia_osc',
             orientation='h',
-            title=f"Top 10 Maiores Beneficiárias em {selected_year}",
+            title=f"Top 10 Maiores Beneficiárias ({start_year}-{end_year})",
             text_auto='.2s'
         )
         fig = apply_academic_chart_style(fig)
