@@ -23,13 +23,17 @@ def load_resources_data():
     
     # 1. Load Main Data (OSCs Santos) to get names/valid IDs
     try:
-        df_main = pd.read_csv(main_data_path, sep=';', dtype=str)
+        try:
+             df_main = pd.read_csv(main_data_path, sep=';', dtype=str, encoding='utf-8')
+        except UnicodeDecodeError:
+             df_main = pd.read_csv(main_data_path, sep=';', dtype=str, encoding='latin1')
+             
         df_main.columns = df_main.columns.str.strip() # Strip whitespace from headers
         # Clean CNPJ for joining
         df_main['cnpj_clean'] = df_main['cnpj'].str.replace(r'\D', '', regex=True)
     except Exception as e:
         st.error(f"Erro ao carregar oscs_santos.csv: {e}")
-        return None, None
+        return None, None, None
 
     # 2. Load 4786-recursososc.csv (IPEA Transferências)
     try:
