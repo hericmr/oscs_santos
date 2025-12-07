@@ -5,7 +5,9 @@ def render_key_results(df):
     """
     Renders the 'Principais Resultados' section with key metrics.
     Display: "Do total de [Active] OSCs em atividade em Santos, [OS] OSs e [OSCIP] são OSCIPs."
+    Now expandable with 2025 Resource Analysis.
     """
+    import os
     
     # Ensure necessary columns exist
     if 'situacao_cadastral' not in df.columns or 'cd_natureza_juridica_osc' not in df.columns:
@@ -17,19 +19,79 @@ def render_key_results(df):
     total_active = len(active_df)
 
     # Calculate OS (Natureza Jurídica 3301)
-    # 3301 = Organização Social (Civil) -> Actually 330-1 is Organização Social.
-    # Note: Using 3301 based on internal project convention seen in legacy code.
     os_count = len(active_df[active_df['cd_natureza_juridica_osc'] == 3301])
 
-    # Calculate OSCIP 
-    # Logic: Any Active OSC that is NOT an OS (3301) is considered OSCIP for this specific text metric.
-    # This is a simplification requested by the user ("7xxxx são OSCIPs" vs "xxxx OSs").
+    # Calculate OSCIP (Non-OS simplification)
     oscip_count = len(active_df[active_df['cd_natureza_juridica_osc'] != 3301])
+    
+    # --- Load Resource Data for All Years Analysis ---
+    res_path = os.path.join(os.path.dirname(__file__), '../data/tabela_recursos_osc_match_completo.csv')
+    
+    analysis_html = ""
+    
+    if os.path.exists(res_path):
+        try:
+            df_res = pd.read_csv(res_path, sep=';', decimal=',')
+            
+            # Ensure proper types
+            df_res['valor_repasse'] = pd.to_numeric(df_res['valor_repasse'], errors='coerce').fillna(0)
+            
+            # Get valid years sorted descending
+            unique_years = sorted([y for y in df_res['ano_recurso'].dropna().unique()], reverse=True)
+            unique_years = [int(y) for y in unique_years] # ensure integers
+            
+            analysis_parts = []
+            
+            for year in unique_years:
+                # Filter Year and Matched
+                df_year = df_res[(df_res['ano_recurso'] == year) & (df_res['match_type'] != 'None')]
+                
+                if df_year.empty:
+                    continue
+                
+                # Check nature
+                is_os = df_year['natureza_juridica_desc'] == 'Organizacao Social (OS)'
+                
+                # Stats for OS
+                os_data = df_year[is_os]
+                qtd_os = os_data['match_cnpj'].nunique()
+                val_os = os_data['valor_repasse'].sum()
+                
+                # Stats for OSCIPs (Others)
+                oscip_data = df_year[~is_os]
+                qtd_oscip = oscip_data['match_cnpj'].nunique()
+                val_oscip = oscip_data['valor_repasse'].sum()
+                
+                # Format HTML for this year
+                year_block = f"""
+<div style="margin-top: 15px; border-top: 1px solid #e0e0e0; padding-top: 10px;">
+    <p style="margin-bottom: 5px; color: #555;"><strong>Análise de Repasses ({year}):</strong></p>
+    <p style="margin-bottom: 5px;">
+    Das <b>{oscip_count}</b> OSCIPs ativas, <b>{qtd_oscip}</b> receberam 
+    <b>R$ {val_oscip:,.2f}</b>.
+    </p>
+    <p>
+    Entre as <b>{os_count}</b> OSs ativas, <b>{qtd_os}</b> receberam 
+    <b>R$ {val_os:,.2f}</b>.
+    </p>
+</div>
+"""
+                analysis_parts.append(year_block)
+            
+            analysis_html = "".join(analysis_parts)
+            
+        except Exception as e:
+            print(f"Error calculating stats: {e}")
+            analysis_html = f"<p style='color:red'>Erro ao carregar análise temporal: {e}</p>"
 
     # Styling for the container
     st.markdown("### Principais Resultados")
     
-    # Create a styled box
+    # Text Label (Original Summary)
+    summary_text = f"Do total de <b>{total_active}</b> OSCs em atividade em Santos, <b>{os_count}</b> são Organizações Sociais (OSs) e <b>{oscip_count}</b> são classificadas como OSCIPs."
+    
+    # Create a styled box (Static, Simple, Scrollable if too long? No, user asks for simple presentation, just list them)
+    # We might want to limit height if it's huge, but let's just list them for now as requested.
     st.markdown(
         f"""
         <div style="
@@ -42,10 +104,9 @@ def render_key_results(df):
             margin-bottom: 2rem;
         ">
             <p style="font-size: 1.1rem; margin: 0; line-height: 1.6;">
-                Do total de <b>{total_active}</b> OSCs em atividade em Santos, 
-                <b>{os_count}</b> são Organizações Sociais (OSs) e 
-                <b>{oscip_count}</b> são classificadas como OSCIPs.
+                {summary_text}
             </p>
+            {analysis_html}
         </div>
         """,
         unsafe_allow_html=True
