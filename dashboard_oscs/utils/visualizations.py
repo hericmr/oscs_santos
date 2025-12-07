@@ -89,7 +89,7 @@ def plot_time_series(df, date_col, title="", cumulative=False):
     
     return apply_academic_chart_style(fig)
 
-def plot_map(df, lat_col='latitude', lon_col='longitude', tooltip_cols=None):
+def plot_map(df, lat_col='latitude', lon_col='longitude', tooltip_cols=None, hover_name_col='tx_razao_social_osc'):
     """
     Gera mapa Folium com pontos individuais (sem clusterização).
     tooltip_cols pode ser uma lista de colunas ou um dict {coluna: label}.
@@ -131,11 +131,13 @@ def plot_map(df, lat_col='latitude', lon_col='longitude', tooltip_cols=None):
         
         popup_html += "</div>"
         
+        hover_text = str(row.get(hover_name_col, 'Sem Nome'))
+        
         folium.CircleMarker(
             location=[row[lat_col], row[lon_col]],
             radius=6 if is_os else 5, # Slightly larger for importance? Or same. Let's make it consistent.
             popup=folium.Popup(popup_html, max_width=300),
-            tooltip=f"Razão Social: {row.get('tx_razao_social_osc', 'Não Informada')}",
+            tooltip=hover_text,
             color=marker_color,
             fill=True,
             fill_color=marker_color,

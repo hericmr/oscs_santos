@@ -100,10 +100,10 @@ def apply_academic_style():
             }
             
             /* Hide Streamlit Header, Menu, and Footer */
-            header[data-testid="stHeader"] {
-                visibility: hidden;
-                height: 0px;
-            }
+            /* Header restored for navigation access */
+            /* header[data-testid="stHeader"] {
+                visibility: visible;
+            } */
             
             /* Remove the colored top decoration */
             div[data-testid="stDecoration"] {
