@@ -24,65 +24,7 @@ def render_key_results(df):
     # Calculate OSCIP (Non-OS simplification)
     oscip_count = len(active_df[active_df['cd_natureza_juridica_osc'] != 3301])
     
-    # --- Load Resource Data for All Years Analysis ---
-    res_path = os.path.join(os.path.dirname(__file__), '../data/tabela_recursos_osc_match_completo.csv')
-    
-    analysis_html = ""
-    
-    if os.path.exists(res_path):
-        try:
-            df_res = pd.read_csv(res_path, sep=';', decimal=',')
-            
-            # Ensure proper types
-            df_res['valor_repasse'] = pd.to_numeric(df_res['valor_repasse'], errors='coerce').fillna(0)
-            
-            # Get valid years sorted descending
-            unique_years = sorted([y for y in df_res['ano_recurso'].dropna().unique()], reverse=True)
-            unique_years = [int(y) for y in unique_years] # ensure integers
-            
-            analysis_parts = []
-            
-            for year in unique_years:
-                # Filter Year and Matched
-                df_year = df_res[(df_res['ano_recurso'] == year) & (df_res['match_type'] != 'None')]
-                
-                if df_year.empty:
-                    continue
-                
-                # Check nature
-                is_os = df_year['natureza_juridica_desc'] == 'Organizacao Social (OS)'
-                
-                # Stats for OS
-                os_data = df_year[is_os]
-                qtd_os = os_data['match_cnpj'].nunique()
-                val_os = os_data['valor_repasse'].sum()
-                
-                # Stats for OSCIPs (Others)
-                oscip_data = df_year[~is_os]
-                qtd_oscip = oscip_data['match_cnpj'].nunique()
-                val_oscip = oscip_data['valor_repasse'].sum()
-                
-                # Format HTML for this year
-                year_block = f"""
-<div style="margin-top: 15px; border-top: 1px solid #e0e0e0; padding-top: 10px;">
-    <p style="margin-bottom: 5px; color: #555;"><strong>Análise de Repasses ({year}):</strong></p>
-    <p style="margin-bottom: 5px;">
-    Das <b>{oscip_count}</b> OSCIPs ativas, <b>{qtd_oscip}</b> receberam 
-    <b>R$ {val_oscip:,.2f}</b>.
-    </p>
-    <p>
-    Entre as <b>{os_count}</b> OSs ativas, <b>{qtd_os}</b> receberam 
-    <b>R$ {val_os:,.2f}</b>.
-    </p>
-</div>
-"""
-                analysis_parts.append(year_block)
-            
-            analysis_html = "".join(analysis_parts)
-            
-        except Exception as e:
-            print(f"Error calculating stats: {e}")
-            analysis_html = f"<p style='color:red'>Erro ao carregar análise temporal: {e}</p>"
+
 
     # Styling for the container
     st.markdown("### Principais Resultados")
@@ -103,10 +45,8 @@ def render_key_results(df):
             color: #000000;
             margin-bottom: 2rem;
         ">
-            <p style="font-size: 1.1rem; margin: 0; line-height: 1.6;">
                 {summary_text}
             </p>
-            {analysis_html}
         </div>
         """,
         unsafe_allow_html=True

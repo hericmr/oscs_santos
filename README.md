@@ -6,33 +6,35 @@
 
 Este projeto tem como objetivo realizar um mapeamento e uma análise crítica das Organizações da Sociedade Civil (OSCs) na cidade de Santos-SP. A iniciativa combina processamento de dados governamentais, análise estatística e visualização interativa para fornecer insights sobre a distribuição territorial, a evolução histórica e o fluxo de recursos públicos (prestação de contas) dessas entidades.
 
-##  Objetivos
+## Objetivos
 
-- **Mapear** a distribuição geespacial e temática das OSCs no município.
+- **Mapear** a distribuição geoespacial e temática das OSCs no município.
 - **Analisar** os dados de prestação de contas e repasses da Prefeitura de Santos (2018-2025).
+- **Investigar** a relação entre o financiamento público e a localização das entidades.
 
-## Fontes de Dados e Metadados
+---
+
+##  Fontes de Dados e Metadados
 
 Os dados apresentados neste dashboard são consolidados a partir de duas fontes primárias:
 
 ### 1. Mapa das Organizações da Sociedade Civil (IPEA)
 - **Fonte**: Base de dados oficial do IPEA (Instituto de Pesquisa Econômica Aplicada).
 - **Dados Extraídos**: Cadastro nacional de OSCs, incluindo CNPJ, Razão Social, endereço, área de atuação e natureza jurídica.
-- **Processamento**: Os dados foram filtrados para o município de Santos-SP e enriquecidos com geolocalização.
+- **Processamento**: Os dados foram filtrados para o recorte geográfico do município de Santos-SP e enriquecidos com geolocalização.
 
 ### 2. Portal de Dados Abertos de Santos (Prefeitura Municipal)
 - **Fonte**: [Portal de Dados Abertos - Santos](https://egov.santos.sp.gov.br/dadosabertos)
 - **Dados Extraídos**: 
     - Recursos transferidos para OSCs (valores de repasse, empenho).
-    - Prestação de contas por ano, secretaria e entidade beneficiária.
-- **Cobertura Temporal**: Dados completos de 2018 a 2025.
+    - Prestação de contas detalhada por ano, secretaria e entidade beneficiária.
 
 
 ---
 
-## Metodologia e Pipeline de Tratamento de Dados
+##  Metodologia e Pipeline de Tratamento de Dados
 
-Para garantir a validade científica e a reprodutibilidade da pesquisa, este projeto documenta rigorosamente como os dados brutos foram transformados em informação analítica. O objetivo é afastar qualquer dúvida sobre a integridade dos números apresentados.
+Para garantir a validade científica e a reprodutibilidade da pesquisa, este projeto documenta como os dados brutos foram transformados em informação analítica.
 
 ### 1. Definição das Fontes (Origem)
 O projeto cruza duas bases de dados distintas para gerar as informações do dashboard:
@@ -54,7 +56,7 @@ Todos os scripts de processamento (ETL) estão disponíveis publicamente neste r
 
 ---
 
-##  Estrutura do Repositório
+##  Estrutura
 
 O projeto está organizado para separar a lógica de processamento de dados (backend/scripts) da visualização (frontend/dashboard).
 
