@@ -80,6 +80,42 @@ else:
         else:
             st.warning("Nenhum registro encontrado para esta métrica.")
 
+    # --- Tabela 6.3 (IPEA) - Natureza Jurídica: Santos (Distribuição %) ---
+    st.divider()
+    st.markdown("### Tabela 6.3 - OSCs por natureza jurídica: Santos (Distribuição %)")
+    
+    # 1. Calcular contagens baseadas nos códigos
+    # Mapping codes: 3999: Associação, 3069: Fundação, 3220: Religiosa, 3301: OS
+    total_oscs_gen = len(df)
+    
+    if total_oscs_gen > 0:
+        count_assoc = len(df[df['cd_natureza_juridica_osc'] == 3999]) if 'cd_natureza_juridica_osc' in df.columns else 0
+        count_fund = len(df[df['cd_natureza_juridica_osc'] == 3069]) if 'cd_natureza_juridica_osc' in df.columns else 0
+        count_relig = len(df[df['cd_natureza_juridica_osc'] == 3220]) if 'cd_natureza_juridica_osc' in df.columns else 0
+        count_os = len(df[df['cd_natureza_juridica_osc'] == 3301]) if 'cd_natureza_juridica_osc' in df.columns else 0
+        
+        # Calcular porcentagens
+        pct_assoc = (count_assoc / total_oscs_gen * 100)
+        pct_fund = (count_fund / total_oscs_gen * 100)
+        pct_relig = (count_relig / total_oscs_gen * 100)
+        pct_os = (count_os / total_oscs_gen * 100)
+        
+        # Criar DataFrame Wide (Horizontal)
+        table_63_data = {
+            'Município': ['Santos'],
+            'Associação Privada': [f"{pct_assoc:.1f}%"],
+            'Fundação Privada': [f"{pct_fund:.1f}%"],
+            'Org. Religiosa': [f"{pct_relig:.1f}%"],
+            'Org. Social (OS)': [f"{pct_os:.1f}%"],
+            'Total': ["100.0%"]
+        }
+        
+        df_table_63 = pd.DataFrame(table_63_data)
+        
+        # Exibir Tabela
+        st.dataframe(df_table_63, use_container_width=True, hide_index=True)
+        st.caption("Fonte: Mapa das OSCs (Recorte Santos).")
+
     st.divider()
 
     # --- Charts ---
