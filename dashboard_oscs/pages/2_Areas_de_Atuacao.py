@@ -20,10 +20,118 @@ if not df.empty and 'Area_Atuacao' in df.columns:
     
     # Vamos usar nosso plotly para ser consistente
     fig_area = plot_bar_chart(df, 'Area_Atuacao', title="Contagem de OSCs por Área", orientation='v')
-    fig_area.update_layout(showlegend=True, legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
+    # Remove legend
+    fig_area.update_layout(showlegend=False)
     st.plotly_chart(fig_area, use_container_width=True)
 
-    # --- Tabela 5.1 (Adaptada) - Natureza Jurídica ---
+    # --- Tabela: Áreas e Subáreas de Atuação (IPEA) ---
+    st.markdown("### Área de Atuação das OSCs")
+    st.markdown("Esta seção trata sobre as áreas de atuação das Organizações da Sociedade Civil - OSCs.")
+
+    # Lógica de Agregação Hierárquica
+    # As colunas são binárias (One-Hot). 
+    # Area_X = 1 -> OSC atua na Area X
+    # SubArea_Y = 1 -> OSC atua na SubArea Y
+    
+    # Mapeamento hierárquico (Hardcoded baseado nas colunas do CSV para garantir estrutura)
+    hierarchy = {
+        'Assistência Social': ['SubArea_Assistencia_social'],
+        'Cultura e Recreação': ['SubArea_Cultura_e_arte', 'SubArea_Esportes_e_recreacao'],
+        'Desenvolvimento e Defesa de Direitos': ['SubArea_Desenvolvimento_e_defesa_de_direitos', 'SubArea_Associacoes_de_atividades_nao_especificadas_anteriormente'],
+        'Educação e Pesquisa': ['SubArea_Educacao_infantil', 'SubArea_Ensino_fundamental', 'SubArea_Ensino_superior', 'SubArea_Educacao_profissional', 'SubArea_Atividades_de_apoio_a_educacao', 'SubArea_Outras_formas_de_educacao_ensino', 'SubArea_Estudos_e_pesquisas'],
+        'Saúde': ['SubArea_Hospitais', 'SubArea_Outros_servicos_de_saude'],
+        'Religião': ['SubArea_Religiao'],
+        'Associações Patronais e Profissionais': ['SubArea_Associacoes_empresariais_e_patronais', 'SubArea_Associacoes_profissionais'],
+        'Outras Atividades Associativas': []
+    }
+
+    # Mapa de colunas Area_ para nomes legíveis (deve bater com keys do hierarchy)
+    area_col_map = {
+        'Area_Assistencia_social': 'Assistência Social',
+        'Area_Cultura_e_recreacao': 'Cultura e Recreação',
+        'Area_Desenvolvimento_e_defesa_de_direitos_e_interesses': 'Desenvolvimento e Defesa de Direitos',
+        'Area_Educacao_e_pesquisa': 'Educação e Pesquisa',
+        'Area_Saude': 'Saúde',
+        'Area_Religiao': 'Religião',
+        'Area_Associacoes_patronais_e_profissionais': 'Associações Patronais e Profissionais',
+        'Area_Outras_atividades_associativas': 'Outras Atividades Associativas'
+    }
+
+    table_rows = []
+    total_oscs = len(df)
+
+    # Iterar sobre as Áreas Principais
+    for area_col, area_name in area_col_map.items():
+        if area_col in df.columns:
+            # Calcular Total da Área
+            count_area = df[area_col].sum()
+            if count_area == 0: continue # Skip areas with 0 results
+
+            try:
+                pct_total_area = (count_area / total_oscs) * 100
+            except: 
+                pct_total_area = 0
+
+            # Adicionar Linha da Categoria Principal
+            table_rows.append({
+                'Area': f"<b>{area_name}</b>",
+                'Total': count_area,
+                'Perc_Total': pct_total_area,
+                'Perc_Group': None # Categoria principal não tem % grupo
+            })
+
+            # Processar Subáreas
+            subareas = hierarchy.get(area_name, [])
+            for sub_col in subareas:
+                if sub_col in df.columns:
+                    count_sub = df[df[area_col] == 1][sub_col].sum() # Contar subarea APENAS dentro da area pai, embora dados devam ser consistentes
+                    
+                    if count_sub > 0:
+                        try:
+                            pct_total_sub = (count_sub / total_oscs) * 100
+                            pct_group_sub = (count_sub / count_area) * 100
+                        except:
+                            pct_total_sub = 0
+                            pct_group_sub = 0
+                            
+                        # Limpar nome da subarea
+                        sub_name = sub_col.replace('SubArea_', '').replace('_', ' ').capitalize()
+                        
+                        table_rows.append({
+                            'Area': f"<span style='padding-left: 20px;'>{sub_name}</span>",
+                            'Total': count_sub,
+                            'Perc_Total': pct_total_sub,
+                            'Perc_Group': pct_group_sub
+                        })
+
+    # Adicionar Total Geral
+    table_rows.append({
+        'Area': "<b>Total Geral de OSCs</b>",
+        'Total': total_oscs,
+        'Perc_Total': 100.0,
+        'Perc_Group': None
+    })
+
+    # Criar DataFrame final
+    df_area_table = pd.DataFrame(table_rows)
+
+    # Formatação Final
+    df_area_table['Total de OSCs'] = df_area_table['Total'].apply(lambda x: f"{int(x):,.0f}".replace(",", "."))
+    df_area_table['(%) Em relação ao total'] = df_area_table['Perc_Total'].apply(lambda x: f"{x:.1f}")
+    df_area_table['(%) Em relação ao grupo'] = df_area_table['Perc_Group'].apply(lambda x: f"{x:.1f}" if pd.notnull(x) else "-")
+
+    # Selecionar colunas finais
+    final_cols = ['Area', 'Total de OSCs', '(%) Em relação ao total', '(%) Em relação ao grupo']
+    df_display_area = df_area_table[final_cols].rename(columns={'Area': 'Áreas de Atuação'})
+
+    # Renderizar HTML
+    html_area = df_display_area.to_html(index=False, escape=False, classes='ipea-table')
+    st.write(html_area, unsafe_allow_html=True)
+    st.caption("Fonte: Mapa das OSCs (IPEA). Elaboração própria.")
+    
+    st.divider()
+
+    # --- Tabela 5.1 (Original) - Natureza Jurídica ---
     import pandas as pd
     
     st.markdown("### Tabela de Natureza Jurídica (Padrão IPEA)")
