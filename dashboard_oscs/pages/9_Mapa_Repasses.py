@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from streamlit_folium import st_folium
 import plotly.express as px
-from utils.data_loader import load_data
+from utils.data_loader import load_data, load_csv_robust
 from utils.visualizations import plot_map, apply_academic_chart_style
 from utils.styles import apply_academic_style
 import os
@@ -24,11 +24,8 @@ match_file_path = os.path.join(current_dir, '..', 'data', 'tabela_recursos_osc_m
 def load_match_data():
     if not os.path.exists(match_file_path):
         return pd.DataFrame()
-    try:
-        df = pd.read_csv(match_file_path, sep=';', encoding='utf-8')
-    except:
-        df = pd.read_csv(match_file_path, sep=',', encoding='utf-8')
-    return df
+    
+    return load_csv_robust(match_file_path)
 
 df_matches = load_match_data()
 

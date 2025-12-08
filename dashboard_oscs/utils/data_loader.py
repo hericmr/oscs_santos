@@ -3,6 +3,36 @@ import streamlit as st
 import os
 from utils.data_cleaning import clean_data
 
+
+def load_csv_robust(filepath, decimal=','):
+    """
+    Tenta carregar um CSV lidando automaticamente com:
+    - Encodings: utf-8, latin-1 (iso-8859-1)
+    - Separadores: ;, ,, \t
+    """
+    encodings = ['utf-8', 'latin-1', 'cp1252']
+    separators = [';', ',', '\t']
+    
+    for encoding in encodings:
+        for sep in separators:
+            try:
+                # Tenta ler apenas as primeiras linhas para validar
+                df = pd.read_csv(filepath, sep=sep, encoding=encoding, nrows=5)
+                # Se leu e tem colunas (>1 se sep correto, mas as vezes 1 coluna é válido, 
+                # porem separadores errados costumam gerar 1 coluna com tudo junto)
+                if len(df.columns) > 1:
+                    # Ler arquivo inteiro
+                    return pd.read_csv(filepath, sep=sep, encoding=encoding, decimal=decimal)
+            except:
+                continue
+                
+    # Se falhar tudo, tenta força bruta com o separador mais comum e latin1
+    try:
+        return pd.read_csv(filepath, sep=';', encoding='latin-1', decimal=decimal)
+    except Exception as e:
+        print(f"Erro ao carregar {filepath}: {e}")
+        return pd.DataFrame()
+
 @st.cache_data
 def load_data(filename="oscs_santos.csv"):
     """
@@ -19,16 +49,7 @@ def load_data(filename="oscs_santos.csv"):
         st.error(f"Arquivo não encontrado: {file_path}")
         return pd.DataFrame()
 
-    try:
-        # Tenta detectar separador automaticamente ou usa ; que é comum no Brasil
-        try:
-             df = pd.read_csv(file_path, sep=';', encoding='utf-8')
-        except:
-             df = pd.read_csv(file_path, sep=',', encoding='utf-8')
-        
-        # Se houver erro de encoding, tentar latin1
-    except UnicodeDecodeError:
-        df = pd.read_csv(filepath, sep=';', encoding='latin1')
+    df = load_csv_robust(file_path)
 
     df_cleaned = clean_data(df)
     return df_cleaned
@@ -57,13 +78,11 @@ def load_funding_data():
             ano_str = filename.replace('.csv', '').split('_')[-1]
             ano = int(ano_str)
             
-            try:
-                df = pd.read_csv(filepath, sep=',', encoding='utf-8')
-            except:
-                 df = pd.read_csv(filepath, sep=';', encoding='utf-8')
+            df = load_csv_robust(filepath)
             
-            df['ano'] = ano
-            dfs.append(df)
+            if not df.empty:
+                df['ano'] = ano
+                dfs.append(df)
         except Exception as e:
             st.warning(f"Erro ao ler arquivo {filename}: {e}")
             continue

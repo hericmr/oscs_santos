@@ -8,13 +8,15 @@ import sys
 # Add parent directory to path to allow importing utils
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from utils import styles, components
+from utils.styles import apply_academic_style
+from utils.visualizations import apply_academic_chart_style
+from utils.data_loader import load_csv_robust
 
 # Page Configuration
 st.set_page_config(page_title="Correspondencia de Repasses", page_icon=None, layout="wide")
 
 # Apply Styles
-styles.apply_academic_style()
+apply_academic_style()
 
 # Title
 st.markdown("<h1>Correspondência de Repasses e Recursos</h1>", unsafe_allow_html=True)
@@ -41,9 +43,9 @@ def load_matching_data():
     
     # Load
     try:
-        df_summary = pd.read_csv(file_summary, sep=';', decimal=',')
-        df_complete = pd.read_csv(file_complete, sep=';', decimal=',')
-        df_unmatched = pd.read_csv(file_unmatched, sep=';', decimal=',')
+        df_summary = load_csv_robust(file_summary)
+        df_complete = load_csv_robust(file_complete)
+        df_unmatched = load_csv_robust(file_unmatched)
         
         # Ensure match_type is string and fill NaNs
         if 'match_type' in df_complete.columns:
