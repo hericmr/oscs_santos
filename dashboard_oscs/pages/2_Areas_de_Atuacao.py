@@ -183,34 +183,7 @@ if not df.empty and 'Area_Atuacao' in df.columns:
 
     st.divider()
 
-    # 2. Drilldown - Subáreas
-    st.subheader("Detalhamento por Subárea")
-    
-    selected_area = st.selectbox("Selecione uma Área para ver detalhes:", df['Area_Atuacao'].unique())
-    
-    if selected_area:
-        df_filtered = df[df['Area_Atuacao'] == selected_area]
-        
-        # Encontrar colunas de SubArea que tem valor 1.0
-        # Colunas comeca com 'SubArea_'
-        subarea_cols = [c for c in df.columns if c.startswith('SubArea_')]
-        
-        active_subareas = []
-        for idx, row in df_filtered.iterrows():
-            for c in subarea_cols:
-                if row[c] == 1.0:
-                    name = c.replace('SubArea_', '').replace('_', ' ')
-                    active_subareas.append(name)
-        
-        if active_subareas:
-            import pandas as pd
-            df_sub = pd.DataFrame(active_subareas, columns=['SubArea'])
-            fig_sub = plot_bar_chart(df_sub, 'SubArea', title=f"Subáreas em {selected_area}", orientation='v')
-            # Ajustar altura se tiver muitas barras
-            # fig_sub.update_layout(height=max(400, len(df_sub['SubArea'].unique()) * 20))
-            st.plotly_chart(fig_sub, use_container_width=True)
-        else:
-            st.info("Nenhuma subárea específica identificada nestes registros.")
+
 
 else:
     st.error("Dados de Área de Atuação indisponíveis.")

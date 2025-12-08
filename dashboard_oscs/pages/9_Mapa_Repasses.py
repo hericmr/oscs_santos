@@ -68,7 +68,7 @@ df_oscs['cnpj_clean'] = df_oscs['cnpj'].apply(clean_cnpj)
 # Merge para pegar coordenadas e detalhes
 # Left merge no match para manter os repasses, trazendo coords do df_oscs
 df_merged = df_valid_matches.merge(
-    df_oscs[['cnpj_clean', 'latitude', 'longitude', 'tx_endereco_completo', 'situacao_cadastral', 'dt_fundacao_osc']],
+    df_oscs[['cnpj_clean', 'latitude', 'longitude', 'tx_endereco_completo', 'situacao_cadastral', 'dt_fundacao_osc', 'Area_Atuacao']],
     left_on='match_cnpj_clean',
     right_on='cnpj_clean',
     how='inner' # Inner para garantir que só mostramos quem tem coordenada
@@ -110,20 +110,34 @@ df_merged['ano_recurso'] = df_merged['ano_recurso'].fillna(0).astype(int)
 min_year = int(df_merged['ano_recurso'].min()) if not df_merged.empty else 2016
 max_year = int(df_merged['ano_recurso'].max()) if not df_merged.empty else 2025
 
-st.subheader("Linha do Tempo")
-# Slider para selecionar intervalo (range)
-year_range = st.slider("Selecione o Período", min_value=min_year, max_value=max_year, value=(min_year, max_year), step=1)
-start_year, end_year = year_range
+st.subheader("Filtros")
+col_filter_1, col_filter_2 = st.columns([2, 2])
+
+with col_filter_1:
+    # Slider para selecionar intervalo (range)
+    year_range = st.slider("Selecione o Período", min_value=min_year, max_value=max_year, value=(min_year, max_year), step=1)
+    start_year, end_year = year_range
 
 # Filtro
 df_year = df_merged[(df_merged['ano_recurso'] >= start_year) & (df_merged['ano_recurso'] <= end_year)]
+
+with col_filter_2:
+    # Filtro de Área de Atuação
+    if 'Area_Atuacao' in df_year.columns:
+        # Obter opções, tratando nulos
+        area_options = sorted(df_year['Area_Atuacao'].dropna().unique())
+        selected_areas = st.multiselect("Filtrar por Área de Atuação", options=area_options, default=area_options)
+        
+        # Aplicar filtro se não estiver vazio
+        if selected_areas:
+             df_year = df_year[df_year['Area_Atuacao'].isin(selected_areas)]
 
 # --- Agregação por OSC para o Mapa ---
 # Uma OSC pode ter recebido vários repasses no ano. Queremos 1 pino no mapa.
 # Agrupar por CNPJ e manter dados estáticos da OSC
 # Para o nome da beneficiária, pegamos o mais frequente (moda) ou o primeiro para exibir no tooltip
 group_cols = ['match_cnpj_clean', 'match_name', 'latitude', 'longitude', 'cd_natureza_juridica', 'natureza_juridica_desc', 
-              'situacao_cadastral', 'Bairro', 'dt_fundacao_osc', 'tx_endereco_completo']
+              'situacao_cadastral', 'Bairro', 'dt_fundacao_osc', 'tx_endereco_completo', 'Area_Atuacao']
 
 # Função de agregação personalizada para pegar o nome da beneficiária mais comum
 def get_most_common(x):
@@ -180,6 +194,7 @@ with col1:
             'Bairro': 'Bairro',
             'situacao_cadastral': 'Situação',
             'dt_fundacao_osc': 'Fundação',
+            'Area_Atuacao': 'Área',
             'Secretarias': 'Resp. Repasse',
             'Qtd. Transferências': 'Qtd. Transferências',
             'Valor Formatado': 'Valor Total'
