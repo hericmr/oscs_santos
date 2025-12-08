@@ -12,8 +12,9 @@ if parent_dir not in sys.path:
     sys.path.append(parent_dir)
 
 from utils.data_loader import load_funding_data
+from utils.styles import apply_academic_style
 
-st.set_page_config(layout="wide", page_title="Transferências de Recursos Públicos Municipais")
+
 apply_academic_style()
 
 st.title("Transferências de Recursos Públicos Municipais para OSs e OSCs")

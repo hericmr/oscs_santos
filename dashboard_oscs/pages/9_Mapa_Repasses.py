@@ -7,7 +7,7 @@ from utils.visualizations import plot_map, apply_academic_chart_style
 from utils.styles import apply_academic_style
 import os
 
-st.set_page_config(page_title="Evolução Quantitativa Recursos", layout="wide")
+
 apply_academic_style()
 
 st.title("Mapa 3 - Evolução Quantitativa das Transferências")

@@ -3,7 +3,7 @@ import pandas as pd
 from utils.data_loader import load_data
 from utils.visualizations import plot_pie_chart, plot_bar_chart
 
-st.set_page_config(page_title="Visão Geral", layout="wide")
+
 from utils.styles import apply_academic_style
 apply_academic_style()
 

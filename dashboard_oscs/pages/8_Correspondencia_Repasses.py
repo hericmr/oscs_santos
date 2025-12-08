@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils import styles, components
 
 # Page Configuration
-st.set_page_config(page_title="Correspondencia de Transferências", page_icon=None, layout="wide")
+
 
 # Apply Styles
 styles.apply_academic_style()

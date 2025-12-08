@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt # Just in case, though we prefer Plotly for the dashboard
 
 # Set page config
-st.set_page_config(page_title="Recursos", layout="wide")
+
 from utils.styles import apply_academic_style
 from utils.visualizations import apply_academic_chart_style
 apply_academic_style()
