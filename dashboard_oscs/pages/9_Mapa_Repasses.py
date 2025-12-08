@@ -67,8 +67,25 @@ df_oscs['cnpj_clean'] = df_oscs['cnpj'].apply(clean_cnpj)
 
 # Merge para pegar coordenadas e detalhes
 # Left merge no match para manter os repasses, trazendo coords do df_oscs
+# Mapa de colunas Area_ para nomes legíveis
+area_col_map = {
+    'Area_Assistencia_social': 'Assistência Social',
+    'Area_Cultura_e_recreacao': 'Cultura e Recreação',
+    'Area_Desenvolvimento_e_defesa_de_direitos_e_interesses': 'Desenvolvimento e Defesa de Direitos',
+    'Area_Educacao_e_pesquisa': 'Educação e Pesquisa',
+    'Area_Saude': 'Saúde',
+    'Area_Religiao': 'Religião',
+    'Area_Associacoes_patronais_e_profissionais': 'Associações Patronais e Profissionais',
+    'Area_Outras_atividades_associativas': 'Outras Atividades Associativas'
+}
+
+# Merge para pegar coordenadas e detalhes
+# Left merge no match para manter os repasses, trazendo coords do df_oscs
+# Incluir todas as colunas de área no merge
+cols_to_merge = ['cnpj_clean', 'latitude', 'longitude', 'tx_endereco_completo', 'situacao_cadastral', 'dt_fundacao_osc', 'Area_Atuacao'] + list(area_col_map.keys())
+
 df_merged = df_valid_matches.merge(
-    df_oscs[['cnpj_clean', 'latitude', 'longitude', 'tx_endereco_completo', 'situacao_cadastral', 'dt_fundacao_osc', 'Area_Atuacao']],
+    df_oscs[cols_to_merge],
     left_on='match_cnpj_clean',
     right_on='cnpj_clean',
     how='inner' # Inner para garantir que só mostramos quem tem coordenada
@@ -122,15 +139,41 @@ with col_filter_1:
 df_year = df_merged[(df_merged['ano_recurso'] >= start_year) & (df_merged['ano_recurso'] <= end_year)]
 
 with col_filter_2:
-    # Filtro de Área de Atuação
-    if 'Area_Atuacao' in df_year.columns:
-        # Obter opções, tratando nulos
-        area_options = sorted(df_year['Area_Atuacao'].dropna().unique())
-        selected_areas = st.multiselect("Filtrar por Área de Atuação", options=area_options, default=area_options)
+    # Filtro de Área de Atuação (Multi-select com base nas colunas binárias)
+    # Opções legíveis
+    area_options = sorted(list(area_col_map.values()))
+    selected_areas_labels = st.multiselect("Filtrar por Área de Atuação", options=area_options, default=area_options)
+    
+    if selected_areas_labels:
+        # 1. Identificar quais colunas do DataFrame correspondem aos rótulos selecionados
+        selected_cols = [k for k, v in area_col_map.items() if v in selected_areas_labels]
         
-        # Aplicar filtro se não estiver vazio
-        if selected_areas:
-             df_year = df_year[df_year['Area_Atuacao'].isin(selected_areas)]
+        # 2. Garantir que essas colunas existem no df (já fizemos no merge, mas por segurança)
+        valid_cols = [c for c in selected_cols if c in df_year.columns]
+        
+        if valid_cols:
+            # Garantir que as colunas sejam numéricas antes de somar
+            # Previne TypeError se elas estiverem como '0', '1' (str) -> concatenação
+            for col in valid_cols:
+                df_year[col] = pd.to_numeric(df_year[col], errors='coerce').fillna(0)
+            
+            # 3. Filtrar: manter linha se a soma dessas colunas for > 0 (OU lógico)
+            # Se a soma das colunas selecionadas for > 0, significa que a OSC atua em pelo menos uma das áreas
+            mask = df_year[valid_cols].sum(axis=1) > 0
+            df_year = df_year[mask]
+        else:
+             # Se nenhuma coluna válida, não mostra nada ou mostra tudo? (Lógica de filtro: nada)
+             df_year = df_year[0:0] 
+     
+    # Se nada selecionado no multiselect, o comportamento padrão do st.multiselect vazio é retornar lista vazia.
+    # Se lista vazia, lógica acima não roda. Usually user filters empty = show nothing or show all?
+    # O código anterior fazia "If selected_areas: filter". Se vazio, mostrava tudo. 
+    # Aqui, se selected_areas_labels for vazio, ele pula o bloco if e mostra tudo (comportamento padrão "sem filtro aplicável"). 
+    # Mas se o usuário DESMARCAR tudo, ele quer ver tudo ou nada?
+    # Geralmente multiselect vazio = "sem filtro" (tudo) ou "nenhuma categoria" (nada).
+    # O user experience comum é: default=all options. Se desmarcar tudo, mostra tudo ou nada.
+    # Vamos manter comportamento: se desmarcar tudo, mostra TUDO (pois não entra no IF).
+    # Caso queira que desmarcar tudo = nada, teria que ter um else. Mas default=all previne isso inicialmente.
 
 # --- Agregação por OSC para o Mapa ---
 # Uma OSC pode ter recebido vários repasses no ano. Queremos 1 pino no mapa.
