@@ -154,3 +154,43 @@ def plot_heatmap(df, x_col, y_col, title=""):
     data = df.groupby([x_col, y_col]).size().reset_index(name='Contagem')
     fig = px.density_heatmap(data, x=x_col, y=y_col, z='Contagem', title=title, text_auto=True)
     return apply_academic_chart_style(fig)
+
+def plot_metric_card(label, value, prefix="", suffix="", delta=None):
+    """
+    Wrapper para st.metric para manter consistência.
+    """
+    st.metric(label=label, value=f"{prefix}{value}{suffix}", delta=delta)
+
+def plot_map_evolution(df_history):
+    """
+    Animação de evolução temporal no mapa.
+    """
+    if df_history.empty:
+        return None
+        
+    df_history = df_history.sort_values('Ano_Fundacao')
+    
+    fig = px.scatter_mapbox(
+        df_history,
+        lat="latitude",
+        lon="longitude",
+        hover_name="tx_razao_social_osc",
+        hover_data=["natureza_juridica_desc", "bairro"],
+        color="cd_natureza_juridica_osc", 
+        animation_frame="Ano_Fundacao",
+        zoom=12,
+        height=600,
+        title="Evolução da Criação de OSCs em Santos"
+    )
+    
+    fig.update_layout(mapbox_style="carto-positron")
+    fig.update_layout(margin={"r":0,"t":40,"l":0,"b":0})
+    
+    return apply_academic_chart_style(fig)
+
+def plot_line_chart(df, x_col, y_col, title=""):
+    """
+    Simple line chart wrapper.
+    """
+    fig = px.line(df, x=x_col, y=y_col, title=title, markers=True)
+    return apply_academic_chart_style(fig)

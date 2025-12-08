@@ -1,4 +1,9 @@
 import streamlit as st
+import sys
+import os
+
+# Add current directory to path to ensure dashboard_utils is found
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Configuração da Página Principal (Navigation)
 st.set_page_config(page_title="Dashboard OSCs Santos", layout="wide")
