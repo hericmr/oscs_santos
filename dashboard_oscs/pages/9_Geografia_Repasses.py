@@ -136,10 +136,15 @@ def get_most_common(x):
     except:
         return x.iloc[0] if not x.empty else "N/A"
 
+# Função para agrupar secretarias únicas
+def get_unique_secretarias(x):
+    return ", ".join(sorted(x.astype(str).unique()))
+
 df_map_data = df_year.groupby(group_cols).agg({
     'valor_repasse_float': 'sum',
     'id': 'count', # Contagem de repasses
-    'beneficiaria_nome': get_most_common # Trazer o nome usado no repasse
+    'beneficiaria_nome': get_most_common, # Trazer o nome usado no repasse
+    'secretaria_sigla': get_unique_secretarias # Lista de secretarias
 }).reset_index()
 
 # Renomear para compatibilidade com plot_map OU criar dados de tooltip manuais
@@ -149,7 +154,8 @@ df_map_data.rename(columns={
     'id': 'Qtd. Repasses',
     'cd_natureza_juridica': 'cd_natureza_juridica_osc', # Para cor (3301 = OS)
     'natureza_juridica_desc': 'Tipo Jurídico',
-    'beneficiaria_nome': 'Beneficiária' # Nome que irá no tooltip hover
+    'beneficiaria_nome': 'Beneficiária', # Nome que irá no tooltip hover
+    'secretaria_sigla': 'Secretarias'
 }, inplace=True)
 
 # Formatar valor para tooltip
@@ -178,6 +184,7 @@ with col1:
             'Bairro': 'Bairro',
             'situacao_cadastral': 'Situação',
             'dt_fundacao_osc': 'Fundação',
+            'Secretarias': 'Resp. Repasse',
             'Qtd. Repasses': 'Qtd. Repasses',
             'Valor Formatado': 'Valor Total'
         }
