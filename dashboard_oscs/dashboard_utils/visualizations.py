@@ -194,3 +194,4 @@ def plot_line_chart(df, x_col, y_col, title=""):
     """
     fig = px.line(df, x=x_col, y=y_col, title=title, markers=True)
     return apply_academic_chart_style(fig)
+# Force update
