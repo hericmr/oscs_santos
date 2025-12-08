@@ -13,7 +13,7 @@ from dashboard_utils.visualizations import apply_academic_chart_style
 from dashboard_utils.data_loader import load_csv_robust
 
 # Page Configuration
-st.set_page_config(page_title="Correspondencia de Transferências", page_icon=None, layout="wide")
+
 
 # Apply Styles
 apply_academic_style()

@@ -1,11 +1,11 @@
-
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-from dashboard_utils.data_loader import load_data
-from dashboard_utils.visualizations import plot_line_chart, apply_academic_chart_style
-from dashboard_utils.styles import apply_academic_style
+from utils.data_loader import load_data
+
+
+from utils.styles import apply_academic_style
 apply_academic_style()
 
 st.title("Criação de Organizações da Sociedade Civil em Santos (1933–2025)")

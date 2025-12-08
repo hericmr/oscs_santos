@@ -1,10 +1,10 @@
 import streamlit as st
 from streamlit_folium import st_folium
-from dashboard_utils.data_loader import load_data
-from dashboard_utils.visualizations import plot_map
+from utils.data_loader import load_data
+from utils.visualizations import plot_map
 
-st.set_page_config(page_title="Geolocalização", layout="wide")
-from dashboard_utils.styles import apply_academic_style
+
+from utils.styles import apply_academic_style
 apply_academic_style()
 
 st.title("Mapa 1 - Distribuição geográfica das OSs e OSCIPs em Santos")

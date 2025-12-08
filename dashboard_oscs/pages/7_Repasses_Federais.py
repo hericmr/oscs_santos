@@ -5,10 +5,9 @@ import os
 import matplotlib.pyplot as plt # Just in case, though we prefer Plotly for the dashboard
 
 # Set page config
-st.set_page_config(page_title="Recursos", layout="wide")
-from dashboard_utils.data_loader import load_data, load_csv_robust
-from dashboard_utils.visualizations import apply_academic_chart_style
-from dashboard_utils.styles import apply_academic_style
+
+from utils.styles import apply_academic_style
+from utils.visualizations import apply_academic_chart_style
 apply_academic_style()
 
 st.title("Transferências de Recursos Públicos Federais")
@@ -24,7 +23,10 @@ def load_resources_data():
     
     # 1. Load Main Data (OSCs Santos) to get names/valid IDs
     try:
-        df_main = load_csv_robust(main_data_path)
+        try:
+             df_main = pd.read_csv(main_data_path, sep=';', dtype=str, encoding='utf-8')
+        except UnicodeDecodeError:
+             df_main = pd.read_csv(main_data_path, sep=';', dtype=str, encoding='latin1')
              
         df_main.columns = df_main.columns.str.strip() # Strip whitespace from headers
         # Clean CNPJ for joining
@@ -36,7 +38,7 @@ def load_resources_data():
     # 2. Load 4786-recursososc.csv (IPEA Transferências)
     try:
         recursos_path = os.path.join(data_dir, '4786-recursososc.csv')
-        df_recursos_ipea = load_csv_robust(recursos_path)
+        df_recursos_ipea = pd.read_csv(recursos_path, sep=';', dtype=str)
         df_recursos_ipea.columns = df_recursos_ipea.columns.str.strip()
         
         # Convert numeric columns
@@ -67,7 +69,7 @@ def load_resources_data():
     # 3. Load tb_recursos.csv (Ministério da Justiça)
     try:
         tb_recursos_path = os.path.join(data_dir, 'tb_recursos.csv')
-        df_tb_recursos = load_csv_robust(tb_recursos_path)
+        df_tb_recursos = pd.read_csv(tb_recursos_path, sep=';', dtype=str)
         
         # Clean CNPJ
         df_tb_recursos['cnpj_clean'] = df_tb_recursos['cnpj'].str.replace(r'\D', '', regex=True)
@@ -92,7 +94,7 @@ def load_resources_data():
     # 4. Load contas.csv (Prefeitura de Santos)
     try:
         contas_path = os.path.join(data_dir, 'contas.csv')
-        df_contas = load_csv_robust(contas_path)
+        df_contas = pd.read_csv(contas_path, sep=',', quotechar='"', dtype=str)
         
         # Clean numeric values
         if 'Valor do Repasse' in df_contas.columns:

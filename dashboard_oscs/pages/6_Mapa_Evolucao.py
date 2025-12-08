@@ -3,7 +3,7 @@ from streamlit_folium import st_folium
 from utils.data_loader import load_data
 from utils.visualizations import plot_map
 
-st.set_page_config(page_title="Evolução Quantitativa", layout="wide")
+
 from utils.styles import apply_academic_style
 apply_academic_style()
 
