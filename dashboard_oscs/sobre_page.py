@@ -1,4 +1,4 @@
-```python
+
 import streamlit as st
 from dashboard_utils.styles import apply_academic_style
 from dashboard_utils.components import render_academic_header, render_data_source_card

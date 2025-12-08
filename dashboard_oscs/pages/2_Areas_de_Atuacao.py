@@ -1,4 +1,4 @@
-```python
+
 import streamlit as st
 from dashboard_utils.data_loader import load_data
 from dashboard_utils.visualizations import plot_bar_chart, plot_pie_chart, apply_academic_chart_style
