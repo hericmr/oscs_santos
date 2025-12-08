@@ -11,8 +11,8 @@ parent_dir = os.path.dirname(current_dir)
 if parent_dir not in sys.path:
     sys.path.append(parent_dir)
 
-from utils.data_loader import load_funding_data
-from utils.styles import apply_academic_style
+from dashboard_utils.data_loader import load_funding_data
+from dashboard_utils.styles import apply_academic_style
 
 
 apply_academic_style()

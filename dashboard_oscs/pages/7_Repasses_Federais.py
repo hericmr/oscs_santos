@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt # Just in case, though we prefer Plotly for the 
 
 # Set page config
 
-from utils.styles import apply_academic_style
-from utils.visualizations import apply_academic_chart_style
+from dashboard_utils.styles import apply_academic_style
+from dashboard_utils.visualizations import apply_academic_chart_style
 apply_academic_style()
 
 st.title("Transferências de Recursos Públicos Federais")

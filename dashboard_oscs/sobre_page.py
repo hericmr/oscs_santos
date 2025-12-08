@@ -1,7 +1,7 @@
 
 import streamlit as st
 from dashboard_utils.styles import apply_academic_style
-from dashboard_utils.components import render_academic_header, render_data_source_card
+
 
 # Note: st.set_page_config should NOT be called here if it's called in the main app.py routing
 # But for individual page testing it might be useful.

@@ -1,10 +1,10 @@
 import streamlit as st
 import pandas as pd
-from utils.data_loader import load_data
-from utils.visualizations import plot_pie_chart, plot_bar_chart
+from dashboard_utils.data_loader import load_data
+from dashboard_utils.visualizations import plot_pie_chart, plot_bar_chart
 
 
-from utils.styles import apply_academic_style
+from dashboard_utils.styles import apply_academic_style
 apply_academic_style()
 
 st.title("Visão Geral")
@@ -16,7 +16,7 @@ if df.empty:
     st.error("Erro ao carregar os dados. Verifique se o arquivo data/oscs_santos.csv existe.")
 else:
     # --- Principais Resultados ---
-    from utils.components import render_key_results, render_employment_stats, render_kpis_section, render_table_6_3
+    from dashboard_utils.components import render_key_results, render_employment_stats, render_kpis_section, render_table_6_3
     render_key_results(df)
     # render_employment_stats(df) # Hidden due to missing RAIS data
         

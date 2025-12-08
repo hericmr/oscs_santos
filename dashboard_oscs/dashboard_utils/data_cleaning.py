@@ -18,14 +18,20 @@ def clean_data(df):
             df[col] = df[col].astype(str).str.replace(',', '.', regex=False)
             df[col] = pd.to_numeric(df[col], errors='coerce')
 
-    # 3. Processar Áreas de Atuação (One-Hot Decoding)
-    # Colunas que começam com 'Area_'
+    # 3. Processar Áreas de Atuação (One-Hot Decoding) and SubAreas
+    # Garantir que colunas binárias sejam numéricas
+    binary_cols = [c for c in df.columns if c.startswith('Area_') or c.startswith('SubArea_')]
+    for col in binary_cols:
+        # Converter para numérico, forçando erros para NaN
+        df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype(int)
+
+    # Colunas que começam com 'Area_' para a lógica de One-Hot
     area_cols = [c for c in df.columns if c.startswith('Area_')]
     
     def get_primary_area(row):
         active_areas = []
         for col in area_cols:
-            if row[col] == 1.0:
+            if row[col] == 1:
                 # Remover prefixo 'Area_' e substituir underscores por espaços
                 area_name = col.replace('Area_', '').replace('_', ' ')
                 active_areas.append(area_name)

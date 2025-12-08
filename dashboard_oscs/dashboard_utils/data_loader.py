@@ -78,7 +78,7 @@ def load_funding_data():
             ano_str = filename.replace('.csv', '').split('_')[-1]
             ano = int(ano_str)
             
-            df = load_csv_robust(filepath)
+            df = load_csv_robust(filepath, decimal='.')
             
             if not df.empty:
                 df['ano'] = ano
