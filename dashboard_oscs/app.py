@@ -1,19 +1,21 @@
 import streamlit as st
 
-st.set_page_config(
-    page_title="Dashboard OSCs Santos",
-    layout="wide"
-)
-from utils.styles import apply_academic_style
-apply_academic_style()
+# Configuração da Página Principal (Navigation)
+st.set_page_config(page_title="Dashboard OSCs Santos", layout="wide")
 
+# Definição das Páginas
+pg = st.navigation([
+    st.Page("sobre_page.py", title="Sobre", icon="ℹ️"),
+    st.Page("pages/1_Visao_Geral.py", title="Visão Geral", icon="📊"),
+    st.Page("pages/2_Areas_de_Atuacao.py", title="Áreas de Atuação", icon="🎯"),
+    st.Page("pages/3_Mapa_Geral.py", title="Mapa Geral", icon="🗺️"),
+    st.Page("pages/4_Situacao_Cadastral.py", title="Situação Cadastral", icon="📋"),
+    st.Page("pages/5_Tendencias.py", title="Tendências", icon="📈"),
+    st.Page("pages/6_Mapa_Evolucao.py", title="Mapa Evolução", icon="⏳"),
+    st.Page("pages/7_Repasses_Federais.py", title="Repasses Federais", icon="🏛️"),
+    st.Page("pages/7_Repasses_Prefeitura.py", title="Repasses Prefeitura", icon="🏙️"),
+    st.Page("pages/8_Correspondencia_Repasses.py", title="Correspondência Repasses", icon="🔗"),
+    st.Page("pages/9_Mapa_Repasses.py", title="Mapa Repasses", icon="📍")
+])
 
-
-st.title("Relatório preliminar das OSCIPs e OSs de Santos")
-
-st.markdown("""
-Este relatório apresenta um panorama inicial das OSCs em Santos, abrangendo informações desde 1930 até 2025. O levantamento, de caráter preliminar, consolida dados do Mapa das OSCs (IPEA) (https://mapaosc.ipea.gov.br/)e do sistema de prestação de contas da Prefeitura de Santos (https://egov.santos.sp.gov.br/dadosabertos/prestacao_contas), servindo como base estratégica para estudos futuros.
-
----
-**Use o menu lateral para navegar entre as páginas de análise.**
-""")
+pg.run()
