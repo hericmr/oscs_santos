@@ -55,7 +55,8 @@ if not df.empty and 'Area_Atuacao' in df.columns:
     for area_col, area_name in area_col_map.items():
         if area_col in df.columns:
             # Calcular Total da Área
-            count_area = df[area_col].sum()
+            # Garantir que é numérico para evitar crash
+            count_area = pd.to_numeric(df[area_col], errors='coerce').fillna(0).sum()
             if count_area == 0: continue # Skip areas with 0 results
 
             try:
@@ -122,22 +123,13 @@ if not df.empty and 'Area_Atuacao' in df.columns:
     
     st.divider()
 
-    # 1. Gráfico Geral das Áreas
-    st.subheader("Gráfico 1 - Distribuição das OSCs por área de atuação")
-    
-    # Vamos usar nosso plotly para ser consistente
-    fig_area = plot_bar_chart(df, 'Area_Atuacao', title="", orientation='v')
-    # Remove legend
-    fig_area.update_layout(showlegend=False)
-    st.plotly_chart(fig_area, use_container_width=True)
+
 
     st.divider()
 
-    # --- Tabela 5.1 (Original) - Natureza Jurídica ---
-    import pandas as pd
+    # --- Tabela: Natureza Jurídica ---
+    st.subheader("Capítulo 6: Natureza Jurídica das OSCs em Santos")
     
-    st.markdown("### Tabela 2 - Número de OSCs por natureza jurídica")
-
     # Mapeamento de Códigos de Natureza Jurídica (CONCLA/IBGE)
     # Fonte: https://concla.ibge.gov.br/estrutura/natjur-estrutura/natureza-juridica-2018.html
     nat_jur_map = {
@@ -147,91 +139,47 @@ if not df.empty and 'Area_Atuacao' in df.columns:
         3301: 'Organização Social (OS)',
         3130: 'Entidade Sindical',
         3105: 'Entidade de Mediação e Arbitragem',
-        # Adicionar outros se aparecerem nos dados
     }
-
+    
+    # Utilizar a coluna correta
     target_col = 'cd_natureza_juridica_osc'
     
-    # Fallback se a coluna padrão não existir, tenta procurar uma parecida
-    if target_col not in df.columns:
-         # Tenta achar alguma coluna que tenha 'natureza' no nome
-         possible_cols = [c for c in df.columns if 'natureza' in c.lower()]
-         if possible_cols:
-             target_col = possible_cols[0]
-
     if target_col in df.columns:
-        # Criar coluna descritiva se não existir
-        if 'natureza_juridica_desc' not in df.columns:
-            # Garantir que é numérico para usar o map (removendo traços se for string)
-            def clean_code(x):
-                try:
-                    s = str(x).replace('-', '').replace('.', '')
-                    return int(s)
-                except:
-                    return 0
+        # Prepara dados
+        # Converter para numérico para o map funcionar
+        def safe_int(x):
+            try: return int(float(x))
+            except: return 0
             
-            df['temp_nat_code'] = df[target_col].apply(clean_code)
-            df['Natureza Jurídica Desc'] = df['temp_nat_code'].map(nat_jur_map).fillna(df[target_col].astype(str))
-        else:
-            df['Natureza Jurídica Desc'] = df['natureza_juridica_desc']
-
-        # Calcular estatísticas
-        total_geral = len(df)
-        df_nat = df['Natureza Jurídica Desc'].value_counts().reset_index()
-        df_nat.columns = ['Natureza Jurídica', 'Total de OSCs']
+        df['temp_nat_code'] = df[target_col].apply(safe_int)
+        df['Natureza Jurídica'] = df['temp_nat_code'].map(nat_jur_map).fillna(df[target_col].astype(str))
         
-        # Calcular Porcentagens
-        df_nat['(%) Em relação ao total'] = (df_nat['Total de OSCs'] / total_geral * 100).round(1)
-        df_nat['(%) Em relação ao grupo'] = "100.0"
-
-        # Adicionar linha de Total
-        row_total = pd.DataFrame({
-            'Natureza Jurídica': ['<b>Total Geral</b>'],
-            'Total de OSCs': [total_geral],
-            '(%) Em relação ao total': [100.0],
-            '(%) Em relação ao grupo': ['-']
-        })
+        # Agrupar e contar
+        df_nat = df['Natureza Jurídica'].value_counts().reset_index()
+        df_nat.columns = ['Natureza Jurídica', 'Quantidade']
         
-        df_display = pd.concat([df_nat, row_total], ignore_index=True)
-
-        # Formatação
-        df_display['Total de OSCs'] = df_display['Total de OSCs'].apply(lambda x: f"{x:,.0f}".replace(",", "."))
-        df_display['(%) Em relação ao total'] = df_display['(%) Em relação ao total'].astype(str)
+        # Calcular Porcentagem
+        total_nat = df_nat['Quantidade'].sum()
+        df_nat['(%)'] = (df_nat['Quantidade'] / total_nat * 100)
         
-        # HTML Styling
-        html = df_display.to_html(index=False, escape=False, classes='ipea-table')
+        # Formatar
+        df_nat['(%)'] = df_nat['(%)'].apply(lambda x: f"{x:.2f}%")
         
-        st.markdown("""
-        <style>
-            .ipea-table {
-                width: 100%;
-                border-collapse: collapse;
-                font-family: 'Times New Roman', Times, serif;
-                font-size: 14px;
-                color: black;
-            }
-            .ipea-table th {
-                border-top: 2px solid black;
-                border-bottom: 2px solid black;
-                text-align: left;
-                padding: 8px;
-                font-weight: bold;
-            }
-            .ipea-table td {
-                border-bottom: 1px solid #ddd;
-                padding: 8px;
-            }
-            .ipea-table tr:last-child td {
-                border-bottom: 2px solid black;
-                font-weight: bold;
-            }
-        </style>
-        """, unsafe_allow_html=True)
+        # Adicionar linha TOTAL
+        row_total = pd.DataFrame([{
+            'Natureza Jurídica': 'TOTAL',
+            'Quantidade': total_nat,
+            '(%)': '100.00%'
+        }])
         
-        st.write(html, unsafe_allow_html=True)
-        st.caption("Fonte: Mapa das OSCs (IPEA). Elaboração própria.")
+        df_display_nat = pd.concat([df_nat, row_total], ignore_index=True)
+         
+        # Exibir Tabela
+        st.table(df_display_nat)
+        
+        st.caption("Fonte: Mapa das Organizações da Sociedade Civil (Recorte Santos).")
     else:
-        st.warning(f"Coluna de Natureza Jurídica não encontrada. Colunas disponíveis: {list(df.columns)}")
+        st.error(f"Coluna '{target_col}' não encontrada para gerar a tabela de Natureza Jurídica.")
 
     st.divider()
 
