@@ -126,22 +126,31 @@ else:
         # Calculate Percentages Row-wise
         pivot_pct = pivot.div(pivot['Total'], axis=0).mul(100)
         
-        # Format as String with "Count (Pct%)"
-        pivot_display = pivot.copy().astype(object)
-        for col in pivot.columns:
-             for idx in pivot.index:
-                 count = pivot.at[idx, col]
-                 pct = pivot_pct.at[idx, col]
-                 pivot_display.at[idx, col] = f"{count} ({pct:.1f}%)"
+        # Interleave columns: Percent then Count
+        final_cols = []
+        cols_order = sorted([c for c in pivot.columns if c != 'Total']) + ['Total']
+        
+        pivot_display = pd.DataFrame(index=pivot.index)
+        
+        for col in cols_order:
+            # Percent Column
+            col_pct_name = f"{col} (%)"
+            pivot_display[col_pct_name] = pivot_pct[col].apply(lambda x: f"{x:.1f}%")
+            
+            # Count Column
+            col_count_name = f"{col} (N)"
+            pivot_display[col_count_name] = pivot[col]
             
         # Reset Index to make Bairro a column
         pivot_display = pivot_display.reset_index()
         
         # Filter out random/bad extractions if list is too long (Optional, but good for UX)
         # For now, sorting by Total Count (descending) to show most relevant neighborhoods first
-        # We need the original counts to sort
-        pivot_counts = pivot.reset_index()
-        valid_bairros = pivot_counts.sort_values('Total', ascending=False)['Bairro'].tolist()
+        # We use the Total (N) column for sorting
+        if 'Total (N)' in pivot_display.columns:
+            valid_bairros = pivot_display.sort_values('Total (N)', ascending=False)['Bairro'].tolist()
+        else:
+            valid_bairros = pivot_display['Bairro'].tolist()
         
         # Remove 'Total' row from sorting and put it at the end or top
         if 'Total' in valid_bairros:
