@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Configuração da Página Principal (Navigation)
-st.set_page_config(page_title="Dashboard OSCs Santos", layout="wide")
+st.set_page_config(page_title="Relatório OSCs Santos", layout="wide")
 
 # Definição das Páginas
 pg = st.navigation([
