@@ -80,41 +80,82 @@ else:
         else:
             st.warning("Nenhum registro encontrado para esta métrica.")
 
-    # --- Tabela 6.3 (IPEA) - Natureza Jurídica: Santos (Distribuição %) ---
+    # --- Tabela 6.3 (IPEA) - Natureza Jurídica: Santos (Distribuição por Bairro) ---
     st.divider()
-    st.markdown("### Tabela 6.3 - OSCs por natureza jurídica: Santos (Distribuição %)")
+    st.markdown("### Tabela 6.3 - OSCs por natureza jurídica segundo o bairro (Distribuição %)")
     
-    # 1. Calcular contagens baseadas nos códigos
-    # Mapping codes: 3999: Associação, 3069: Fundação, 3220: Religiosa, 3301: OS
-    total_oscs_gen = len(df)
-    
-    if total_oscs_gen > 0:
-        count_assoc = len(df[df['cd_natureza_juridica_osc'] == 3999]) if 'cd_natureza_juridica_osc' in df.columns else 0
-        count_fund = len(df[df['cd_natureza_juridica_osc'] == 3069]) if 'cd_natureza_juridica_osc' in df.columns else 0
-        count_relig = len(df[df['cd_natureza_juridica_osc'] == 3220]) if 'cd_natureza_juridica_osc' in df.columns else 0
-        count_os = len(df[df['cd_natureza_juridica_osc'] == 3301]) if 'cd_natureza_juridica_osc' in df.columns else 0
+    # Função para extrair Bairro (Reutilizada de Mapa_Repasses)
+    def extract_bairro(addr):
+        if not isinstance(addr, str): return "Não Identificado"
+        parts = addr.split(',')
+        try:
+            # Procurar 'Santos'
+            sanitized_parts = [p.strip().upper() for p in parts]
+            if 'SANTOS' in sanitized_parts:
+                idx = sanitized_parts.index('SANTOS')
+                if idx > 0:
+                    possible_bairro = parts[idx-1].strip()
+                    if len(possible_bairro) < 3 and idx > 1:
+                         return parts[idx-2].strip()
+                    return possible_bairro.title() # Capitalize
+            if len(parts) >= 4:
+                return parts[-3].strip().title()
+        except:
+            pass
+        return "Não Identificado"
+
+    if 'Bairro' not in df.columns and 'tx_endereco_completo' in df.columns:
+        df['Bairro'] = df['tx_endereco_completo'].apply(extract_bairro)
         
-        # Calcular porcentagens
-        pct_assoc = (count_assoc / total_oscs_gen * 100)
-        pct_fund = (count_fund / total_oscs_gen * 100)
-        pct_relig = (count_relig / total_oscs_gen * 100)
-        pct_os = (count_os / total_oscs_gen * 100)
+    if 'Bairro' in df.columns and 'cd_natureza_juridica_osc' in df.columns:
+        # Filter out invalid neighborhoods if needed, or keep all
+        df_bairro = df.copy()
         
-        # Criar DataFrame Wide (Horizontal)
-        table_63_data = {
-            'Município': ['Santos'],
-            'Associação Privada': [f"{pct_assoc:.1f}%"],
-            'Fundação Privada': [f"{pct_fund:.1f}%"],
-            'Org. Religiosa': [f"{pct_relig:.1f}%"],
-            'Org. Social (OS)': [f"{pct_os:.1f}%"],
-            'Total': ["100.0%"]
+        # Mapping Names
+        nat_jur_labels = {
+            3999: "Associação Privada",
+            3069: "Fundação Privada",
+            3220: "Org. Religiosa",
+            3301: "Org. Social (OS)"
         }
+        df_bairro['Natureza_Label'] = df_bairro['cd_natureza_juridica_osc'].map(nat_jur_labels).fillna("Outros")
         
-        df_table_63 = pd.DataFrame(table_63_data)
+        # Pivot Table: Index=Bairro, Columns=Natureza, Values=Count
+        pivot = pd.crosstab(df_bairro['Bairro'], df_bairro['Natureza_Label'], margins=True, margins_name="Total")
         
+        # Calculate Percentages Row-wise
+        pivot_pct = pivot.div(pivot['Total'], axis=0).mul(100)
+        
+        # Format as String with %
+        for col in pivot_pct.columns:
+            pivot_pct[col] = pivot_pct[col].apply(lambda x: f"{x:.1f}%")
+            
+        # Reset Index to make Bairro a column
+        pivot_display = pivot_pct.reset_index()
+        
+        # Filter out random/bad extractions if list is too long (Optional, but good for UX)
+        # For now, sorting by Total Count (descending) to show most relevant neighborhoods first
+        # We need the original counts to sort
+        pivot_counts = pivot.reset_index()
+        valid_bairros = pivot_counts.sort_values('Total', ascending=False)['Bairro'].tolist()
+        
+        # Remove 'Total' row from sorting and put it at the end or top
+        if 'Total' in valid_bairros:
+            valid_bairros.remove('Total')
+            valid_bairros = ['Total'] + valid_bairros # Total first
+            
+        # Reorder DataFrame
+        pivot_display['Bairro'] = pd.Categorical(pivot_display['Bairro'], categories=valid_bairros, ordered=True)
+        pivot_display = pivot_display.sort_values('Bairro')
+        
+        # Rename Index Column for display
+        pivot_display = pivot_display.rename(columns={'Bairro': 'Bairro / Localidade'})
+
         # Exibir Tabela
-        st.dataframe(df_table_63, use_container_width=True, hide_index=True)
-        st.caption("Fonte: Mapa das OSCs (Recorte Santos).")
+        st.dataframe(pivot_display, use_container_width=True, hide_index=True)
+        st.caption("Fonte: Mapa das OSCs (Recorte Santos) - Bairros inferidos do endereço.")
+    else:
+        st.warning("Dados de endereço insuficientes para extrair bairros.")
 
     st.divider()
 
