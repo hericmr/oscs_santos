@@ -13,20 +13,20 @@ from dashboard_utils.visualizations import apply_academic_chart_style
 from dashboard_utils.data_loader import load_csv_robust
 
 # Page Configuration
-st.set_page_config(page_title="Correspondencia de Repasses", page_icon=None, layout="wide")
+st.set_page_config(page_title="Correspondencia de Transferências", page_icon=None, layout="wide")
 
 # Apply Styles
 apply_academic_style()
 
 # Title
-st.markdown("<h1>Correspondência de Repasses e Recursos</h1>", unsafe_allow_html=True)
+st.markdown("<h1>Correspondência de Transferências e Recursos</h1>", unsafe_allow_html=True)
 st.markdown("""
 <p style="text-align: justify;">
 Esta página descreve o processo de vinculação entre os dados do Mapa das OSCs e os arquivos de prestação de contas da Prefeitura de Santos. 
-Como o Mapa das OSCs não informa os repasses municipais, foi necessário cruzar as bases para completar o panorama.
-Os dados abrangem repasses de 2016 a 2025.
+Como o Mapa das OSCs não informa as transferências municipais, foi necessário cruzar as bases para completar o panorama.
+Os dados abrangem transferências de 2016 a 2025.
 <br><br>
-No cruzamento, alguns repasses apareceram para entidades não encontradas no Mapa das OSCs, principalmente por divergências de cadastro ou ausência da organização na plataforma.
+No cruzamento, algumas transferências apareceram para entidades não encontradas no Mapa das OSCs, principalmente por divergências de cadastro ou ausência da organização na plataforma.
 </p>
 <hr>
 """, unsafe_allow_html=True)

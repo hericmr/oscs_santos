@@ -7,12 +7,12 @@ from dashboard_utils.visualizations import plot_map, apply_academic_chart_style
 from dashboard_utils.styles import apply_academic_style
 import os
 
-st.set_page_config(page_title="Geografia dos Repasses", layout="wide")
+st.set_page_config(page_title="Evolução Quantitativa Recursos", layout="wide")
 apply_academic_style()
 
-st.title("Distribuição Geográfica dos Repasses")
+st.title("Mapa 3 - Evolução Quantitativa das Transferências")
 st.markdown("""
-Esta página apresenta as representações gráficas resultantes do cruzamento entre a base de dados do Mapa das OSCs (recorte: Santos) e os registros de prestação de contas da Prefeitura de Santos
+Esta página apresenta a evolução quantitativa das transferências e representações gráficas resultantes do cruzamento entre a base de dados do Mapa das OSCs (recorte: Santos) e os registros de prestação de contas da Prefeitura de Santos
 """)
 
 # --- Carregar Dados ---
@@ -147,7 +147,7 @@ df_map_data = df_year.groupby(group_cols).agg({
 df_map_data.rename(columns={
     'match_name': 'tx_nome_fantasia_osc', # Para plot_map usar como titulo do popup
     'valor_repasse_float': 'Valor Total Recebido',
-    'id': 'Qtd. Repasses',
+    'id': 'Qtd. Transferências',
     'cd_natureza_juridica': 'cd_natureza_juridica_osc', # Para cor (3301 = OS)
     'natureza_juridica_desc': 'Tipo Jurídico',
     'beneficiaria_nome': 'Beneficiária', # Nome que irá no tooltip hover
@@ -171,7 +171,7 @@ if not df_map_data.empty:
 col1, col2 = st.columns([3, 1])
 
 with col1:
-    st.markdown(f"### Mapa 3 - Distribuição dos Repasses ({start_year} - {end_year})")
+    st.markdown(f"### Mapa 3 - Distribuição das Transferências ({start_year} - {end_year})")
     
     if not df_map_data.empty:
         # Colunas para tooltip enriquecido (Popup)
@@ -181,7 +181,7 @@ with col1:
             'situacao_cadastral': 'Situação',
             'dt_fundacao_osc': 'Fundação',
             'Secretarias': 'Resp. Repasse',
-            'Qtd. Repasses': 'Qtd. Repasses',
+            'Qtd. Transferências': 'Qtd. Transferências',
             'Valor Formatado': 'Valor Total'
         }
         
@@ -189,7 +189,7 @@ with col1:
         m = plot_map(df_map_data, tooltip_cols=tooltip, hover_name_col='Beneficiária')
         st_folium(m, width="100%", height=600)
     else:
-        st.info(f"Nenhum repasse mapeado com coordenadas para o período {start_year}-{end_year}.")
+        st.info(f"Nenhuma transferência mapeada com coordenadas para o período {start_year}-{end_year}.")
 
 with col2:
     st.markdown("### Resumo do Período")
@@ -198,7 +198,7 @@ with col2:
     total_val = df_map_data['Valor Total Recebido'].sum()
     qtd_oscs = df_map_data['match_cnpj_clean'].nunique()
     
-    st.metric("Total Repassado", f"R$ {total_val:,.2f}")
+    st.metric("Total Transferido", f"R$ {total_val:,.2f}")
     st.metric("OSCs Beneficiadas", qtd_oscs)
     
     
@@ -206,12 +206,12 @@ with col2:
 
 # --- Área Expansível e Modular (Detalhes) ---
 st.markdown("---")
-st.subheader(f"Detalhamento dos Repasses ({start_year} - {end_year})")
+st.subheader(f"Detalhamento das Transferências ({start_year} - {end_year})")
 
 with st.expander("Ver Tabela Detalhada", expanded=False):
     if not df_map_data.empty:
         st.dataframe(
-            df_map_data[['tx_nome_fantasia_osc', 'Tipo Jurídico', 'Qtd. Repasses', 'Valor Formatado', 'latitude', 'longitude']],
+            df_map_data[['tx_nome_fantasia_osc', 'Tipo Jurídico', 'Qtd. Transferências', 'Valor Formatado', 'latitude', 'longitude']],
             use_container_width=True,
             hide_index=True
         )

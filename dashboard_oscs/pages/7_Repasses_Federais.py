@@ -11,7 +11,7 @@ from dashboard_utils.visualizations import apply_academic_chart_style
 from dashboard_utils.styles import apply_academic_style
 apply_academic_style()
 
-st.title("Repasses Federais")
+st.title("Transferências de Recursos Públicos Federais")
 
 # --- Helper Functions ---
 @st.cache_data
@@ -117,7 +117,7 @@ def load_resources_data():
 # --- Main Logic ---
 df_ipea, df_mj, df_contas = load_resources_data()
 
-tab1, tab2 = st.tabs(["Repasses Federais (IPEA)", "Fontes de Recursos (MJ)"])
+tab1, tab2 = st.tabs(["Transferências Federais (IPEA)", "Fontes de Recursos (MJ)"])
 
 with tab1:
     # ... (content of tab 1) ...
@@ -154,7 +154,7 @@ with tab1:
         valid_cols = [c for c in display_cols if c in df_ipea.columns]
         st.dataframe(df_ipea[valid_cols].sort_values(by='dt_ano_recursos_osc', ascending=False) if 'dt_ano_recursos_osc' in valid_cols else df_ipea[valid_cols], use_container_width=True)
     else:
-        st.info("Não foram encontrados dados de repasses federais vinculados às OSCs de Santos nesta base.")
+        st.info("Não foram encontrados dados de transferências federais vinculados às OSCs de Santos nesta base.")
 
 with tab2:
     st.header("Origem dos Recursos (Percentual)")
