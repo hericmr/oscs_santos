@@ -155,6 +155,15 @@ df_map_data.rename(columns={
 # Formatar valor para tooltip
 df_map_data['Valor Formatado'] = df_map_data['Valor Total Recebido'].apply(lambda x: f"R$ {x:,.2f}")
 
+# --- Filtro de Pesquisa (Destaque no Mapa) ---
+if not df_map_data.empty:
+    osc_options = sorted(df_map_data['tx_nome_fantasia_osc'].astype(str).unique())
+    selected_osc = st.selectbox("Pesquisar OSC por Nome (Filtrar Mapa)", ["Todas"] + osc_options)
+
+    if selected_osc != "Todas":
+        df_map_data = df_map_data[df_map_data['tx_nome_fantasia_osc'] == selected_osc]
+        st.info(f"Exibindo destaque para: **{selected_osc}**")
+
 # --- Renderização ---
 
 col1, col2 = st.columns([3, 1])
@@ -189,16 +198,8 @@ with col2:
     st.metric("Total Repassado", f"R$ {total_val:,.2f}")
     st.metric("OSCs Beneficiadas", qtd_oscs)
     
-    # Breve distribuição OS vs OSCIP
-    if not df_map_data.empty:
-        # Assumindo 3301 = OS
-        df_os = df_map_data[df_map_data['cd_natureza_juridica_osc'] == 3301]
-        df_outros = df_map_data[df_map_data['cd_natureza_juridica_osc'] != 3301]
-        
-        st.markdown("---")
-        st.markdown("**Por Tipo:**")
-        st.write(f"**OSs ({len(df_os)}):** R$ {df_os['Valor Total Recebido'].sum():,.2f}")
-        st.write(f"**Outros ({len(df_outros)}):** R$ {df_outros['Valor Total Recebido'].sum():,.2f}")
+    
+    # Detalhe removido conforme solicitação (Por Tipo)
 
 # --- Área Expansível e Modular (Detalhes) ---
 st.markdown("---")
