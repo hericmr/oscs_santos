@@ -11,11 +11,15 @@ parent_dir = os.path.dirname(current_dir)
 if parent_dir not in sys.path:
     sys.path.append(parent_dir)
 
-from utils.data_loader import load_funding_data
+from dashboard_utils.data_loader import load_data, load_csv_robust
+from dashboard_utils.visualizations import plot_bar_chart, plot_pie_chart, apply_academic_chart_style
+from dashboard_utils.styles import apply_academic_style
 
 st.set_page_config(layout="wide", page_title="Repasses da Prefeitura")
 
 st.title("Repasses da Prefeitura para OSs e OSCs")
+
+apply_academic_style("Repasses da Prefeitura para OSs e OSCs")
 
 st.markdown("""
 Esta página apresenta os dados de repasses financeiros da Prefeitura de Santos para as Organizações da Sociedade Civil (OSCs), 

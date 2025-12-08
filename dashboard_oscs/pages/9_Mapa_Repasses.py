@@ -2,9 +2,9 @@ import streamlit as st
 import pandas as pd
 from streamlit_folium import st_folium
 import plotly.express as px
-from utils.data_loader import load_data, load_csv_robust
-from utils.visualizations import plot_map, apply_academic_chart_style
-from utils.styles import apply_academic_style
+from dashboard_utils.data_loader import load_data, load_csv_robust
+from dashboard_utils.visualizations import plot_map, apply_academic_chart_style
+from dashboard_utils.styles import apply_academic_style
 import os
 
 st.set_page_config(page_title="Geografia dos Repasses", layout="wide")

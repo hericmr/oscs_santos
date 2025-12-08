@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 import os
-from utils.data_cleaning import clean_data
+from dashboard_utils.data_cleaning import clean_data
 
 
 def load_csv_robust(filepath, decimal=','):

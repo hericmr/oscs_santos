@@ -8,9 +8,9 @@ import sys
 # Add parent directory to path to allow importing utils
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from utils.styles import apply_academic_style
-from utils.visualizations import apply_academic_chart_style
-from utils.data_loader import load_csv_robust
+from dashboard_utils.styles import apply_academic_style
+from dashboard_utils.visualizations import apply_academic_chart_style
+from dashboard_utils.data_loader import load_csv_robust
 
 # Page Configuration
 st.set_page_config(page_title="Correspondencia de Repasses", page_icon=None, layout="wide")

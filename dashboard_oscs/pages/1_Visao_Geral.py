@@ -1,10 +1,10 @@
 import streamlit as st
 import pandas as pd
-from utils.data_loader import load_data
-from utils.visualizations import plot_pie_chart, plot_bar_chart
+from dashboard_utils.data_loader import load_data
+from dashboard_utils.visualizations import plot_metric_card
+from dashboard_utils.styles import apply_academic_style
 
 st.set_page_config(page_title="Visão Geral", layout="wide")
-from utils.styles import apply_academic_style
 apply_academic_style()
 
 st.title("Visão Geral")

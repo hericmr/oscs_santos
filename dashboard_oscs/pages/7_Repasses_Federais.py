@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt # Just in case, though we prefer Plotly for the 
 
 # Set page config
 st.set_page_config(page_title="Recursos", layout="wide")
-from utils.styles import apply_academic_style
-from utils.visualizations import apply_academic_chart_style
-from utils.data_loader import load_csv_robust
+from dashboard_utils.data_loader import load_data, load_csv_robust
+from dashboard_utils.visualizations import apply_academic_chart_style
+from dashboard_utils.styles import apply_academic_style
 apply_academic_style()
 
 st.title("Repasses Federais")

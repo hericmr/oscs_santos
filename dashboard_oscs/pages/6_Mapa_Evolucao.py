@@ -1,10 +1,8 @@
 import streamlit as st
 from streamlit_folium import st_folium
-from utils.data_loader import load_data
-from utils.visualizations import plot_map
-
-st.set_page_config(page_title="Evolução Temporal", layout="wide")
-from utils.styles import apply_academic_style
+from dashboard_utils.data_loader import load_data
+from dashboard_utils.visualizations import plot_map_evolution, apply_academic_chart_style
+from dashboard_utils.styles import apply_academic_style
 apply_academic_style()
 
 st.title("Mapa 2 - Evolução Temporal no Mapa")
