@@ -23,6 +23,76 @@ if not df.empty and 'Area_Atuacao' in df.columns:
     fig_area.update_layout(showlegend=True, legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
     st.plotly_chart(fig_area, use_container_width=True)
 
+    # --- Tabela 5.1 (Adaptada) - Natureza Jurídica ---
+    import pandas as pd
+    
+    st.markdown("### Tabela de Natureza Jurídica (Padrão IPEA)")
+
+    if 'natureza_juridica_desc' in df.columns:
+        # Calcular estatísticas
+        total_geral = len(df)
+        df_nat = df['natureza_juridica_desc'].value_counts().reset_index()
+        df_nat.columns = ['Natureza Jurídica', 'Total de OSCs']
+        
+        # Calcular Porcentagens
+        df_nat['(%) Em relação ao total'] = (df_nat['Total de OSCs'] / total_geral * 100).round(1)
+        
+        # Como não temos uma categoria "pai" hierárquica clara nos dados planos (ex: AssociaçãoPrivada vs AssociaçãoPublica),
+        # assumiremos que cada linha é um grupo em si, então % do grupo é 100% ou deixamos vazio.
+        # Seguindo a instrução "mantenha 100% ou deixe em branco" caso não haja subcategorias.
+        df_nat['(%) Em relação ao grupo'] = "100.0"
+
+        # Adicionar linha de Total
+        row_total = pd.DataFrame({
+            'Natureza Jurídica': ['<b>Total Geral</b>'],
+            'Total de OSCs': [total_geral],
+            '(%) Em relação ao total': [100.0],
+            '(%) Em relação ao grupo': ['-']
+        })
+        
+        df_display = pd.concat([df_nat, row_total], ignore_index=True)
+
+        # Formatação de milhares
+        df_display['Total de OSCs'] = df_display['Total de OSCs'].apply(lambda x: f"{x:,.0f}".replace(",", "."))
+        df_display['(%) Em relação ao total'] = df_display['(%) Em relação ao total'].astype(str)
+        
+        # HTML Styling para "Padrão Acadêmico/IPEA"
+        # Usando HTML simples para controlar bordas e negrito
+        html = df_display.to_html(index=False, escape=False, classes='ipea-table')
+        
+        # Injetar CSS específico para essa tabela
+        st.markdown("""
+        <style>
+            .ipea-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-family: 'Times New Roman', Times, serif;
+                font-size: 14px;
+                color: black;
+            }
+            .ipea-table th {
+                border-top: 2px solid black;
+                border-bottom: 2px solid black;
+                text-align: left;
+                padding: 8px;
+                font-weight: bold;
+            }
+            .ipea-table td {
+                border-bottom: 1px solid #ddd;
+                padding: 8px;
+            }
+            .ipea-table tr:last-child td {
+                border-bottom: 2px solid black;
+                font-weight: bold;
+            }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        st.write(html, unsafe_allow_html=True)
+        st.caption("Fonte: Mapa das OSCs (IPEA). Elaboração própria.")
+    else:
+        st.warning("Coluna 'natureza_juridica_desc' não encontrada nos dados.")
+
     st.divider()
 
     # 2. Drilldown - Subáreas

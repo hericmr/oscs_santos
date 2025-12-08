@@ -12,8 +12,7 @@ apply_academic_style()
 
 st.title("Distribuição Geográfica dos Repasses")
 st.markdown("""
-Esta etapa apresenta a **evolução temporal e geográfica** das Organizações da Sociedade Civil (OSC) que receberam repasses financeiros.
-Utilize a linha do tempo abaixo para filtrar os dados por ano e visualizar a distribuição das organizações no território.
+Esta página apresenta as representações gráficas resultantes do cruzamento entre a base de dados do Mapa das OSCs (recorte: Santos) e os registros de prestação de contas da Prefeitura de Santos
 """)
 
 # --- Carregar Dados ---
