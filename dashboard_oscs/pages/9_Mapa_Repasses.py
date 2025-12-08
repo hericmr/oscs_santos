@@ -174,7 +174,7 @@ if not df_map_data.empty:
 col1, col2 = st.columns([3, 1])
 
 with col1:
-    st.markdown(f"### Mapa de Repasses - {start_year} a {end_year}")
+    st.markdown(f"### Mapa 3 - Distribuição dos Repasses ({start_year} - {end_year})")
     
     if not df_map_data.empty:
         # Colunas para tooltip enriquecido (Popup)
@@ -229,7 +229,7 @@ with st.expander("Análise Gráfica (Top 10 Beneficiárias)", expanded=True):
             x='Valor Total Recebido',
             y='tx_nome_fantasia_osc',
             orientation='h',
-            title=f"Top 10 Maiores Beneficiárias ({start_year}-{end_year})",
+            title=f"Gráfico 1 - Top 10 Maiores Beneficiárias ({start_year}-{end_year})",
             text_auto='.2s'
         )
         fig = apply_academic_chart_style(fig)

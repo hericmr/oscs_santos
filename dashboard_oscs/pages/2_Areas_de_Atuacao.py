@@ -12,21 +12,11 @@ st.title("Áreas de Atuação")
 df = load_data()
 
 if not df.empty and 'Area_Atuacao' in df.columns:
-    # 1. Gráfico Geral das Áreas
-    st.subheader("Distribuição por Área de Atuação Principal")
-    
-    # Contagem
-    # area_counts = df['Area_Atuacao'].value_counts()
-    # st.bar_chart(area_counts) 
-    
-    # Vamos usar nosso plotly para ser consistente
-    fig_area = plot_bar_chart(df, 'Area_Atuacao', title="Contagem de OSCs por Área", orientation='v')
-    # Remove legend
-    fig_area.update_layout(showlegend=False)
-    st.plotly_chart(fig_area, use_container_width=True)
+
 
     # --- Tabela: Áreas e Subáreas de Atuação (IPEA) ---
-    st.markdown("### Área de Atuação das OSCs")
+    # --- Tabela: Áreas e Subáreas de Atuação (IPEA) ---
+    st.markdown("### Tabela 1 - Número de OSCs, segundo a finalidade de atuação")
     st.markdown("Esta seção trata sobre as áreas de atuação das Organizações da Sociedade Civil - OSCs.")
 
     # Lógica de Agregação Hierárquica
@@ -132,10 +122,21 @@ if not df.empty and 'Area_Atuacao' in df.columns:
     
     st.divider()
 
+    # 1. Gráfico Geral das Áreas
+    st.subheader("Gráfico 1 - Distribuição das OSCs por área de atuação")
+    
+    # Vamos usar nosso plotly para ser consistente
+    fig_area = plot_bar_chart(df, 'Area_Atuacao', title="", orientation='v')
+    # Remove legend
+    fig_area.update_layout(showlegend=False)
+    st.plotly_chart(fig_area, use_container_width=True)
+
+    st.divider()
+
     # --- Tabela 5.1 (Original) - Natureza Jurídica ---
     import pandas as pd
     
-    st.markdown("### Tabela de Natureza Jurídica (Padrão IPEA)")
+    st.markdown("### Tabela 2 - Número de OSCs por natureza jurídica")
 
     # Mapeamento de Códigos de Natureza Jurídica (CONCLA/IBGE)
     # Fonte: https://concla.ibge.gov.br/estrutura/natjur-estrutura/natureza-juridica-2018.html

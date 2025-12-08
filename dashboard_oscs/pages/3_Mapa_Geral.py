@@ -7,7 +7,7 @@ st.set_page_config(page_title="Geolocalização", layout="wide")
 from utils.styles import apply_academic_style
 apply_academic_style()
 
-st.title("Distribuição geográfica das OSs e OSCIPs em Santos")
+st.title("Mapa 1 - Distribuição geográfica das OSs e OSCIPs em Santos")
 
 df = load_data()
 

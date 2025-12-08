@@ -7,7 +7,7 @@ st.set_page_config(page_title="Evolução Temporal", layout="wide")
 from utils.styles import apply_academic_style
 apply_academic_style()
 
-st.title("Evolução Temporal no Mapa")
+st.title("Mapa 2 - Evolução Temporal no Mapa")
 
 st.markdown("""
 Mova a linha do tempo abaixo para visualizar o surgimento das OSCs em Santos ao longo dos anos.
