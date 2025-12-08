@@ -83,6 +83,7 @@ else:
     # --- Tabela 6.3 (IPEA) - Natureza Jurídica: Santos (Distribuição por Bairro) ---
     st.divider()
     st.markdown("### Tabela 6.3 - OSCs por natureza jurídica segundo o bairro (Distribuição %)")
+    st.markdown("Esta seção apresenta dados sobre a natureza jurídica das Organizações da Sociedade Civil - OSCs. Foram usadas para calcular o total de OSCs da cidade de Santos as naturezas associações privadas, fundações privadas e organizações religiosas pessoas de direito privado sem fins lucrativos previstas no Código Civil – Lei n o 10.406/2002, bem como as organizações sociais assim qualificadas por Lei Federal, Estadual, Distrital ou Municipal.")
     
     # Função para extrair Bairro (Reutilizada de Mapa_Repasses)
     def extract_bairro(addr):
