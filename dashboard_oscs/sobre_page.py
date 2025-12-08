@@ -1,13 +1,12 @@
 import streamlit as st
-
-st.set_page_config(
-    page_title="Dashboard OSCs Santos",
-    layout="wide"
-)
 from utils.styles import apply_academic_style
+
+# Note: st.set_page_config should NOT be called here if it's called in the main app.py routing
+# But for individual page testing it might be useful.
+# However, within st.navigation, page config is usually handled by the main app or the first page load.
+# Let's keep the content focus.
+
 apply_academic_style()
-
-
 
 st.title("Relatório preliminar das OSCIPs e OSs de Santos")
 

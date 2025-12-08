@@ -38,8 +38,8 @@ Para garantir a validade científica e a reprodutibilidade da pesquisa, este pro
 
 ### 1. Definição das Fontes (Origem)
 O projeto cruza duas bases de dados distintas para gerar as informações do dashboard:
-- **Base Transacional**: Dados de Prestação de Contas da Prefeitura de Santos (Portal de Dados Abertos) - Foco em valores repassados, datas das transações e secretarias responsáveis.
-- **Base Cadastral**: Mapa das OSCs (IPEA) - Foco na caracterização da entidade, incluindo natureza jurídica, área de atuação oficial e data de fundação.
+- **Base 2**: Dados de Prestação de Contas da Prefeitura de Santos (Portal de Dados Abertos) - Foco em valores repassados, datas das transações e secretarias responsáveis.
+- **Base 1**: Mapa das OSCs (IPEA) - Foco na caracterização da entidade, incluindo natureza jurídica, área de atuação oficial e data de fundação.
 
 ### 2. Processo de Higienização (Data Cleaning)
 A integridade dos dados é assegurada pelas seguintes etapas de normalização:

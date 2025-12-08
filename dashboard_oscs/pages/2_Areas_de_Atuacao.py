@@ -28,18 +28,50 @@ if not df.empty and 'Area_Atuacao' in df.columns:
     
     st.markdown("### Tabela de Natureza Jurídica (Padrão IPEA)")
 
-    if 'natureza_juridica_desc' in df.columns:
+    # Mapeamento de Códigos de Natureza Jurídica (CONCLA/IBGE)
+    # Fonte: https://concla.ibge.gov.br/estrutura/natjur-estrutura/natureza-juridica-2018.html
+    nat_jur_map = {
+        3999: 'Associação Privada',
+        3069: 'Fundação Privada',
+        3220: 'Organização Religiosa',
+        3301: 'Organização Social (OS)',
+        3130: 'Entidade Sindical',
+        3105: 'Entidade de Mediação e Arbitragem',
+        # Adicionar outros se aparecerem nos dados
+    }
+
+    target_col = 'cd_natureza_juridica_osc'
+    
+    # Fallback se a coluna padrão não existir, tenta procurar uma parecida
+    if target_col not in df.columns:
+         # Tenta achar alguma coluna que tenha 'natureza' no nome
+         possible_cols = [c for c in df.columns if 'natureza' in c.lower()]
+         if possible_cols:
+             target_col = possible_cols[0]
+
+    if target_col in df.columns:
+        # Criar coluna descritiva se não existir
+        if 'natureza_juridica_desc' not in df.columns:
+            # Garantir que é numérico para usar o map (removendo traços se for string)
+            def clean_code(x):
+                try:
+                    s = str(x).replace('-', '').replace('.', '')
+                    return int(s)
+                except:
+                    return 0
+            
+            df['temp_nat_code'] = df[target_col].apply(clean_code)
+            df['Natureza Jurídica Desc'] = df['temp_nat_code'].map(nat_jur_map).fillna(df[target_col].astype(str))
+        else:
+            df['Natureza Jurídica Desc'] = df['natureza_juridica_desc']
+
         # Calcular estatísticas
         total_geral = len(df)
-        df_nat = df['natureza_juridica_desc'].value_counts().reset_index()
+        df_nat = df['Natureza Jurídica Desc'].value_counts().reset_index()
         df_nat.columns = ['Natureza Jurídica', 'Total de OSCs']
         
         # Calcular Porcentagens
         df_nat['(%) Em relação ao total'] = (df_nat['Total de OSCs'] / total_geral * 100).round(1)
-        
-        # Como não temos uma categoria "pai" hierárquica clara nos dados planos (ex: AssociaçãoPrivada vs AssociaçãoPublica),
-        # assumiremos que cada linha é um grupo em si, então % do grupo é 100% ou deixamos vazio.
-        # Seguindo a instrução "mantenha 100% ou deixe em branco" caso não haja subcategorias.
         df_nat['(%) Em relação ao grupo'] = "100.0"
 
         # Adicionar linha de Total
@@ -52,15 +84,13 @@ if not df.empty and 'Area_Atuacao' in df.columns:
         
         df_display = pd.concat([df_nat, row_total], ignore_index=True)
 
-        # Formatação de milhares
+        # Formatação
         df_display['Total de OSCs'] = df_display['Total de OSCs'].apply(lambda x: f"{x:,.0f}".replace(",", "."))
         df_display['(%) Em relação ao total'] = df_display['(%) Em relação ao total'].astype(str)
         
-        # HTML Styling para "Padrão Acadêmico/IPEA"
-        # Usando HTML simples para controlar bordas e negrito
+        # HTML Styling
         html = df_display.to_html(index=False, escape=False, classes='ipea-table')
         
-        # Injetar CSS específico para essa tabela
         st.markdown("""
         <style>
             .ipea-table {
@@ -91,7 +121,7 @@ if not df.empty and 'Area_Atuacao' in df.columns:
         st.write(html, unsafe_allow_html=True)
         st.caption("Fonte: Mapa das OSCs (IPEA). Elaboração própria.")
     else:
-        st.warning("Coluna 'natureza_juridica_desc' não encontrada nos dados.")
+        st.warning(f"Coluna de Natureza Jurídica não encontrada. Colunas disponíveis: {list(df.columns)}")
 
     st.divider()
 
