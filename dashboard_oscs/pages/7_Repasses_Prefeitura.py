@@ -13,13 +13,13 @@ if parent_dir not in sys.path:
 
 from utils.data_loader import load_funding_data
 
-st.set_page_config(layout="wide", page_title="Repasses da Prefeitura")
+st.set_page_config(layout="wide", page_title="Transferências de Recursos Públicos Municipais")
 apply_academic_style()
 
-st.title("Repasses da Prefeitura para OSs e OSCs")
+st.title("Transferências de Recursos Públicos Municipais para OSs e OSCs")
 
 st.markdown("""
-Esta página apresenta os dados de repasses financeiros da Prefeitura de Santos para as Organizações da Sociedade Civil (OSCs), 
+Esta página apresenta os dados de transferências de recursos públicos da Prefeitura de Santos para as Organizações da Sociedade Civil (OSCs), 
 com base nos arquivos de prestação de contas disponibilizados.
 """)
 
@@ -29,7 +29,7 @@ st.info("Dados fornecidos pela prefeitura, acessados através [https://egov.sant
 df = load_funding_data()
 
 if df.empty:
-    st.warning("Nenhum dado de repasse encontrado.")
+    st.warning("Nenhum dado de transferência encontrado.")
 else:
     # Sidebar filters
     st.sidebar.header("Filtros")
@@ -47,8 +47,8 @@ else:
     unique_entities = df_filtered['beneficiaria_nome'].nunique()
 
     c1, c2, c3 = st.columns(3)
-    c1.metric("Valor Total Repassado", f"R$ {total_repassed:,.2f}")
-    c2.metric("Total de Repasses", total_records)
+    c1.metric("Valor Total Transferido", f"R$ {total_repassed:,.2f}")
+    c2.metric("Total de Transferências", total_records)
     c3.metric("Entidades Beneficiadas", unique_entities)
 
     st.markdown("---")
@@ -59,9 +59,9 @@ else:
         col_chart1, col_chart2 = st.columns(2)
         
         with col_chart1:
-            st.subheader("Evolução dos Repasses por Ano")
+            st.subheader("Evolução das Transferências por Ano")
             daily_trend = df.groupby('ano')['valor_repasse'].sum().reset_index()
-            fig_trend = px.bar(daily_trend, x='ano', y='valor_repasse', title="Total Repassado por Ano", labels={'valor_repasse': 'Valor (R$)', 'ano': 'Ano'})
+            fig_trend = px.bar(daily_trend, x='ano', y='valor_repasse', title="Total Transferido por Ano", labels={'valor_repasse': 'Valor (R$)', 'ano': 'Ano'})
             st.plotly_chart(fig_trend, use_container_width=True)
 
         with col_chart2:
@@ -88,7 +88,7 @@ else:
         # --- Charts ---
 
         # 1. Top 10 Entidades
-        st.markdown("### 1. Top 10 Entidades com Maior Repasse")
+        st.markdown("### 1. Top 10 Entidades com Maior Volume Transferido")
         top_10 = df_filtered.groupby('beneficiaria_nome')['valor_repasse'].sum().reset_index().nlargest(10, 'valor_repasse').sort_values('valor_repasse', ascending=True)
         fig_top10 = px.bar(top_10, x='valor_repasse', y='beneficiaria_nome', orientation='h', title=f"Top 10 Entidades - {ano_selecionado}", labels={'valor_repasse': 'Valor (R$)', 'beneficiaria_nome': 'Entidade'})
         st.plotly_chart(fig_top10, use_container_width=True)
