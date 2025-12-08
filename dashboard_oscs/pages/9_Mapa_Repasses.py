@@ -127,58 +127,45 @@ df_merged['ano_recurso'] = df_merged['ano_recurso'].fillna(0).astype(int)
 min_year = int(df_merged['ano_recurso'].min()) if not df_merged.empty else 2016
 max_year = int(df_merged['ano_recurso'].max()) if not df_merged.empty else 2025
 
-st.subheader("Filtros")
-col_filter_1, col_filter_2 = st.columns([2, 2])
+# --- Layout Principal (2 Colunas) ---
+col_map, col_filters = st.columns([3, 1])
 
-with col_filter_1:
-    # Slider para selecionar intervalo (range)
+# --- Coluna Direita: Filtros ---
+with col_filters:
+    st.markdown("### Filtros")
+    
+    # 1. Filtro Temporal (Slider)
     year_range = st.slider("Selecione o Período", min_value=min_year, max_value=max_year, value=(min_year, max_year), step=1)
     start_year, end_year = year_range
 
-# Filtro
-df_year = df_merged[(df_merged['ano_recurso'] >= start_year) & (df_merged['ano_recurso'] <= end_year)]
-
-with col_filter_2:
-    # Filtro de Área de Atuação (Multi-select com base nas colunas binárias)
+    # 2. Filtro de Área de Atuação
     # Opções legíveis
     area_options = sorted(list(area_col_map.values()))
     selected_areas_labels = st.multiselect("Filtrar por Área de Atuação", options=area_options, default=area_options)
+
+# --- Lógica de Filtragem (Processamento) ---
+# Aplica os filtros capturados na coluna direita aos dados
+df_year = df_merged[(df_merged['ano_recurso'] >= start_year) & (df_merged['ano_recurso'] <= end_year)]
+
+if selected_areas_labels:
+    # 1. Identificar quais colunas do DataFrame correspondem aos rótulos selecionados
+    selected_cols = [k for k, v in area_col_map.items() if v in selected_areas_labels]
     
-    if selected_areas_labels:
-        # 1. Identificar quais colunas do DataFrame correspondem aos rótulos selecionados
-        selected_cols = [k for k, v in area_col_map.items() if v in selected_areas_labels]
+    # 2. Garantir que essas colunas existem no df
+    valid_cols = [c for c in selected_cols if c in df_year.columns]
+    
+    if valid_cols:
+        # Garantir que as colunas sejam numéricas antes de somar
+        for col in valid_cols:
+            df_year[col] = pd.to_numeric(df_year[col], errors='coerce').fillna(0)
         
-        # 2. Garantir que essas colunas existem no df (já fizemos no merge, mas por segurança)
-        valid_cols = [c for c in selected_cols if c in df_year.columns]
-        
-        if valid_cols:
-            # Garantir que as colunas sejam numéricas antes de somar
-            # Previne TypeError se elas estiverem como '0', '1' (str) -> concatenação
-            for col in valid_cols:
-                df_year[col] = pd.to_numeric(df_year[col], errors='coerce').fillna(0)
-            
-            # 3. Filtrar: manter linha se a soma dessas colunas for > 0 (OU lógico)
-            # Se a soma das colunas selecionadas for > 0, significa que a OSC atua em pelo menos uma das áreas
-            mask = df_year[valid_cols].sum(axis=1) > 0
-            df_year = df_year[mask]
-        else:
-             # Se nenhuma coluna válida, não mostra nada ou mostra tudo? (Lógica de filtro: nada)
-             df_year = df_year[0:0] 
-     
-    # Se nada selecionado no multiselect, o comportamento padrão do st.multiselect vazio é retornar lista vazia.
-    # Se lista vazia, lógica acima não roda. Usually user filters empty = show nothing or show all?
-    # O código anterior fazia "If selected_areas: filter". Se vazio, mostrava tudo. 
-    # Aqui, se selected_areas_labels for vazio, ele pula o bloco if e mostra tudo (comportamento padrão "sem filtro aplicável"). 
-    # Mas se o usuário DESMARCAR tudo, ele quer ver tudo ou nada?
-    # Geralmente multiselect vazio = "sem filtro" (tudo) ou "nenhuma categoria" (nada).
-    # O user experience comum é: default=all options. Se desmarcar tudo, mostra tudo ou nada.
-    # Vamos manter comportamento: se desmarcar tudo, mostra TUDO (pois não entra no IF).
-    # Caso queira que desmarcar tudo = nada, teria que ter um else. Mas default=all previne isso inicialmente.
+        # 3. Filtrar: manter linha se a soma dessas colunas for > 0
+        mask = df_year[valid_cols].sum(axis=1) > 0
+        df_year = df_year[mask]
+    else:
+         df_year = df_year[0:0]
 
 # --- Agregação por OSC para o Mapa ---
-# Uma OSC pode ter recebido vários repasses no ano. Queremos 1 pino no mapa.
-# Agrupar por CNPJ e manter dados estáticos da OSC
-# Para o nome da beneficiária, pegamos o mais frequente (moda) ou o primeiro para exibir no tooltip
 group_cols = ['match_cnpj_clean', 'match_name', 'latitude', 'longitude', 'cd_natureza_juridica', 'natureza_juridica_desc', 
               'situacao_cadastral', 'Bairro', 'dt_fundacao_osc', 'tx_endereco_completo', 'Area_Atuacao']
 
@@ -214,22 +201,24 @@ df_map_data.rename(columns={
 # Formatar valor para tooltip
 df_map_data['Valor Formatado'] = df_map_data['Valor Total Recebido'].apply(lambda x: f"R$ {x:,.2f}")
 
-# --- Filtro de Pesquisa (Destaque no Mapa) ---
-if not df_map_data.empty:
-    osc_options = sorted(df_map_data['tx_nome_fantasia_osc'].astype(str).unique())
-    selected_osc = st.selectbox("Pesquisar OSC por Nome (Filtrar Mapa)", ["Todas"] + osc_options)
+# --- Continuação Coluna Direita: Busca ---
+with col_filters:
+    # Filtro de Pesquisa (Destaque no Mapa)
+    if not df_map_data.empty:
+        osc_options = sorted(df_map_data['tx_nome_fantasia_osc'].astype(str).unique())
+        selected_osc = st.selectbox("Pesquisar OSC", ["Todas"] + osc_options)
 
-    if selected_osc != "Todas":
-        df_map_data = df_map_data[df_map_data['tx_nome_fantasia_osc'] == selected_osc]
-        st.info(f"Exibindo destaque para: **{selected_osc}**")
-
-# --- Renderização ---
-
-col1, col2 = st.columns([3, 1])
-
-with col1:
+        if selected_osc != "Todas":
+            df_map_data = df_map_data[df_map_data['tx_nome_fantasia_osc'] == selected_osc]
+            # Aviso visual movido para a coluna do mapa para não poluir filtros
+            
+# --- Coluna Esquerda: Mapa ---
+with col_map:
     st.markdown(f"### Mapa 3 - Distribuição das Transferências ({start_year} - {end_year})")
     
+    if 'selected_osc' in locals() and selected_osc != "Todas":
+         st.info(f"Exibindo destaque para: **{selected_osc}**")
+
     if not df_map_data.empty:
         # Colunas para tooltip enriquecido (Popup)
         tooltip = {
@@ -249,18 +238,21 @@ with col1:
     else:
         st.info(f"Nenhuma transferência mapeada com coordenadas para o período {start_year}-{end_year}.")
 
-with col2:
-    st.markdown("### Resumo do Período")
-    
-    # Métricas Simples
-    total_val = df_map_data['Valor Total Recebido'].sum()
-    qtd_oscs = df_map_data['match_cnpj_clean'].nunique()
-    
+# --- Seção Inferior: Métricas (Resumo) ---
+st.markdown("---")
+st.subheader("Resumo do Período")
+
+# Métricas lado a lado em colunas independentes
+met_col1, met_col2 = st.columns(2)
+
+# Métricas Simples
+total_val = df_map_data['Valor Total Recebido'].sum()
+qtd_oscs = df_map_data['match_cnpj_clean'].nunique()
+
+with met_col1:
     st.metric("Total Transferido", f"R$ {total_val:,.2f}")
-    st.metric("OSCs Beneficiadas", qtd_oscs)
-    
-    
-    # Detalhe removido conforme solicitação (Por Tipo)
+with met_col2:
+    st.metric("OSCs Beneficiadas", f"{qtd_oscs}")
 
 # --- Área Expansível e Modular (Detalhes) ---
 st.markdown("---")
