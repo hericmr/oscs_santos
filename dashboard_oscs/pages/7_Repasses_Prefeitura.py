@@ -14,6 +14,7 @@ if parent_dir not in sys.path:
 from utils.data_loader import load_funding_data
 
 st.set_page_config(layout="wide", page_title="Repasses da Prefeitura")
+apply_academic_style()
 
 st.title("Repasses da Prefeitura para OSs e OSCs")
 
