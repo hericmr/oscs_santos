@@ -126,12 +126,16 @@ else:
         # Calculate Percentages Row-wise
         pivot_pct = pivot.div(pivot['Total'], axis=0).mul(100)
         
-        # Format as String with %
-        for col in pivot_pct.columns:
-            pivot_pct[col] = pivot_pct[col].apply(lambda x: f"{x:.1f}%")
+        # Format as String with "Count (Pct%)"
+        pivot_display = pivot.copy().astype(object)
+        for col in pivot.columns:
+             for idx in pivot.index:
+                 count = pivot.at[idx, col]
+                 pct = pivot_pct.at[idx, col]
+                 pivot_display.at[idx, col] = f"{count} ({pct:.1f}%)"
             
         # Reset Index to make Bairro a column
-        pivot_display = pivot_pct.reset_index()
+        pivot_display = pivot_display.reset_index()
         
         # Filter out random/bad extractions if list is too long (Optional, but good for UX)
         # For now, sorting by Total Count (descending) to show most relevant neighborhoods first
