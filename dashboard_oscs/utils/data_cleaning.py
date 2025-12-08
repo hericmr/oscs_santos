@@ -45,3 +45,28 @@ def clean_data(df):
         df['situacao_cadastral'] = df['situacao_cadastral'].fillna('Desconhecida')
 
     return df
+
+def extract_bairro(addr):
+    """
+    Extrai o bairro de um endereço formatado (ex: LOGRADOURO, NUM, COMPL, BAIRRO, CIDADE, UF).
+    Heurística simples baseada na posição em relação a 'SANTOS'.
+    """
+    if not isinstance(addr, str): return "Não Identificado"
+    parts = addr.split(',')
+    try:
+        # Procurar 'Santos'
+        sanitized_parts = [p.strip().upper() for p in parts]
+        if 'SANTOS' in sanitized_parts:
+            idx = sanitized_parts.index('SANTOS')
+            if idx > 0:
+                possible_bairro = parts[idx-1].strip()
+                # Se for número ou complemento curto, tenta voltar mais um
+                if len(possible_bairro) < 3 and idx > 1:
+                        return parts[idx-2].strip()
+                return possible_bairro.title() # Capitalize
+        # Fallback: pegar o item do meio se tiver tamanho suficiente
+        if len(parts) >= 4:
+            return parts[-3].strip().title()
+    except:
+        pass
+    return "Não Identificado"

@@ -130,3 +130,111 @@ def render_employment_stats(df):
         """,
         unsafe_allow_html=True
     )
+
+def render_kpis_section(df):
+    """
+    Render KPIs and interactive lists for Overview page.
+    """
+    col1, col2, col3 = st.columns(3)
+    
+    total_oscs = len(df)
+    ativas = len(df[df['situacao_cadastral'] == 'Ativa']) if 'situacao_cadastral' in df.columns else 0
+    total_os = len(df[df['cd_natureza_juridica_osc'] == 3301]) if 'cd_natureza_juridica_osc' in df.columns else 0
+
+    # Initialize session state for interactivity
+    if 'selected_metric' not in st.session_state:
+        st.session_state['selected_metric'] = None
+
+    # KPI Buttons
+    if col1.button("Ver Lista", key="btn_total"):
+        st.session_state['selected_metric'] = 'total'
+    col1.metric("Total de OSCs", total_oscs)
+    
+    if col2.button("Ver Lista", key="btn_ativas"):
+        st.session_state['selected_metric'] = 'ativas'
+    col2.metric("OSCs Ativas", ativas)
+
+    if col3.button("Ver Lista", key="btn_os"):
+        st.session_state['selected_metric'] = 'os'
+    col3.metric("Total de OS", total_os)
+
+    # Interactive Details Table
+    if st.session_state['selected_metric']:
+        st.divider()
+        st.subheader("Detalhamento da Métrica Selecionada")
+        
+        detail_df = pd.DataFrame()
+        
+        if st.session_state['selected_metric'] == 'total':
+            st.info("Mostrando todas as OSCs.")
+            detail_df = df
+            
+        elif st.session_state['selected_metric'] == 'ativas':
+            st.info("Mostrando apenas OSCs com situação cadastral Ativa.")
+            detail_df = df[df['situacao_cadastral'] == 'Ativa'] if 'situacao_cadastral' in df.columns else df
+        
+        elif st.session_state['selected_metric'] == 'os':
+            st.info("Mostrando apenas Organizações Sociais (Código 3301).")
+            if 'cd_natureza_juridica_osc' in df.columns:
+                detail_df = df[df['cd_natureza_juridica_osc'] == 3301]
+        
+        if not detail_df.empty:
+            height = min((len(detail_df) + 1) * 35 + 3, 600)
+            st.dataframe(detail_df, use_container_width=True, height=height)
+            
+            if st.button("Fechar Lista"):
+                st.session_state['selected_metric'] = None
+                st.rerun()
+        else:
+            st.warning("Nenhum registro encontrado.")
+    
+    st.divider()
+
+def render_table_6_3(df):
+    """
+    Render Table 6.3 - OSCs by Legal Nature and Neighborhood.
+    """
+    st.markdown("Esta seção apresenta dados sobre a natureza jurídica das Organizações da Sociedade Civil - OSCs. Foram usadas para calcular o total de OSCs da cidade de Santos as naturezas associações privadas, fundações privadas e organizações religiosas pessoas de direito privado sem fins lucrativos previstas no Código Civil – Lei n o 10.406/2002, bem como as organizações sociais assim qualificadas por Lei Federal, Estadual, Distrital ou Municipal.")
+    st.markdown("### Tabela 6.3 - OSCs por natureza jurídica segundo o bairro (Distribuição %)")
+    
+    from utils.data_cleaning import extract_bairro
+    
+    # Apply extraction if column doesn't exist
+    df_proc = df.copy()
+    if 'Bairro' not in df_proc.columns and 'tx_endereco_completo' in df_proc.columns:
+        df_proc['Bairro'] = df_proc['tx_endereco_completo'].apply(extract_bairro)
+        
+    if 'Bairro' in df_proc.columns and 'cd_natureza_juridica_osc' in df_proc.columns:
+        nat_jur_labels = {
+            3999: "Associação Privada",
+            3069: "Fundação Privada",
+            3220: "Org. Religiosa",
+            3301: "Org. Social (OS)"
+        }
+        df_proc['Natureza_Label'] = df_proc['cd_natureza_juridica_osc'].map(nat_jur_labels).fillna("Outros")
+        
+        pivot = pd.crosstab(df_proc['Bairro'], df_proc['Natureza_Label'], margins=True, margins_name="Total")
+        pivot_pct = pivot.div(pivot['Total'], axis=0).mul(100)
+        
+        for col in pivot_pct.columns:
+            pivot_pct[col] = pivot_pct[col].apply(lambda x: f"{x:.1f}%")
+            
+        pivot_display = pivot_pct.reset_index()
+        
+        # Sort by Total Volume
+        pivot_counts = pivot.reset_index()
+        valid_bairros = pivot_counts.sort_values('Total', ascending=False)['Bairro'].tolist()
+        if 'Total' in valid_bairros:
+            valid_bairros.remove('Total')
+            valid_bairros = ['Total'] + valid_bairros
+            
+        pivot_display['Bairro'] = pd.Categorical(pivot_display['Bairro'], categories=valid_bairros, ordered=True)
+        pivot_display = pivot_display.sort_values('Bairro')
+        pivot_display = pivot_display.rename(columns={'Bairro': 'Bairro / Localidade'})
+
+        st.dataframe(pivot_display, use_container_width=True, hide_index=True)
+        st.caption("Fonte: Mapa das OSCs (Recorte Santos) - Bairros inferidos do endereço.")
+    else:
+        st.warning("Dados insuficientes para gerar Tabela 6.3.")
+        
+    st.divider()
