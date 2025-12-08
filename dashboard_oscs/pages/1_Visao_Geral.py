@@ -82,113 +82,80 @@ else:
 
     # --- Tabela 6.3 (IPEA) - Natureza Jurídica: Santos (Distribuição por Bairro) ---
     st.divider()
-    st.markdown("### Tabela 6.3 - Distribuição de OSCs por Bairro e Natureza Jurídica")
-
-    # 1. Função de Extração Melhorada
-    def extract_bairro_safe(addr):
+    st.markdown("### Tabela 6.3 - OSCs por natureza jurídica segundo o bairro (Distribuição %)")
+    
+    # Função para extrair Bairro (Reutilizada de Mapa_Repasses)
+    def extract_bairro(addr):
         if not isinstance(addr, str): return "Não Identificado"
-        parts = [p.strip() for p in addr.split(',')]
-        
-        # Tenta achar 'Santos' e pegar o anterior
-        for i, part in enumerate(parts):
-            if 'SANTOS' in part.upper():
-                if i > 0:
-                    candidate = parts[i-1]
-                    # Validação básica: Bairro não costuma ser número ou muito curto
-                    if not candidate.isdigit() and len(candidate) > 2:
-                        return candidate.title()
-        
-        # Fallback: pega o penúltimo se houver partes suficientes
-        if len(parts) >= 3:
-             candidate = parts[-2] if 'CEP' not in parts[-1] else parts[-3]
-             if not candidate.isdigit() and len(candidate) > 2:
-                 return candidate.title()
-                 
+        parts = addr.split(',')
+        try:
+            # Procurar 'Santos'
+            sanitized_parts = [p.strip().upper() for p in parts]
+            if 'SANTOS' in sanitized_parts:
+                idx = sanitized_parts.index('SANTOS')
+                if idx > 0:
+                    possible_bairro = parts[idx-1].strip()
+                    if len(possible_bairro) < 3 and idx > 1:
+                         return parts[idx-2].strip()
+                    return possible_bairro.title() # Capitalize
+            if len(parts) >= 4:
+                return parts[-3].strip().title()
+        except:
+            pass
         return "Não Identificado"
 
-    if 'tx_endereco_completo' in df.columns:
-        # Criar coluna de bairro se não existir
-        if 'Bairro' not in df.columns:
-            df['Bairro'] = df['tx_endereco_completo'].apply(extract_bairro_safe)
-
-        # 2. Filtragem e Tratamento (Pareto: Focar nos bairros relevantes)
-        df_display = df.copy()
+    if 'Bairro' not in df.columns and 'tx_endereco_completo' in df.columns:
+        df['Bairro'] = df['tx_endereco_completo'].apply(extract_bairro)
         
-        # Mapeamento das Naturezas (Simplificando nomes longos)
+    if 'Bairro' in df.columns and 'cd_natureza_juridica_osc' in df.columns:
+        # Filter out invalid neighborhoods if needed, or keep all
+        df_bairro = df.copy()
+        
+        # Mapping Names
         nat_jur_labels = {
-            3999: "Associação",
-            3069: "Fundação",
-            3220: "Religiosa",
-            3301: "OS (Social)"
+            3999: "Associação Privada",
+            3069: "Fundação Privada",
+            3220: "Org. Religiosa",
+            3301: "Org. Social (OS)"
         }
-        df_display['Natureza'] = df_display['cd_natureza_juridica_osc'].map(nat_jur_labels).fillna("Outros")
-
-        # Agrupar bairros pequenos em "Outros" (ex: menos de 5 OSCs)
-        bairro_counts = df_display['Bairro'].value_counts()
-        cutoff = 5 # Bairros com menos de X OSCs viram "Outros"
-        main_bairros = bairro_counts[bairro_counts >= cutoff].index
-        df_display['Bairro_Clean'] = df_display['Bairro'].apply(lambda x: x if x in main_bairros else 'Outros / Pequenos')
-
-        # 3. Controles de Visualização
-        col_opt1, col_opt2 = st.columns([1, 3])
-        view_mode = col_opt1.radio("Visualizar dados em:", ["Porcentagem (%)", "Quantidade (N)", "Ambos"], horizontal=True)
-
-        # 4. Criando a Pivot Table
-        if view_mode == "Quantidade (N)":
-            pivot = pd.crosstab(df_display['Bairro_Clean'], df_display['Natureza'], margins=True, margins_name="Total")
-            # Ordenar por Total
-            pivot = pivot.sort_values('Total', ascending=False)
+        df_bairro['Natureza_Label'] = df_bairro['cd_natureza_juridica_osc'].map(nat_jur_labels).fillna("Outros")
+        
+        # Pivot Table: Index=Bairro, Columns=Natureza, Values=Count
+        pivot = pd.crosstab(df_bairro['Bairro'], df_bairro['Natureza_Label'], margins=True, margins_name="Total")
+        
+        # Calculate Percentages Row-wise
+        pivot_pct = pivot.div(pivot['Total'], axis=0).mul(100)
+        
+        # Format as String with %
+        for col in pivot_pct.columns:
+            pivot_pct[col] = pivot_pct[col].apply(lambda x: f"{x:.1f}%")
             
-            # Styling: Heatmap simples nos números
-            st.dataframe(
-                pivot.style.background_gradient(cmap="Blues", subset=pivot.columns.drop("Total", errors='ignore')),
-                use_container_width=True,
-                height=500
-            )
-
-        elif view_mode == "Porcentagem (%)":
-            # Crosstab normalizado pela linha (index) -> Soma da linha = 100%
-            pivot = pd.crosstab(df_display['Bairro_Clean'], df_display['Natureza'], normalize='index').mul(100)
+        # Reset Index to make Bairro a column
+        pivot_display = pivot_pct.reset_index()
+        
+        # Filter out random/bad extractions if list is too long (Optional, but good for UX)
+        # For now, sorting by Total Count (descending) to show most relevant neighborhoods first
+        # We need the original counts to sort
+        pivot_counts = pivot.reset_index()
+        valid_bairros = pivot_counts.sort_values('Total', ascending=False)['Bairro'].tolist()
+        
+        # Remove 'Total' row from sorting and put it at the end or top
+        if 'Total' in valid_bairros:
+            valid_bairros.remove('Total')
+            valid_bairros = ['Total'] + valid_bairros # Total first
             
-            # Adicionar coluna de Contagem Total para ordenação
-            total_counts = df_display['Bairro_Clean'].value_counts()
-            pivot['Total (N)'] = total_counts
-            
-            # Ordenar e remover coluna auxiliar se não quiser mostrar
-            pivot = pivot.sort_values('Total (N)', ascending=False)
-            
-            # Formatação bonita com Pandas Styler
-            st.dataframe(
-                pivot.style.format("{:.1f}%", subset=pivot.columns.drop('Total (N)'))
-                     .background_gradient(cmap="Greens", axis=None, subset=pivot.columns.drop('Total (N)')), # Axis=None aplica gradiente na tabela toda
-                use_container_width=True,
-                height=500
-            )
+        # Reorder DataFrame
+        pivot_display['Bairro'] = pd.Categorical(pivot_display['Bairro'], categories=valid_bairros, ordered=True)
+        pivot_display = pivot_display.sort_values('Bairro')
+        
+        # Rename Index Column for display
+        pivot_display = pivot_display.rename(columns={'Bairro': 'Bairro / Localidade'})
 
-        else: # "Ambos" (Lógica original melhorada)
-            pivot_count = pd.crosstab(df_display['Bairro_Clean'], df_display['Natureza'], margins=True, margins_name="Total")
-            pivot_pct = pd.crosstab(df_display['Bairro_Clean'], df_display['Natureza'], normalize='index').mul(100)
-            
-            # Construir tabela combinada manualmente para garantir ordem
-            combined = pd.DataFrame(index=pivot_count.index.sort_values()) # Index alfabético ou poderia ordenar por volume
-            
-            # Ordenar bairros por volume total antes de iterar
-            order_idx = pivot_count.sort_values('Total', ascending=False).index
-            combined = combined.reindex(order_idx)
-
-            cols = sorted([c for c in pivot_count.columns if c != 'Total']) + ['Total']
-            
-            for col in cols:
-                combined[f"{col} (N)"] = pivot_count[col]
-                if col != 'Total': # Não faz sentido % do Total geral na linha, pois é sempre 100%
-                    combined[f"{col} (%)"] = pivot_pct[col].apply(lambda x: f"{x:.1f}%")
-
-            st.dataframe(combined, use_container_width=True, height=600)
-
-        st.caption(f"Nota: Bairros com menos de {cutoff} OSCs foram agrupados em 'Outros / Pequenos' para facilitar a visualização.")
-
+        # Exibir Tabela
+        st.dataframe(pivot_display, use_container_width=True, hide_index=True)
+        st.caption("Fonte: Mapa das OSCs (Recorte Santos) - Bairros inferidos do endereço.")
     else:
-        st.warning("Coluna de endereço não disponível para gerar esta tabela.")
+        st.warning("Dados de endereço insuficientes para extrair bairros.")
 
     st.divider()
 
