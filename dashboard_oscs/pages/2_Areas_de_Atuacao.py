@@ -16,7 +16,7 @@ if not df.empty and 'Area_Atuacao' in df.columns:
 
     # --- Tabela: Áreas e Subáreas de Atuação (IPEA) ---
     # --- Tabela: Áreas e Subáreas de Atuação (IPEA) ---
-    st.markdown("### Tabela 6.2 - Número de OSCs, segundo a finalidade de atuação (Atualizado)")
+    st.markdown("### Tabela 2 - Número de OSCs, segundo a finalidade de atuação (Atualizado)")
     st.markdown("Esta seção trata sobre as áreas de atuação das Organizações da Sociedade Civil - OSCs.")
 
     # --- Nova Implementação usando area_subarea.csv ---
