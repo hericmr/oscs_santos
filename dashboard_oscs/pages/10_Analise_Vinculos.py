@@ -159,12 +159,60 @@ if df_71 is not None:
     st.caption("Tabela 7: Detalhamento por Finalidade e Faixa")
     st.dataframe(df_82, hide_index=True, use_container_width=True)
     
+    st.write("### Distribuição dos Vínculos por Finalidade (100% Empilhado)")
+
+    # Prepare data for 100% Stacked Bar Chart
+    # 1. Select only the (N) columns for the bins, exclude Total
+    cols_n = [c for c in df_82.columns if '(N)' in c and 'Total' not in c]
+    
+    # 2. Filter out the TOTAL row from the main dataframe
+    df_82_chart = df_82[df_82['Finalidade das OSCs'] != 'TOTAL'].copy()
+    
+    # 3. Rename columns to remove ' (N)' for better legend labels
+    rename_map = {c: c.replace(' (N)', '') for c in cols_n}
+    df_82_chart = df_82_chart.rename(columns=rename_map)
+    
+    # 4. Melt to long format
+    df_melted_82 = df_82_chart.melt(
+        id_vars=['Finalidade das OSCs'], 
+        value_vars=list(rename_map.values()),
+        var_name='Faixa de Vínculos', 
+        value_name='Quantidade'
+    )
+    
+    # 5. Calculate percentage for each group (Finalidade)
+    # Group by Finalidade and sum to get total per Finalidade
+    df_melted_82['Total_Finalidade'] = df_melted_82.groupby('Finalidade das OSCs')['Quantidade'].transform('sum')
+    df_melted_82['Porcentagem'] = (df_melted_82['Quantidade'] / df_melted_82['Total_Finalidade']) * 100
+    
+    # 6. Create the chart
+    fig_82_stacked = px.bar(
+        df_melted_82,
+        x="Finalidade das OSCs",
+        y="Porcentagem",
+        color="Faixa de Vínculos",
+        title="Distribuição de Vínculos por Finalidade (100%)",
+        labels={"Finalidade das OSCs": "Finalidade", "Porcentagem": "Porcentagem (%)"},
+        text_auto='.1f', # Show value with 1 decimal place
+        category_orders={"Faixa de Vínculos": list(rename_map.values())} # Preserve order from table
+    )
+    
+    # Update layout to look like a 100% stacked chart
+    fig_82_stacked.update_layout(
+        xaxis_title="Finalidade das OSCs",
+        yaxis_title="Porcentagem (%)",
+        yaxis_range=[0, 100],
+        legend_title="Faixas de Vínculos"
+    )
+    
+    st.plotly_chart(fig_82_stacked, use_container_width=True)
+    
     st.write("### Mapa de Calor (Quantidade de OSCs)")
     fig_82 = px.imshow(
         df_82_heatmap,
         text_auto=True,
         aspect="auto",
         color_continuous_scale="Blues",
-        title="Distribuição de Vínculos por Finalidade"
+        title="Quantidade de OSCs por Faixa e Finalidade"
     )
     st.plotly_chart(fig_82, use_container_width=True)
