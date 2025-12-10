@@ -20,8 +20,6 @@ apply_academic_style()
 
 st.title("Transferências de Recursos Públicos Municipais para OSs e OSCs")
 
-render_transfer_table_11_1()
-
 st.markdown("""
 Esta página apresenta os dados de transferências de recursos públicos da Prefeitura de Santos para as Organizações da Sociedade Civil (OSCs), 
 com base nos arquivos de prestação de contas disponibilizados.
@@ -56,6 +54,8 @@ else:
     c3.metric("Entidades Beneficiadas", unique_entities)
 
     st.markdown("---")
+
+    render_transfer_table_11_1()
 
     # Visualizations
     # Visualizations

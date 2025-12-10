@@ -10,7 +10,7 @@ apply_academic_style()
 st.title("Análise de Vínculos: OSCs vs RAIS 2023 (Santos)")
 
 st.markdown("""
-São apresentados dados sobre o mercado formal de trabalho nas Organizações da Sociedade Civil - OSCs a partir de dados da Relação Anual de Informações Sociais (Rais). Para isto foram utilizados dois grupos: os vínculos empregatícios e o pessoal ocupado. Não há dados disponíveis na Rais sobre os trabalhadores voluntários, razão pela qual estão excluídos desta análise. Espera-se que o voluntariado constitua uma fração relevante da força de trabalho nas OSCs, e, por isso, os números aqui apresentados subestimam o número total de pessoas que efetivamente atuam em ações associadas às OSCs. Ademais, é de se registrar que os dados da Rais indicam apenas os vínculos formais de trabalho, e, tal como em outros setores da economia, a fração de trabalhadores que exercem funções autônomas sem vinculação formal ao empregador pode ser expressiva.
+Dados sobre o trabalho nas Organizações da Sociedade Civil (OSCs) usando informações da Rais. A análise foca apenas nos empregos formais. Como a Rais não tem dados sobre voluntários, eles não foram incluídos. Os voluntários são uma parte importante das OSCs, por isso, o número real de pessoas trabalhando é maior do que o mostrado aqui. Além disso, a Rais só registra quem tem carteira assinada, deixando de fora os trabalhadores autônomos e informais.
 """)
 
 # --- Helper Functions ---
