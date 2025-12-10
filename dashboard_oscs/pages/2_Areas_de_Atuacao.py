@@ -28,12 +28,12 @@ if not df.empty and 'Area_Atuacao' in df.columns:
     hierarchy = {
         'Assistência Social': ['SubArea_Assistencia_social'],
         'Cultura e Recreação': ['SubArea_Cultura_e_arte', 'SubArea_Esportes_e_recreacao'],
-        'Desenvolvimento e Defesa de Direitos': ['SubArea_Desenvolvimento_e_defesa_de_direitos', 'SubArea_Associacoes_de_atividades_nao_especificadas_anteriormente'],
+        'Desenvolvimento e Defesa de Direitos': ['SubArea_Desenvolvimento_e_defesa_de_direitos'],
         'Educação e Pesquisa': ['SubArea_Educacao_infantil', 'SubArea_Ensino_fundamental', 'SubArea_Ensino_superior', 'SubArea_Educacao_profissional', 'SubArea_Atividades_de_apoio_a_educacao', 'SubArea_Outras_formas_de_educacao_ensino', 'SubArea_Estudos_e_pesquisas'],
         'Saúde': ['SubArea_Hospitais', 'SubArea_Outros_servicos_de_saude'],
         'Religião': ['SubArea_Religiao'],
-        'Associações Patronais e Profissionais': ['SubArea_Associacoes_empresariais_e_patronais', 'SubArea_Associacoes_profissionais'],
-        'Outras Atividades Associativas': []
+        'Associações Patronais e Profissionais': ['SubArea_Associacoes_empresariais_e_patronais', 'SubArea_Associacoes_profissionais', 'SubArea_Associacoes_de_produtores_rurais_pescadores_e_similares'],
+        'Outras Atividades Associativas': ['SubArea_Associacoes_de_atividades_nao_especificadas_anteriormente']
     }
 
     # Mapa de colunas Area_ para nomes legíveis (deve bater com keys do hierarchy)
