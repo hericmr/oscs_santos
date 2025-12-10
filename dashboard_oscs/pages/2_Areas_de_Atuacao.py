@@ -16,7 +16,7 @@ if not df.empty and 'Area_Atuacao' in df.columns:
 
     # --- Tabela: Áreas e Subáreas de Atuação (IPEA) ---
     # --- Tabela: Áreas e Subáreas de Atuação (IPEA) ---
-    st.markdown("### Tabela 2 - Número de OSCs, segundo a finalidade de atuação (Atualizado)")
+    st.markdown("### Tabela 2 - Número de OSCs, segundo a finalidade de atuação")
     st.markdown("Esta seção trata sobre as áreas de atuação das Organizações da Sociedade Civil - OSCs.")
 
     # --- Nova Implementação usando area_subarea.csv ---
@@ -89,8 +89,8 @@ if not df.empty and 'Area_Atuacao' in df.columns:
                     "Area": "Assistência social",
                     "ColPai": "AssistÃªncia social",
                     "Subareas": [
-                        ("Educação infantil", "Ass Social sub Educa"), # As vezes aparece duplicado entre areas, manter contexto
-                        ("Assistência social", "Ass Social sub AssistÃªncia social"),
+                        ("Educação infantil", "Ass Social sub Educa"), 
+                        ("Assistência social", "AssistÃªncia social"), # Fallback to Parent Col as specific sub col is 0
                         ("Outros Assistência social", "Ass Social sub Outros")
                     ]
                 },
@@ -147,7 +147,7 @@ if not df.empty and 'Area_Atuacao' in df.columns:
                     "Area": "Outras atividades associativas",
                     "ColPai": "Outras atividades associativas",
                     "Subareas": [
-                        ("Outras organizações da sociedade civil", "Outras sub AssociaÃ§Ãµes de atividades nÃ£o especificadas anter") # Mapping based on debug output for 'Outras sub...'
+                        ("Outras organizações da sociedade civil", "Outras sub AssociaÃ§Ãµes de atividades nÃ£o especificadas anter") 
                     ]
                 }
             ]
@@ -165,10 +165,23 @@ if not df.empty and 'Area_Atuacao' in df.columns:
                     # Totais Pai
                     # Assumindo que 1 = Sim, nan/0 = Não.
                     # As colunas parecem vir vazias ou com 1.
-                    # Debug output showed values like 1. Let's assume numeric sum is safer or check value '1'.
-                    # Check first value type
                     # Keep it simple: non-null and containing '1' or numeric 1
                     count_pais = pd.to_numeric(df_sub[real_col_pai], errors='coerce').sum()
+                    
+                    # --- FIX: Ensure Parent Count is at least the sum of Subareas ---
+                    # Calculate subarea sum first
+                    sub_total_sum = 0
+                    temp_subs = []
+                    for sub_label, sub_partial_col in item["Subareas"]:
+                         real_col_sub = find_col(sub_partial_col)
+                         if real_col_sub and real_col_sub in df_sub.columns:
+                             c = pd.to_numeric(df_sub[real_col_sub], errors='coerce').sum()
+                             sub_total_sum += c
+                             temp_subs.append((sub_label, c))
+                    
+                    # If calculated sum is greater, use it as the true total
+                    if sub_total_sum > count_pais:
+                         count_pais = sub_total_sum
                     
                     if count_pais == 0:
                         # Se 0, ainda mostramos a linha se fizer parte da estrutura fixa solicitada
@@ -183,36 +196,23 @@ if not df.empty and 'Area_Atuacao' in df.columns:
                         'Perc_Group': None
                     })
                     
-                    # Subareas
+                    # Subareas Render
                     sub_total_check = 0
-                    for sub_label, sub_partial_col in item["Subareas"]:
-                        real_col_sub = find_col(sub_partial_col)
-                        
-                        if real_col_sub and real_col_sub in df_sub.columns:
-                             # Count Only matching Parent? 
-                             # The csv structure is flat but implies hierarchy.
-                             # Let's count totals directly as filtering by parent might be redundant if data is clean,
-                             # but strictly correct is to filter.
-                             # df_filtered = df_sub[pd.to_numeric(df_sub[real_col_pai], errors='coerce') == 1]
-                             # count_sub = pd.to_numeric(df_filtered[real_col_sub], errors='coerce').sum()
+                    for sub_label, count_sub in temp_subs:
+                         if count_sub > 0:
+                             pct_total_sub = (count_sub / total_oscs) * 100
+                             if count_pais > 0:
+                                 pct_group = (count_sub / count_pais) * 100
+                             else:
+                                 pct_group = 0.0
+                             sub_total_check += count_sub
                              
-                             # Actually, let's just sum the sub column.
-                             count_sub = pd.to_numeric(df_sub[real_col_sub], errors='coerce').sum()
-                             
-                             if count_sub > 0:
-                                 pct_total_sub = (count_sub / total_oscs) * 100
-                                 if count_pais > 0:
-                                     pct_group = (count_sub / count_pais) * 100
-                                 else:
-                                     pct_group = 0.0
-                                 sub_total_check += count_sub
-                                 
-                                 table_rows.append({
-                                    'Area': f"<span style='padding-left: 20px;'>{sub_label}</span>",
-                                    'Total': count_sub,
-                                    'Perc_Total': pct_total_sub,
-                                    'Perc_Group': pct_group
-                                })
+                             table_rows.append({
+                                'Area': f"<span style='padding-left: 20px;'>{sub_label}</span>",
+                                'Total': count_sub,
+                                'Perc_Total': pct_total_sub,
+                                'Perc_Group': pct_group
+                            })
                     
                     # Check for "Subárea Não Identificada" (Difference between Parent Total and Sum of Subs)
                     # If Sum Subs < Parent Total
