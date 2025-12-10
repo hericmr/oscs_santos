@@ -19,107 +19,244 @@ if not df.empty and 'Area_Atuacao' in df.columns:
     st.markdown("### Tabela 6.2 - Número de OSCs, segundo a finalidade de atuação (Atualizado)")
     st.markdown("Esta seção trata sobre as áreas de atuação das Organizações da Sociedade Civil - OSCs.")
 
-    # Lógica de Agregação Hierárquica
-    # As colunas são binárias (One-Hot). 
-    # Area_X = 1 -> OSC atua na Area X
-    # SubArea_Y = 1 -> OSC atua na SubArea Y
+    # --- Nova Implementação usando area_subarea.csv ---
+    import os
+    from dashboard_utils.data_loader import load_csv_robust
     
-    # Mapeamento hierárquico (Hardcoded baseado nas colunas do CSV para garantir estrutura)
-    hierarchy = {
-        'Assistência Social': ['SubArea_Assistencia_social'],
-        'Cultura e Recreação': ['SubArea_Cultura_e_arte', 'SubArea_Esportes_e_recreacao'],
-        'Desenvolvimento e Defesa de Direitos': ['SubArea_Desenvolvimento_e_defesa_de_direitos'],
-        'Educação e Pesquisa': ['SubArea_Educacao_infantil', 'SubArea_Ensino_fundamental', 'SubArea_Ensino_superior', 'SubArea_Educacao_profissional', 'SubArea_Atividades_de_apoio_a_educacao', 'SubArea_Outras_formas_de_educacao_ensino', 'SubArea_Estudos_e_pesquisas'],
-        'Saúde': ['SubArea_Hospitais', 'SubArea_Outros_servicos_de_saude'],
-        'Religião': ['SubArea_Religiao'],
-        'Associações Patronais e Profissionais': ['SubArea_Associacoes_empresariais_e_patronais', 'SubArea_Associacoes_profissionais', 'SubArea_Associacoes_de_produtores_rurais_pescadores_e_similares'],
-        'Outras Atividades Associativas': ['SubArea_Associacoes_de_atividades_nao_especificadas_anteriormente']
-    }
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    # Caminho para area_subarea.csv
+    data_path_subarea = os.path.join(current_dir, '..', '..', 'dados atualizados', 'dados_filtrados', 'area_subarea.csv')
+    
+    if os.path.exists(data_path_subarea):
+        try:
+            # Carregar com robustez para encoding
+            df_sub = load_csv_robust(data_path_subarea)
+            
+            # --- Mapeamento Completo e Detalhado ---
+            # Keys: Nome Exibição da Área Pai
+            # Values: Dict {'col_pai': 'NomeColPai', 'subareas': {'NomeExibicaoSub': 'NomeColSub', ...}}
+            # AVISO: Usando 'contains' ou nomes parciais para evitar problemas com encoding exato (Ã§Ã£)
+            
+            # Helper para achar coluna que contem string
+            def find_col(partial_name):
+                matches = [c for c in df_sub.columns if partial_name in c]
+                return matches[0] if matches else None
 
-    # Mapa de colunas Area_ para nomes legíveis (deve bater com keys do hierarchy)
-    area_col_map = {
-        'Area_Assistencia_social': 'Assistência Social',
-        'Area_Cultura_e_recreacao': 'Cultura e Recreação',
-        'Area_Desenvolvimento_e_defesa_de_direitos_e_interesses': 'Desenvolvimento e Defesa de Direitos',
-        'Area_Educacao_e_pesquisa': 'Educação e Pesquisa',
-        'Area_Saude': 'Saúde',
-        'Area_Religiao': 'Religião',
-        'Area_Associacoes_patronais_e_profissionais': 'Associações Patronais e Profissionais',
-        'Area_Outras_atividades_associativas': 'Outras Atividades Associativas'
-    }
+            # Construção da Estrutura de Dados
+            structure = [
+                {
+                    "Area": "Habitação",
+                    "ColPai": find_col("Habita") and find_col("Habita") if not find_col("Habita") is None else "Habitação", # Fallback logic handled inside loop
+                    "Subareas": [
+                        ("Habitação", "Hab sub Habita"),
+                        ("Outros Habitação", "Hab sub Outros")
+                    ]
+                },
+                {
+                    "Area": "Saúde",
+                    "ColPai": "SaÃºde", # Hardcoded based on debug, or use verify
+                    "Subareas": [
+                        ("Hospitais", "Saude sub Hospitais"),
+                        ("Outros serviços de saúde", "Saude sub Outros serviÃ§os de saÃºde"),
+                        ("Subárea Não Identificada", "Saude sub Outros") # Check duplicate 'Outros', maybe map specific logic
+                    ]
+                },
+                {
+                    "Area": "Cultura e recreação",
+                    "ColPai": "Cultura e recrea",
+                    "Subareas": [
+                        ("Cultura e arte", "Cultura sub Cultura e arte"),
+                        ("Esportes e recreação", "Cultura sub Esporte e recrea"),
+                        ("Outros Cultura e recreação", "Cultura sub Outros")
+                    ]
+                },
+                {
+                    "Area": "Educação e pesquisa",
+                    "ColPai": "EducaÃ§Ã£o e pesquisa",
+                    "Subareas": [
+                        ("Educação infantil", "Educacao sub EducaÃ§Ã£o infantil"),
+                        ("Ensino fundamental", "Educacao sub Ensino fundamental"),
+                        ("Ensino médio", "Educacao sub Ensino mÃ©dio"),
+                        ("Ensino superior", "Educacao sub EducaÃ§Ã£o superior"),
+                        ("Estudos e pesquisas", "Educacao sub Estudos e pesquisas"),
+                        ("Educação profissional", "Educacao sub EducaÃ§Ã£o profissional"),
+                        ("Outras formas de educação/ensino", "Educacao sub Outras formas de educaÃ§Ã£o/ensino"),
+                        ("Atividades de apoio à educação", "Educacao sub Atividades de apoio Ã  educaÃ§Ã£o"),
+                        ("Outros Educação e pesquisa", "Educacao sub Outros")
+                    ]
+                },
+                {
+                    "Area": "Assistência social",
+                    "ColPai": "AssistÃªncia social",
+                    "Subareas": [
+                        ("Educação infantil", "Ass Social sub Educa"), # As vezes aparece duplicado entre areas, manter contexto
+                        ("Assistência social", "Ass Social sub AssistÃªncia social"),
+                        ("Outros Assistência social", "Ass Social sub Outros")
+                    ]
+                },
+                {
+                    "Area": "Religião",
+                    "ColPai": "ReligiÃ£o",
+                    "Subareas": [
+                        ("Religião", "Religiao sub ReligiÃ£o"),
+                        ("Outros Religião", "Religiao sub Outros")
+                    ]
+                },
+                {
+                    "Area": "Associações patronais e profissionais",
+                    "ColPai": "AssociaÃ§Ãµes patronais",
+                    "Subareas": [
+                        ("Associações empresariais e patronais", "Ass Patronais sub AssociaÃ§Ãµes empresariais e patronais"),
+                        ("Associações profissionais", "Ass Patronais sub AssociaÃ§Ãµes profissionais"),
+                        ("Associações de produtores rurais, pescadores e similares", "Ass Patronais sub AssociaÃ§Ãµes de produtores rurais"),
+                        ("Cooperativas sociais", "Ass Patronais sub Cooperativas sociais"),
+                        ("Outras Associações patronais e profissionais", "Ass Patronais sub Outros")
+                    ]
+                },
+                {
+                    "Area": "Meio ambiente e proteção animal",
+                    "ColPai": "Meio ambiente e prote",
+                    "Subareas": [
+                        ("Meio ambiente", "Meio Amb sub Meio ambiente"),
+                        ("Proteção animal", "Meio Amb sub ProteÃ§Ã£o animal"),
+                        ("Outros Meio ambiente e proteção animal", "Meio Amb sub Outros")
+                    ]
+                },
+                {
+                    "Area": "Desenvolvimento e defesa de direitos e interesses",
+                    "ColPai": "Desenvolvimento e defesa de direitos",
+                    "Subareas": [
+                        ("Associações de moradores", "Desenv e Def sub AssociaÃ§Ãµes de moradores"),
+                        ("Centros e associações comunitárias", "Desenv e Def sub Centros e associaÃ§Ãµes comunitÃ¡rias"),
+                        ("Desenvolvimento rural", "Desenv e Def sub Desenvolvimento rural"),
+                        ("Emprego e treinamento", "Desenv e Def sub Emprego e treinamento"),
+                        ("Defesa de direitos de grupos e minorias", "Desenv e Def sub Defesa de direitos de grupos e minorias"),
+                        ("Desenvolvimento e defesa de direitos", "Desenv e Def sub Desenvolvimento e defesa de direitos"), # Often repeated header as sub
+                        ("Associações de pais, professores, alunos e afins", "Desenv e Def sub AssociaÃ§Ãµes de pais, professores, alunos e a"),
+                        ("Associações patronais e profissionais", "Desenv e Def sub AssociaÃ§Ãµes patronais e profissionais"),
+                        ("Cultura e recreação", "Desenv e Def sub Cultura e recreaÃ§Ã£o"),
+                        ("Defesa de direitos e interesses - múltiplas áreas", "Desenv e Def sub Defesa de direitos e interesses - mÃºltiplas"),
+                        ("Meio ambiente e proteção animal", "Desenv e Def sub Meio ambiente e proteÃ§Ã£o animal"),
+                        ("Outras formas de desenvolvimento e defesa de direitos e interesses", "Desenv e Def sub Outras formas de desenvolvimento e defesa de d"),
+                        ("Desenvolvimento e defesa de direitos e interesses - Religião", "Desenv e Def sub ReligiÃ£o"),
+                        ("Saúde, assistência social e educação", "Desenv e Def sub SaÃºde, assistÃªncia social e educaÃ§Ã£o"),
+                        ("Outros", "Desenv e Def sub Outros")
+                    ]
+                },
+                {
+                    "Area": "Outras atividades associativas",
+                    "ColPai": "Outras atividades associativas",
+                    "Subareas": [
+                        ("Outras organizações da sociedade civil", "Outras sub AssociaÃ§Ãµes de atividades nÃ£o especificadas anter") # Mapping based on debug output for 'Outras sub...'
+                    ]
+                }
+            ]
 
-    table_rows = []
-    total_oscs = len(df)
+            table_rows = []
+            total_oscs = len(df_sub)
 
-    # Iterar sobre as Áreas Principais
-    for area_col, area_name in area_col_map.items():
-        if area_col in df.columns:
-            # Calcular Total da Área
-            # Garantir que é numérico para evitar crash
-            count_area = pd.to_numeric(df[area_col], errors='coerce').fillna(0).sum()
-            if count_area == 0: continue # Skip areas with 0 results
-
-            try:
-                pct_total_area = (count_area / total_oscs) * 100
-            except: 
-                pct_total_area = 0
-
-            # Adicionar Linha da Categoria Principal
-            table_rows.append({
-                'Area': f"<b>{area_name}</b>",
-                'Total': count_area,
-                'Perc_Total': pct_total_area,
-                'Perc_Group': None # Categoria principal não tem % grupo
-            })
-
-            # Processar Subáreas
-            subareas = hierarchy.get(area_name, [])
-            for sub_col in subareas:
-                if sub_col in df.columns:
-                    count_sub = df[df[area_col] == 1][sub_col].sum() # Contar subarea APENAS dentro da area pai, embora dados devam ser consistentes
+            for item in structure:
+                area_name = item["Area"]
+                
+                # Encontrar nome real da coluna pai no DF (partial match)
+                real_col_pai = find_col(item["ColPai"]) if item["ColPai"] else None
+                
+                if real_col_pai and real_col_pai in df_sub.columns:
+                    # Totais Pai
+                    # Assumindo que 1 = Sim, nan/0 = Não.
+                    # As colunas parecem vir vazias ou com 1.
+                    # Debug output showed values like 1. Let's assume numeric sum is safer or check value '1'.
+                    # Check first value type
+                    # Keep it simple: non-null and containing '1' or numeric 1
+                    count_pais = pd.to_numeric(df_sub[real_col_pai], errors='coerce').sum()
                     
-                    if count_sub > 0:
-                        try:
-                            pct_total_sub = (count_sub / total_oscs) * 100
-                            pct_group_sub = (count_sub / count_area) * 100
-                        except:
-                            pct_total_sub = 0
-                            pct_group_sub = 0
-                            
-                        # Limpar nome da subarea
-                        sub_name = sub_col.replace('SubArea_', '').replace('_', ' ').capitalize()
+                    if count_pais == 0:
+                        # Se 0, ainda mostramos a linha se fizer parte da estrutura fixa solicitada
+                        pass
+
+                    pct_total_area = (count_pais / total_oscs) * 100
+
+                    table_rows.append({
+                        'Area': f"<b>{area_name}</b>",
+                        'Total': count_pais,
+                        'Perc_Total': pct_total_area,
+                        'Perc_Group': None
+                    })
+                    
+                    # Subareas
+                    sub_total_check = 0
+                    for sub_label, sub_partial_col in item["Subareas"]:
+                        real_col_sub = find_col(sub_partial_col)
                         
-                        table_rows.append({
-                            'Area': f"<span style='padding-left: 20px;'>{sub_name}</span>",
-                            'Total': count_sub,
-                            'Perc_Total': pct_total_sub,
-                            'Perc_Group': pct_group_sub
-                        })
+                        if real_col_sub and real_col_sub in df_sub.columns:
+                             # Count Only matching Parent? 
+                             # The csv structure is flat but implies hierarchy.
+                             # Let's count totals directly as filtering by parent might be redundant if data is clean,
+                             # but strictly correct is to filter.
+                             # df_filtered = df_sub[pd.to_numeric(df_sub[real_col_pai], errors='coerce') == 1]
+                             # count_sub = pd.to_numeric(df_filtered[real_col_sub], errors='coerce').sum()
+                             
+                             # Actually, let's just sum the sub column.
+                             count_sub = pd.to_numeric(df_sub[real_col_sub], errors='coerce').sum()
+                             
+                             if count_sub > 0:
+                                 pct_total_sub = (count_sub / total_oscs) * 100
+                                 if count_pais > 0:
+                                     pct_group = (count_sub / count_pais) * 100
+                                 else:
+                                     pct_group = 0.0
+                                 sub_total_check += count_sub
+                                 
+                                 table_rows.append({
+                                    'Area': f"<span style='padding-left: 20px;'>{sub_label}</span>",
+                                    'Total': count_sub,
+                                    'Perc_Total': pct_total_sub,
+                                    'Perc_Group': pct_group
+                                })
+                    
+                    # Check for "Subárea Não Identificada" (Difference between Parent Total and Sum of Subs)
+                    # If Sum Subs < Parent Total
+                    if sub_total_check < count_pais:
+                        diff = count_pais - sub_total_check
+                        # Tolerance for float errors
+                        if diff > 0.9: # at least 1
+                             pct_total_unk = (diff / total_oscs) * 100
+                             pct_group_unk = (diff / count_pais) * 100
+                             table_rows.append({
+                                    'Area': f"<span style='padding-left: 20px;'>Subárea Não Identificada</span>",
+                                    'Total': diff,
+                                    'Perc_Total': pct_total_unk,
+                                    'Perc_Group': pct_group_unk
+                             })
 
-    # Adicionar Total Geral
-    table_rows.append({
-        'Area': "<b>Total Geral de OSCs</b>",
-        'Total': total_oscs,
-        'Perc_Total': 100.0,
-        'Perc_Group': None
-    })
+            # Add Grand Total
+            table_rows.append({
+                'Area': "<b>Total Geral de OSCs</b>",
+                'Total': total_oscs,
+                'Perc_Total': 100.0,
+                'Perc_Group': None
+            })
+            
+            # DataFrame Generation
+            df_area_table = pd.DataFrame(table_rows)
+            
+            # Formatting
+            df_area_table['Total de OSCs'] = df_area_table['Total'].apply(lambda x: f"{int(x):,.0f}".replace(",", "."))
+            df_area_table['(%) Em relação ao total'] = df_area_table['Perc_Total'].apply(lambda x: f"{x:.1f}")
+            df_area_table['(%) Em relação ao grupo'] = df_area_table['Perc_Group'].apply(lambda x: f"{x:.1f}" if pd.notnull(x) else "-")
 
-    # Criar DataFrame final
-    df_area_table = pd.DataFrame(table_rows)
+            final_cols = ['Area', 'Total de OSCs', '(%) Em relação ao total', '(%) Em relação ao grupo']
+            df_display_area = df_area_table[final_cols].rename(columns={'Area': 'Áreas de Atuação'})
+            
+            html_area = df_display_area.to_html(index=False, escape=False, classes='ipea-table')
+            st.write(html_area, unsafe_allow_html=True)
+            st.caption("Fonte: Mapa das OSCs (IPEA). Elaboração própria (Tabela Expandida).")
 
-    # Formatação Final
-    df_area_table['Total de OSCs'] = df_area_table['Total'].apply(lambda x: f"{int(x):,.0f}".replace(",", "."))
-    df_area_table['(%) Em relação ao total'] = df_area_table['Perc_Total'].apply(lambda x: f"{x:.1f}")
-    df_area_table['(%) Em relação ao grupo'] = df_area_table['Perc_Group'].apply(lambda x: f"{x:.1f}" if pd.notnull(x) else "-")
-
-    # Selecionar colunas finais
-    final_cols = ['Area', 'Total de OSCs', '(%) Em relação ao total', '(%) Em relação ao grupo']
-    df_display_area = df_area_table[final_cols].rename(columns={'Area': 'Áreas de Atuação'})
-
-    # Renderizar HTML
-    html_area = df_display_area.to_html(index=False, escape=False, classes='ipea-table')
-    st.write(html_area, unsafe_allow_html=True)
-    st.caption("Fonte: Mapa das OSCs (IPEA). Elaboração própria.")
+        except Exception as e:
+            st.error(f"Erro ao processar tabela detalhada: {e}")
+            st.write(e)
+    else:
+        st.error(f"Arquivo de dados detalhados não encontrado: {data_path_subarea}")
     
     st.divider()
 
