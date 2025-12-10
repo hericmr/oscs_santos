@@ -181,8 +181,34 @@ else:
     df_year = df_year[0:0]
 
 # --- Agregação por OSC para o Mapa ---
+# Recalcular Área de Atuação para o Display para garantir que usamos os nomes bonitos (com acento) do map
+# Baseado nas colunas binárias oficiais
+
+def get_area_display(row):
+    active = []
+    for col, label in area_col_map.items():
+        if col in row.index and row[col] == 1:
+            active.append(label)
+    
+    if not active:
+        return "Não Informado"
+    elif len(active) == 1:
+        return active[0]
+    else:
+        # Se múltiplas, retorna "Múltiplas Áreas" ou lista?
+        # Para o popup, "Múltiplas Áreas" é mais limpo, ou podemos retornar a lista se forem poucas.
+        # Vamos manter "Múltiplas Áreas" para consistência, ou "Múltiplas: ..."
+        return "Múltiplas Áreas"
+
+# Garantir que as colunas de area estejam no DF para a função rodar
+for c in area_col_map.keys():
+    if c not in df_year.columns:
+        df_year[c] = 0 # Fallback
+
+df_year['Area_Display'] = df_year.apply(get_area_display, axis=1)
+
 group_cols = ['match_cnpj_clean', 'match_name', 'latitude', 'longitude', 'cd_natureza_juridica', 'natureza_juridica_desc', 
-              'situacao_cadastral', 'Bairro', 'dt_fundacao_osc', 'tx_endereco_completo', 'Area_Atuacao']
+              'situacao_cadastral', 'Bairro', 'dt_fundacao_osc', 'tx_endereco_completo', 'Area_Display']
 
 # Função de agregação personalizada para pegar o nome da beneficiária mais comum
 def get_most_common(x):
@@ -210,7 +236,8 @@ df_map_data.rename(columns={
     'cd_natureza_juridica': 'cd_natureza_juridica_osc', # Para cor (3301 = OS)
     'natureza_juridica_desc': 'Tipo Jurídico',
     'beneficiaria_nome': 'Beneficiária', # Nome que irá no tooltip hover
-    'secretaria_sigla': 'Secretarias'
+    'secretaria_sigla': 'Secretarias',
+    'Area_Display': 'Area_Atuacao_Display' # Nome final
 }, inplace=True)
 
 # Formatar valor para tooltip
@@ -235,7 +262,7 @@ if not df_map_data.empty:
         'Bairro': 'Bairro',
         'situacao_cadastral': 'Situação',
         'dt_fundacao_osc': 'Fundação',
-        'Area_Atuacao': 'Área de Atuação', # Atualizado label
+        'Area_Atuacao_Display': 'Área de Atuação', # Atualizado label e coluna
         'Secretarias': 'Resp. Repasse',
         'Qtd. Transferências': 'Qtd. Transferências',
         'Valor Formatado': 'Valor Total'
