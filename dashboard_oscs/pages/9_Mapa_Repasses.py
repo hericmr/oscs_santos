@@ -140,19 +140,44 @@ year_range = st.sidebar.slider("Selecione o Período", min_value=min_year, max_v
 start_year, end_year = year_range
 
 # 2. Filtro de Área de Atuação
-# Usar a coluna 'Area_Atuacao' direta que vem do clean_data (sem acentos as vezes)
-# Mas vamos tentar mapear para ficar bonito se bater com as chaves conhecidas, ou usar sorted unique
-avail_areas = sorted(list(df_merged['Area_Atuacao'].astype(str).unique()))
+# Restaurando mapeamento oficial IPEA para garantir consistência com a Página de Áreas (Página 2/3)
+area_col_map = {
+    'Area_Assistencia_social': 'Assistência Social',
+    'Area_Cultura_e_recreacao': 'Cultura e Recreação',
+    'Area_Desenvolvimento_e_defesa_de_direitos_e_interesses': 'Desenvolvimento e Defesa de Direitos',
+    'Area_Educacao_e_pesquisa': 'Educação e Pesquisa',
+    'Area_Saude': 'Saúde',
+    'Area_Religiao': 'Religião',
+    'Area_Associacoes_patronais_e_profissionais': 'Associações Patronais e Profissionais',
+    'Area_Outras_atividades_associativas': 'Outras Atividades Associativas'
+}
+
+avail_areas = sorted(list(area_col_map.values()))
 selected_areas_labels = st.sidebar.multiselect("Filtrar por Área de Atuação", options=avail_areas, default=avail_areas)
 
 # --- Lógica de Filtragem (Processamento) ---
 df_year = df_merged[(df_merged['ano_recurso'] >= start_year) & (df_merged['ano_recurso'] <= end_year)]
 
 if selected_areas_labels:
-    df_year = df_year[df_year['Area_Atuacao'].isin(selected_areas_labels)]
+    # Lógica baseada nas colunas binárias oficiais
+    # 1. Identificar quais colunas binárias correspondem aos rótulos selecionados
+    selected_cols = [k for k, v in area_col_map.items() if v in selected_areas_labels]
+    
+    # 2. Garantir que existem no DF
+    valid_cols = [c for c in selected_cols if c in df_year.columns]
+    
+    if valid_cols:
+        # Garantir numérico
+        for col in valid_cols:
+            df_year[col] = pd.to_numeric(df_year[col], errors='coerce').fillna(0)
+            
+        # 3. Manter linhas que tenham pelo menos 1 nas colunas selecionadas
+        mask = df_year[valid_cols].sum(axis=1) > 0
+        df_year = df_year[mask]
+    else:
+        df_year = df_year[0:0]
 else:
-    # Se nada selecionado, mostrar nada? Ou tudo? Streamlit multiselect vazio [] geralmente usuario quer limpar.
-    # Mas padrão é tudo selecionado. Se ele desmarcar tudo, mostra nada.
+    # Se nada selecionado, mostrar nada
     df_year = df_year[0:0]
 
 # --- Agregação por OSC para o Mapa ---
