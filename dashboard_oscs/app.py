@@ -40,7 +40,8 @@ pages = [
     st.Page("pages/7_Repasses_Federais.py", title="8. Transferências de Recursos Públicos Federais"),
     st.Page("pages/7_Repasses_Prefeitura.py", title="9. Transferências de Recursos Públicos Municipais"),
     st.Page("pages/8_Correspondencia_Repasses.py", title="10. Correspondência de Transferências"),
-    st.Page("pages/9_Mapa_Repasses.py", title="11. Evolução Quantitativa das Transferências")
+    st.Page("pages/9_Mapa_Repasses.py", title="11. Evolução Quantitativa das Transferências"),
+    st.Page("pages/10_Analise_Vinculos.py", title="12. Análise de Vínculos")
 ]
 
 # 4. Configure Navigation based on mode
