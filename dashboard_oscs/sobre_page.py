@@ -21,7 +21,7 @@ O documento serve como base para estudos futuros.
 
 # Destaque para as fontes de dados (Metodologia)
 with st.container():
-    st.subheader("Fontes de Dados")
+    st.subheader("Fontes de dados")
     st.markdown("""    
     1. **[Mapa das OSCs (IPEA)](https://mapaosc.ipea.gov.br/)**
     2. **[Prefeitura de Santos (Prestação de Contas)](https://egov.santos.sp.gov.br/dadosabertos/prestacao_contas)**
