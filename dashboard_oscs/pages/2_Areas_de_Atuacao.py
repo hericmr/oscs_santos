@@ -265,7 +265,7 @@ if not df.empty and 'Area_Atuacao' in df.columns:
     st.divider()
 
     # --- Tabela: Natureza Jurídica ---
-    st.subheader("Tabela 6.1 - Número de OSCs segundo a natureza jurídica")
+    st.subheader("Tabela 2.1 - Número de OSCs segundo a natureza jurídica")
     
     # Mapeamento de Códigos de Natureza Jurídica (CONCLA/IBGE)
     # Fonte: https://concla.ibge.gov.br/estrutura/natjur-estrutura/natureza-juridica-2018.html

@@ -57,7 +57,7 @@ if df_71 is not None:
     
     col1, col2 = st.columns([1, 1])
     with col1:
-        st.caption("Tabela 7.1: Pessoal Ocupado nas OSCs por Natureza Jurídica")
+        st.caption("Tabela 4: Pessoal Ocupado nas OSCs por Natureza Jurídica")
         # st.markdown(df_71.to_markdown(index=False)) 
         st.dataframe(df_71, hide_index=True)
 
@@ -82,7 +82,7 @@ if df_71 is not None:
     
     col3, col4 = st.columns([1, 1])
     with col3:
-        st.caption("Tabela 7.2: OSCs e Pessoal Ocupado por Área de Atuação")
+        st.caption("Tabela 5: OSCs e Pessoal Ocupado por Área de Atuação")
         st.dataframe(df_72, hide_index=True)
     
     with col4:
@@ -121,7 +121,7 @@ if df_71 is not None:
     
     col5, col6 = st.columns([1, 1])
     with col5:
-        st.caption("Tabela 7.3: Distribuição das OSCs por Faixas de Vínculos")
+        st.caption("Tabela 6: Distribuição das OSCs por Faixas de Vínculos")
         st.dataframe(df_73, hide_index=True)
         
     with col6:
@@ -156,7 +156,7 @@ if df_71 is not None:
     # Remove '(N)' from column names for cleaner display in chart
     df_82_heatmap.columns = [c.replace(' (N)', '') for c in df_82_heatmap.columns]
     
-    st.caption("Tabela 8.2: Detalhamento por Finalidade e Faixa")
+    st.caption("Tabela 7: Detalhamento por Finalidade e Faixa")
     st.dataframe(df_82, hide_index=True, use_container_width=True)
     
     st.write("### Mapa de Calor (Quantidade de OSCs)")
