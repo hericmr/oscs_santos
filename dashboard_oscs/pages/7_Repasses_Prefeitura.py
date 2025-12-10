@@ -13,11 +13,14 @@ if parent_dir not in sys.path:
 
 from dashboard_utils.data_loader import load_funding_data
 from dashboard_utils.styles import apply_academic_style
+from dashboard_utils.components import render_transfer_table_11_1
 
 
 apply_academic_style()
 
 st.title("Transferências de Recursos Públicos Municipais para OSs e OSCs")
+
+render_transfer_table_11_1()
 
 st.markdown("""
 Esta página apresenta os dados de transferências de recursos públicos da Prefeitura de Santos para as Organizações da Sociedade Civil (OSCs), 

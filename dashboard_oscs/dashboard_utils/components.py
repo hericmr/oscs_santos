@@ -238,3 +238,31 @@ def render_table_6_3(df):
         st.warning("Dados insuficientes para gerar Tabela 6.3.")
         
     st.divider()
+
+def render_transfer_table_11_1():
+    """
+    Renders Tabela 11.1 - Transferência por Ano.
+    Static data provided by user.
+    """
+    st.markdown("### Tabela 11.1 - Transferência por Ano")
+    
+    data = {
+        "Ano": [
+            2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 
+            2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 
+            2021, 2022, 2023, 2024
+        ],
+        "Transferências para OSCs (em milhões)": [
+            10.558, 10.881, 8.952, 10.578, 12.017, 12.099, 13.398, 12.501, 12.080, 12.494,
+            10.334, 11.128, 11.411, 12.827, 6.552, 7.606, 12.624, 7.608, 7.943, 7.314,
+            14.087, 9.236, 9.660, 19.405
+        ]
+    }
+    
+    df = pd.DataFrame(data)
+    
+    st.dataframe(df, use_container_width=True, hide_index=True)
+    
+    st.caption("Fonte: Mapa das Organizações da Sociedade Civil.")
+    st.caption("Elaboração do IPEA e prefeitura de santos.")
+

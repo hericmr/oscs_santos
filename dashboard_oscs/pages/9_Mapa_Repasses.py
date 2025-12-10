@@ -5,12 +5,16 @@ import plotly.express as px
 from dashboard_utils.data_loader import load_data, load_csv_robust
 from dashboard_utils.visualizations import plot_map, apply_academic_chart_style
 from dashboard_utils.styles import apply_academic_style
+from dashboard_utils.components import render_transfer_table_11_1
 import os
 
 
 apply_academic_style()
 
 st.title("Mapa 3 - Evolução Quantitativa das Transferências")
+
+render_transfer_table_11_1()
+
 st.markdown("""
 Esta página apresenta a evolução quantitativa das transferências e representações gráficas resultantes do cruzamento entre a base de dados do Mapa das OSCs (recorte: Santos) e os registros de prestação de contas da Prefeitura de Santos
 """)
