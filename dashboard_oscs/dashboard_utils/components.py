@@ -195,7 +195,7 @@ def render_table_6_3(df):
     Render Table 6.3 - OSCs by Legal Nature and Neighborhood.
     """
     st.markdown("Esta seção apresenta dados sobre a natureza jurídica das Organizações da Sociedade Civil - OSCs. Foram usadas para calcular o total de OSCs da cidade de Santos as naturezas associações privadas, fundações privadas e organizações religiosas pessoas de direito privado sem fins lucrativos previstas no Código Civil – Lei n o 10.406/2002, bem como as organizações sociais assim qualificadas por Lei Federal, Estadual, Distrital ou Municipal.")
-    st.markdown("### Tabela 6.3 - OSCs por natureza jurídica segundo o bairro (Distribuição %)")
+    st.markdown("### Tabela 1 - OSCs por natureza jurídica segundo o bairro (Distribuição %)")
     
     from dashboard_utils.data_cleaning import extract_bairro
     
