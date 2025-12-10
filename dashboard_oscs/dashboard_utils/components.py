@@ -244,7 +244,7 @@ def render_transfer_table_11_1():
     Renders Tabela 3 - Transferência por Ano.
     Static data provided by user.
     """
-    st.markdown("### Tabela 11.1 - Transferência por Ano")
+    st.markdown("### Tabela 3 - Transferência por Ano")
     
     data = {
         "Ano": [
