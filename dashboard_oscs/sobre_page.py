@@ -13,7 +13,7 @@ apply_academic_style()
 st.title("Relatório preliminar das OSCIPs e OSs de Santos")
 
 st.markdown("""
-Este relatório apresenta um panorama inicial das OSCs em Santos, abrangendo informações desde 1930 até 2025. O levantamento, de caráter preliminar, consolida dados do Mapa das OSCs (IPEA) (https://mapaosc.ipea.gov.br/)e do sistema de prestação de contas da Prefeitura de Santos (https://egov.santos.sp.gov.br/dadosabertos/prestacao_contas), servindo como base para estudos futuros.
+Este relatório apresenta um panorama inicial das OSCs em Santos, abrangendo informações desde 1930 até 2025. O levantamento, de caráter preliminar, consolida dados do Mapa das OSCs (IPEA) (https://mapaosc.ipea.gov.br/), do sistema de prestação de contas da Prefeitura de Santos (https://egov.santos.sp.gov.br/dadosabertos/prestacao_contas) e, por fim, utiliza dados da Relação Anual de Informações Sociais (Rais), com recorte na cidade de Santos e foco nas naturezas jurídicas das organizações identificadas como OSCs. O documento serve como base para estudos futuros.
 
 ---
 **Use o menu lateral para navegar entre as páginas de análise.**
