@@ -58,9 +58,8 @@ if df_71 is not None:
     col1, col2 = st.columns([1, 1])
     with col1:
         st.caption("Tabela 7.1: Pessoal Ocupado nas OSCs por Natureza Jurídica")
-        st.markdown(df_71.to_markdown(index=False)) # Using markdown for better numeric alignment if simple table
-        # Or standard dataframe
-        # st.dataframe(df_71, hide_index=True)
+        # st.markdown(df_71.to_markdown(index=False)) 
+        st.dataframe(df_71, hide_index=True)
 
     with col2:
         fig_71 = px.pie(
