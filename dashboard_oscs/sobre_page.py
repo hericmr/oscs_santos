@@ -9,9 +9,11 @@ st.title("Relatório Preliminar: OSCs, OSCIPs e OSs em Santos")
 # Texto introdutório com justificação (HTML/CSS inline para estilo acadêmico)
 st.markdown("""
 <div style="text-align: justify;">
-Este relatório apresenta um panorama inicial das Organizações da Sociedade Civil (OSCs) em Santos, 
-abrangendo informações desde 1930 até 2025. O levantamento, de caráter preliminar, consolida dados 
-de três bases principais, servindo como alicerce para estudos futuros sobre o terceiro setor na região.
+Este relatório apresenta um panorama inicial das OSCs em Santos, abrangendo informações 
+desde 1930 até 2025. O levantamento, de caráter preliminar, consolida dados do 
+Mapa das OSCs (IPEA) (https://mapaosc.ipea.gov.br/), do sistema de 
+prestação de contas da Prefeitura de Santos (https://egov.santos.sp.gov.br/dadosabertos/prestacao_contas) 
+e, por fim, utiliza dados da Relação Anual de Informações Sociais (Rais) (https://basedosdados.org/dataset/3e7c4d58-96ba-448e-b053-d385a829ef00?table=dabe5ea8-3bb5-4a3e-9d5a-3c7003cd4a60), com recorte na cidade de Santos e foco nas naturezas jurídicas das organizações identificadas como OSCs. O documento serve como base para estudos futuros.
 </div>
 <br>
 """, unsafe_allow_html=True)
@@ -20,9 +22,9 @@ de três bases principais, servindo como alicerce para estudos futuros sobre o t
 with st.container():
     st.subheader("Fontes de Dados")
     st.markdown("""    
-    1. **[Mapa das OSCs (IPEA)](https://mapaosc.ipea.gov.br/)**: Dados nacionais filtrados para o município.
-    2. **[Prefeitura de Santos (Prestação de Contas)](https://egov.santos.sp.gov.br/dadosabertos/prestacao_contas)**: Dados do sistema de transparência municipal.
-    3. **[Relação Anual de Informações Sociais - RAIS (via Base dos Dados)](https://basedosdados.org/dataset/3e7c4d58-96ba-448e-b053-d385a829ef00?table=dabe5ea8-3bb5-4a3e-9d5a-3c7003cd4a60)**: Recorte focado nas naturezas jurídicas das organizações identificadas como OSCs.
+    1. **[Mapa das OSCs (IPEA)](https://mapaosc.ipea.gov.br/)**
+    2. **[Prefeitura de Santos (Prestação de Contas)](https://egov.santos.sp.gov.br/dadosabertos/prestacao_contas)**
+    3. **[Relação Anual de Informações Sociais - RAIS (via Base dos Dados)](https://basedosdados.org/dataset/3e7c4d58-96ba-448e-b053-d385a829ef00?table=dabe5ea8-3bb5-4a3e-9d5a-3c7003cd4a60)**
     """)
 
 # Separador visual e instrução de navegação discreta
