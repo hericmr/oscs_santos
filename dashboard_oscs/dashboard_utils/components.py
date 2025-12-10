@@ -195,56 +195,20 @@ def render_table_6_3(df):
     Render Table 6.3 - OSCs by Legal Nature and Neighborhood.
     """
     st.markdown("Esta seção apresenta dados sobre a natureza jurídica das Organizações da Sociedade Civil - OSCs. Foram usadas para calcular o total de OSCs da cidade de Santos as naturezas associações privadas, fundações privadas e organizações religiosas pessoas de direito privado sem fins lucrativos previstas no Código Civil – Lei n o 10.406/2002, bem como as organizações sociais assim qualificadas por Lei Federal, Estadual, Distrital ou Municipal.")
-    st.markdown("### Tabela 6.3 - OSCs por natureza jurídica segundo o bairro (Distribuição %)")
+    st.markdown("### Tabela 1 - OSCs por natureza jurídica segundo o bairro (Distribuição %)")
     
     from dashboard_utils.data_cleaning import extract_bairro
     
-    # Apply extraction if column doesn't exist
-    df_proc = df.copy()
-    if 'Bairro' not in df_proc.columns and 'tx_endereco_completo' in df_proc.columns:
-        df_proc['Bairro'] = df_proc['tx_endereco_completo'].apply(extract_bairro)
-        
-    if 'Bairro' in df_proc.columns and 'cd_natureza_juridica_osc' in df_proc.columns:
-        nat_jur_labels = {
-            3999: "Associação Privada",
-            3069: "Fundação Privada",
-            3220: "Org. Religiosa",
-            3301: "Org. Social (OS)"
-        }
-        df_proc['Natureza_Label'] = df_proc['cd_natureza_juridica_osc'].map(nat_jur_labels).fillna("Outros")
-        
-        pivot = pd.crosstab(df_proc['Bairro'], df_proc['Natureza_Label'], margins=True, margins_name="Total")
-        pivot_pct = pivot.div(pivot['Total'], axis=0).mul(100)
-        
-        for col in pivot_pct.columns:
-            pivot_pct[col] = pivot_pct[col].apply(lambda x: f"{x:.1f}%")
-            
-        pivot_display = pivot_pct.reset_index()
-        
-        # Sort by Total Volume
-        pivot_counts = pivot.reset_index()
-        valid_bairros = pivot_counts.sort_values('Total', ascending=False)['Bairro'].tolist()
-        if 'Total' in valid_bairros:
-            valid_bairros.remove('Total')
-            valid_bairros = ['Total'] + valid_bairros
-            
-        pivot_display['Bairro'] = pd.Categorical(pivot_display['Bairro'], categories=valid_bairros, ordered=True)
-        pivot_display = pivot_display.sort_values('Bairro')
-        pivot_display = pivot_display.rename(columns={'Bairro': 'Bairro / Localidade'})
+    # ... (rest of function) ...
 
-        st.dataframe(pivot_display, use_container_width=True, hide_index=True)
-        st.caption("Fonte: Mapa das OSCs (Recorte Santos) - Bairros inferidos do endereço.")
-    else:
-        st.warning("Dados insuficientes para gerar Tabela 6.3.")
-        
-    st.divider()
+    # ... (later in file) ...
 
 def render_transfer_table_11_1():
     """
-    Renders Tabela 11.1 - Transferência por Ano.
+    Renders Tabela 1 - Transferência por Ano.
     Static data provided by user.
     """
-    st.markdown("### Tabela 11.1 - Transferência por Ano")
+    st.markdown("### Tabela 1 - Transferência por Ano")
     
     data = {
         "Ano": [

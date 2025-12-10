@@ -16,7 +16,7 @@ if not df.empty and 'Area_Atuacao' in df.columns:
 
     # --- Tabela: Áreas e Subáreas de Atuação (IPEA) ---
     # --- Tabela: Áreas e Subáreas de Atuação (IPEA) ---
-    st.markdown("### Tabela 6.2 - Número de OSCs, segundo a finalidade de atuação")
+    st.markdown("### Tabela 1 - Número de OSCs, segundo a finalidade de atuação")
     st.markdown("Esta seção trata sobre as áreas de atuação das Organizações da Sociedade Civil - OSCs.")
 
     # Lógica de Agregação Hierárquica
@@ -128,7 +128,7 @@ if not df.empty and 'Area_Atuacao' in df.columns:
     st.divider()
 
     # --- Tabela: Natureza Jurídica ---
-    st.subheader("Tabela 6.1 - Número de OSCs segundo a natureza jurídica")
+    st.subheader("Tabela 2 - Número de OSCs segundo a natureza jurídica")
     
     # Mapeamento de Códigos de Natureza Jurídica (CONCLA/IBGE)
     # Fonte: https://concla.ibge.gov.br/estrutura/natjur-estrutura/natureza-juridica-2018.html

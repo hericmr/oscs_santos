@@ -50,7 +50,7 @@ df_71, df_72, df_73, df_82 = load_analysis_data()
 if df_71 is not None:
     
     # --- Tabela 7.1: Pessoal Ocupado ---
-    st.subheader("Tabela 7.1 - Pessoal Ocupado por Natureza Jurídica")
+    st.subheader("Tabela 1 - Pessoal Ocupado por Natureza Jurídica")
     
     # Cleaning for chart
     df_71_plot = df_71[df_71['Natureza Jurídica'] != 'TOTAL'].copy()
@@ -74,7 +74,7 @@ if df_71 is not None:
     st.divider()
 
     # --- Tabela 7.2: Pessoal por Área ---
-    st.subheader("Tabela 7.2 - Pessoal Ocupado por Área de Atuação")
+    st.subheader("Tabela 2 - Pessoal Ocupado por Área de Atuação")
     
     df_72_plot = df_72[df_72['Finalidade de atuação'] != 'TOTAL'].copy()
     
@@ -114,7 +114,7 @@ if df_71 is not None:
     st.divider()
 
     # --- Tabela 7.3: Faixas de Vínculos ---
-    st.subheader("Tabela 7.3 - Distribuição por Faixas de Vínculos")
+    st.subheader("Tabela 3 - Distribuição por Faixas de Vínculos")
     
     df_73_plot = df_73.copy()
     # Ensure correct order if it's categorical? It seems pre-sorted in file 1..10
@@ -138,7 +138,7 @@ if df_71 is not None:
     st.divider()
 
     # --- Tabela 8.2: Finalidade x Faixas ---
-    st.subheader("Tabela 8.2 - Finalidade das OSCs x Faixas de Vínculos")
+    st.subheader("Tabela 4 - Finalidade das OSCs x Faixas de Vínculos")
     
     # We want to show the full table and maybe a heatmap of Counts (N)
     
