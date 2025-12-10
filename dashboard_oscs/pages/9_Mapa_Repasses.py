@@ -127,47 +127,33 @@ df_merged['Bairro'] = df_merged['tx_endereco_completo'].apply(extract_bairro)
 # Garantir Ano como Inteiro
 df_merged['ano_recurso'] = df_merged['ano_recurso'].fillna(0).astype(int)
 
-# --- Filtro Temporal (Slider) ---
+# --- Layout Principal ---
+# Mudança para layout de largura total com filtros na sidebar (Padrão Mapa 1)
+
+# --- Filtros na Sidebar ---
+st.sidebar.header("Filtros")
+
+# 1. Filtro Temporal (Slider)
 min_year = int(df_merged['ano_recurso'].min()) if not df_merged.empty else 2016
 max_year = int(df_merged['ano_recurso'].max()) if not df_merged.empty else 2025
+year_range = st.sidebar.slider("Selecione o Período", min_value=min_year, max_value=max_year, value=(min_year, max_year), step=1)
+start_year, end_year = year_range
 
-# --- Layout Principal (2 Colunas) ---
-col_map, col_filters = st.columns([3, 1])
-
-# --- Coluna Direita: Filtros ---
-with col_filters:
-    st.markdown("### Filtros")
-    
-    # 1. Filtro Temporal (Slider)
-    year_range = st.slider("Selecione o Período", min_value=min_year, max_value=max_year, value=(min_year, max_year), step=1)
-    start_year, end_year = year_range
-
-    # 2. Filtro de Área de Atuação
-    # Opções legíveis
-    area_options = sorted(list(area_col_map.values()))
-    selected_areas_labels = st.multiselect("Filtrar por Área de Atuação", options=area_options, default=area_options)
+# 2. Filtro de Área de Atuação
+# Usar a coluna 'Area_Atuacao' direta que vem do clean_data (sem acentos as vezes)
+# Mas vamos tentar mapear para ficar bonito se bater com as chaves conhecidas, ou usar sorted unique
+avail_areas = sorted(list(df_merged['Area_Atuacao'].astype(str).unique()))
+selected_areas_labels = st.sidebar.multiselect("Filtrar por Área de Atuação", options=avail_areas, default=avail_areas)
 
 # --- Lógica de Filtragem (Processamento) ---
-# Aplica os filtros capturados na coluna direita aos dados
 df_year = df_merged[(df_merged['ano_recurso'] >= start_year) & (df_merged['ano_recurso'] <= end_year)]
 
 if selected_areas_labels:
-    # 1. Identificar quais colunas do DataFrame correspondem aos rótulos selecionados
-    selected_cols = [k for k, v in area_col_map.items() if v in selected_areas_labels]
-    
-    # 2. Garantir que essas colunas existem no df
-    valid_cols = [c for c in selected_cols if c in df_year.columns]
-    
-    if valid_cols:
-        # Garantir que as colunas sejam numéricas antes de somar
-        for col in valid_cols:
-            df_year[col] = pd.to_numeric(df_year[col], errors='coerce').fillna(0)
-        
-        # 3. Filtrar: manter linha se a soma dessas colunas for > 0
-        mask = df_year[valid_cols].sum(axis=1) > 0
-        df_year = df_year[mask]
-    else:
-         df_year = df_year[0:0]
+    df_year = df_year[df_year['Area_Atuacao'].isin(selected_areas_labels)]
+else:
+    # Se nada selecionado, mostrar nada? Ou tudo? Streamlit multiselect vazio [] geralmente usuario quer limpar.
+    # Mas padrão é tudo selecionado. Se ele desmarcar tudo, mostra nada.
+    df_year = df_year[0:0]
 
 # --- Agregação por OSC para o Mapa ---
 group_cols = ['match_cnpj_clean', 'match_name', 'latitude', 'longitude', 'cd_natureza_juridica', 'natureza_juridica_desc', 
@@ -205,42 +191,36 @@ df_map_data.rename(columns={
 # Formatar valor para tooltip
 df_map_data['Valor Formatado'] = df_map_data['Valor Total Recebido'].apply(lambda x: f"R$ {x:,.2f}")
 
-# --- Continuação Coluna Direita: Busca ---
-with col_filters:
-    # Filtro de Pesquisa (Destaque no Mapa)
-    if not df_map_data.empty:
-        osc_options = sorted(df_map_data['tx_nome_fantasia_osc'].astype(str).unique())
-        selected_osc = st.selectbox("Pesquisar OSC", ["Todas"] + osc_options)
+# Filtro de Pesquisa (Destaque no Mapa)
+if not df_map_data.empty:
+    osc_options = sorted(df_map_data['tx_nome_fantasia_osc'].astype(str).unique())
+    selected_osc = st.sidebar.selectbox("Pesquisar OSC (Destaque)", ["Todas"] + osc_options)
 
-        if selected_osc != "Todas":
-            df_map_data = df_map_data[df_map_data['tx_nome_fantasia_osc'] == selected_osc]
-            # Aviso visual movido para a coluna do mapa para não poluir filtros
-            
-# --- Coluna Esquerda: Mapa ---
-with col_map:
-    st.markdown(f"### Mapa 3 - Distribuição das Transferências ({start_year} - {end_year})")
+    if selected_osc != "Todas":
+        df_map_data = df_map_data[df_map_data['tx_nome_fantasia_osc'] == selected_osc]
+        st.sidebar.info(f"Destacando: {selected_osc}")
+
+# --- Mapa ---
+st.markdown(f"### Mapa 3 - Distribuição das Transferências ({start_year} - {end_year})")
+
+if not df_map_data.empty:
+    # Colunas para tooltip enriquecido (Popup)
+    tooltip = {
+        'Tipo Jurídico': 'Tipo',
+        'Bairro': 'Bairro',
+        'situacao_cadastral': 'Situação',
+        'dt_fundacao_osc': 'Fundação',
+        'Area_Atuacao': 'Área de Atuação', # Atualizado label
+        'Secretarias': 'Resp. Repasse',
+        'Qtd. Transferências': 'Qtd. Transferências',
+        'Valor Formatado': 'Valor Total'
+    }
     
-    if 'selected_osc' in locals() and selected_osc != "Todas":
-         st.info(f"Exibindo destaque para: **{selected_osc}**")
-
-    if not df_map_data.empty:
-        # Colunas para tooltip enriquecido (Popup)
-        tooltip = {
-            'Tipo Jurídico': 'Tipo',
-            'Bairro': 'Bairro',
-            'situacao_cadastral': 'Situação',
-            'dt_fundacao_osc': 'Fundação',
-            'Area_Atuacao': 'Área',
-            'Secretarias': 'Resp. Repasse',
-            'Qtd. Transferências': 'Qtd. Transferências',
-            'Valor Formatado': 'Valor Total'
-        }
-        
-        # Hover mostra o nome da beneficiária (como solicitado)
-        m = plot_map(df_map_data, tooltip_cols=tooltip, hover_name_col='Beneficiária')
-        st_folium(m, width="100%", height=600)
-    else:
-        st.info(f"Nenhuma transferência mapeada com coordenadas para o período {start_year}-{end_year}.")
+    # Hover mostra o nome da beneficiária (como solicitado)
+    m = plot_map(df_map_data, tooltip_cols=tooltip, hover_name_col='Beneficiária')
+    st_folium(m, width="100%", height=600)
+else:
+    st.info(f"Nenhuma transferência mapeada com coordenadas para os filtros selecionados.")
 
 # --- Seção Inferior: Métricas (Resumo) ---
 st.markdown("---")
