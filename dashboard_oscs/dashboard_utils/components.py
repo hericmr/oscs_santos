@@ -261,13 +261,10 @@ def render_transfer_table_11_1():
     
     df = pd.DataFrame(data)
     
-    df = pd.DataFrame(data)
-    
     # Adjust layout to avoid too much empty space
     col_l, col_c, col_r = st.columns([1, 2, 1])
     with col_c:
         st.dataframe(df, use_container_width=True, hide_index=True)
     
     st.caption("Fonte: Mapa das Organizações da Sociedade Civil.")
-    st.caption("Elaboração do IPEA e prefeitura de santos.")
 
